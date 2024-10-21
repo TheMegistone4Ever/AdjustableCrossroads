@@ -1,6 +1,6 @@
 package SM_CW_2_JAVA.P5.simsimple;
 
-class Channel {
+public class Channel {
     private int state = 0;
     private double tnext = Double.MAX_VALUE;
 

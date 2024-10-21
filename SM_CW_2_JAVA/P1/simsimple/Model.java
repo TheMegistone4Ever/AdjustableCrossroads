@@ -6,6 +6,8 @@ public class Model {
     private final ArrayList<IElement> list;
     double tNext, tCurr;
     int event;
+    double epsilon = 1e-9;
+
     public Model(ArrayList<IElement> elements) {
         list = elements;
         tNext = 0.0;
@@ -34,7 +36,8 @@ public class Model {
             }
             list.get(event).outAct();
             for (IElement e : list) {
-                if (e.getTnext() == tCurr) {
+                if (!e.equals(list.get(event))
+                        && Math.abs(e.getTnext() - tCurr) < epsilon) {
                     e.outAct();
                 }
             }

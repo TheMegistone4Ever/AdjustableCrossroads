@@ -27,6 +27,11 @@ public class Process extends Element {
         super.outAct();
         super.setTnext(Double.MAX_VALUE);
         super.setState(0);
+
+        if (super.getNextElement() != null) {
+            super.getNextElement().inAct();
+        }
+
         if (getQueue() > 0) {
             setQueue(getQueue() - 1);
             super.setState(1);

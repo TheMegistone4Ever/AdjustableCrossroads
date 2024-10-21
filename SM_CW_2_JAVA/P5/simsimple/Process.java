@@ -41,6 +41,10 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
         List<Channel> soonestChannels = getSoonestChannels();
         super.addQuantity(soonestChannels.size());
 
+        if (super.getNextElement() != null) {
+            super.getNextElement().inAct();
+        }
+
         for (Channel channel : soonestChannels) {
             channel.setTnext(Double.MAX_VALUE);
             channel.setState(0);
@@ -67,7 +71,7 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
                 .orElse(Double.MAX_VALUE);
     }
 
-    private List<Channel> getSoonestChannels() {
+    protected List<Channel> getSoonestChannels() {
         var minTnext = getTnext();
         return channels.stream()
                 .filter(channel -> channel.getTnext() == minTnext && channel.getState() == 1)
