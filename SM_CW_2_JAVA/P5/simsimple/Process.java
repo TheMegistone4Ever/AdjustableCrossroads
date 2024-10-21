@@ -1,13 +1,20 @@
 package SM_CW_2_JAVA.P5.simsimple;
 
-import SM_CW_2_JAVA.P1.simsimple.Element;
-import SM_CW_2_JAVA.P1.simsimple.IElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
     private final ArrayList<Channel> channels = new ArrayList<>();
+
+    public Process() {
+        super();
+        channels.add(new Channel());
+    }
+
+    public Process(int maxQueue) {
+        super(maxQueue);
+        channels.add(new Channel());
+    }
 
     public Process(double delay) {
         super(delay);
@@ -21,12 +28,22 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
         }
     }
 
+    public Process(String nameOfElement, double delay) {
+        super(nameOfElement, delay);
+        channels.add(new Channel());
+    }
+
+    public Process(String nameOfElement, double delay, int maxQueue) {
+        super(nameOfElement, delay, maxQueue);
+        channels.add(new Channel());
+    }
+
     @Override
     public void inAct() {
         Channel freeChannel = getFreeChannel();
         if (freeChannel != null) {
             freeChannel.setState(1);
-            freeChannel.setTnext(super.getTcurr() + super.getDelay());
+            freeChannel.setTNext(super.getTCurr() + super.getDelay());
             addState(1);
         } else {
             if (getQueue() < getMaxQueue()) {
@@ -47,13 +64,13 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
         }
 
         for (Channel channel : soonestChannels) {
-            channel.setTnext(Double.MAX_VALUE);
+            channel.setTNext(Double.MAX_VALUE);
             channel.setState(0);
             addState(-1);
             if (getQueue() > 0) {
                 setQueue(getQueue() - 1);
                 channel.setState(1);
-                channel.setTnext(super.getTcurr() + super.getDelay());
+                channel.setTNext(super.getTCurr() + super.getDelay());
                 addState(1);
             }
         }
@@ -67,17 +84,21 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
     }
 
     @Override
-    public double getTnext() {
+    public double getTNext() {
         return channels.stream()
-                .map(Channel::getTnext)
+                .filter(channel -> channel.getState() == 1)
+                .map(Channel::getTNext)
                 .min(Double::compareTo)
                 .orElse(Double.MAX_VALUE);
     }
 
     protected List<Channel> getSoonestChannels() {
-        var minTnext = getTnext();
+        double minTNext = this.getTNext(), epsilon = 1e-6;
         return channels.stream()
-                .filter(channel -> channel.getTnext() == minTnext && channel.getState() == 1)
+                .filter(channel ->
+                        channel.getState() == 1 &&
+                                Math.abs(channel.getTNext() - minTNext) < epsilon
+                )
                 .toList();
     }
 
