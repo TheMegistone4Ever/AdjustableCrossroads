@@ -3,12 +3,11 @@ package SM_CW_2_JAVA.P6.simsimple;
 import SM_CW_2_JAVA.P1.simsimple.IElement;
 import SM_CW_2_JAVA.P5.simsimple.Channel;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
-    private final ArrayList<IElement> nextElements = new ArrayList<>();
+    private final PriorityQueue<IElement> nextElements = new PriorityQueue<>();
 
     public Process(double delay) {
         super(delay);
@@ -16,6 +15,10 @@ public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
 
     public Process(double delay, int channels) {
         super(delay, channels);
+    }
+
+    public Process(String nameOfElement, double delay, int maxQueue) {
+        super(nameOfElement, delay, maxQueue);
     }
 
     @Override
@@ -28,12 +31,12 @@ public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
         }
 
         for (Channel channel : soonestChannels) {
-            channel.setTnext(Double.MAX_VALUE);
+            channel.setTNext(Double.MAX_VALUE);
             channel.setState(0);
             if (getQueue() > 0) {
                 setQueue(getQueue() - 1);
                 channel.setState(1);
-                channel.setTnext(super.getTcurr() + super.getDelay());
+                channel.setTNext(super.getTCurr() + super.getDelay());
             }
         }
     }
@@ -43,7 +46,7 @@ public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
         if (nextElements.isEmpty()) {
             return null;
         }
-        return nextElements.get((int) (Math.random() * nextElements.size()));
+        return nextElements.peek();
     }
 
     @Override
