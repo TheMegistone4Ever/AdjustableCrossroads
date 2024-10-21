@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class SimModel {
     public static void main(String[] args) {
-        Model model = createModel(4.0, 1.0, 5);
+        Model model = createModel(1.0, 1.0, 5);
         model.simulate(3000.0);
         model.printResult();
     }
