@@ -7,18 +7,20 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Model {
+    final double epsilon = 1e-6;
+    final boolean verbose;
     private final Map<Integer, IElement> elements = new java.util.HashMap<>();
     double tNext, tCurr;
     int event;
-    double epsilon = 1e-9;
 
-    public Model(@NotNull ArrayList<IElement> elements) {
+    public Model(@NotNull ArrayList<IElement> elements, boolean verbose) {
         for (IElement e : elements) {
             this.elements.put(e.getId(), e);
         }
-        tNext = 0.0;
+        tNext = .0;
         event = 0;
         tCurr = tNext;
+        this.verbose = verbose;
     }
 
     public void simulate(double time) {
@@ -26,30 +28,41 @@ public class Model {
             tNext = Double.MAX_VALUE;
             for (Map.Entry<Integer, IElement> entry : elements.entrySet()) {
                 IElement e = entry.getValue();
-                if (e.getTnext() < tNext) {
-                    tNext = e.getTnext();
+                if (e.getTNext() < tNext) {
+                    tNext = e.getTNext();
                     event = entry.getKey();
                 }
             }
-            System.out.println("\nIt's time for event in " +
-                    elements.get(event).getName() +
-                    ", time = " + tNext);
+
+            if (verbose) {
+                System.out.printf("\nIt's time for event in %s, time=%.6f\n", elements.get(event).getName(), tNext);
+            }
+
             for (IElement e : elements.values()) {
                 e.doStatistics(tNext - tCurr);
             }
             tCurr = tNext;
             for (IElement e : elements.values()) {
-                e.setTcurr(tCurr);
+                e.setTCurr(tCurr);
             }
-            elements.get(event).outAct();
+
+            ArrayList<IElement> eventsToProcess = new ArrayList<>();
             for (IElement e : elements.values()) {
-                if (!e.equals(elements.get(event))
-                        && Math.abs(e.getTnext() - tCurr) < epsilon) {
-                    e.outAct();
+                if (Math.abs(e.getTNext() - tCurr) < epsilon) {
+                    eventsToProcess.add(e);
                 }
             }
-            printInfo();
+
+            for (IElement e : eventsToProcess) {
+                e.outAct();
+            }
+
+            if (verbose) {
+                printInfo();
+            }
         }
+
+        // if any remains in queue, add to failure statistics
         for (IElement e : elements.values()) {
             if (e.getClass().equals(Process.class)) {
                 Process p = (Process) e;
@@ -57,25 +70,21 @@ public class Model {
             }
         }
     }
+
     public void printInfo() {
         for (IElement e : elements.values()) {
             e.printInfo();
         }
     }
+
     public void printResult() {
         System.out.println("\n-------------RESULTS-------------");
         for (IElement e : elements.values()) {
             e.printResult();
             if (e.getClass().equals(Process.class)) {
                 Process p = (Process) e;
-                System.out.println(
-                        "failure = " + p.getFailure() +
-                        "\nmean length of queue = " +
-                        p.getMeanQueue() / tCurr +
-                        "\nfailure probability = " +
-                        p.getFailure() / (double) p.getQuantity()
-                 + "\n"
-                );
+                System.out.printf("failure=%d\nmean length of queue=%.6f\nfailure probability=%.6f\n",
+                        p.getFailure(), p.getMeanQueue() / tCurr, p.getFailure() / (double) p.getQuantity());
             }
         }
     }
