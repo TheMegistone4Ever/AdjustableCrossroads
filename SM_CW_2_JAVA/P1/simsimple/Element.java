@@ -111,6 +111,10 @@ public class Element implements  IElement {
         return state;
     }
     @Override
+    public void addState(int stateToAdd) {
+        state += stateToAdd;
+    }
+    @Override
     public void setState(int state) {
         this.state = state;
     }

@@ -12,6 +12,7 @@ public interface IElement {
     double getTcurr();
     void setTcurr(double tcurr);
     int getState();
+    public void addState(int stateToAdd);
     void setState(int state);
     IElement getNextElement();
     void setNextElement(IElement nextElement);

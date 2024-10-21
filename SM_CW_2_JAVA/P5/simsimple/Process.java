@@ -27,6 +27,7 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
         if (freeChannel != null) {
             freeChannel.setState(1);
             freeChannel.setTnext(super.getTcurr() + super.getDelay());
+            addState(1);
         } else {
             if (getQueue() < getMaxQueue()) {
                 setQueue(getQueue() + 1);
@@ -48,10 +49,12 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
         for (Channel channel : soonestChannels) {
             channel.setTnext(Double.MAX_VALUE);
             channel.setState(0);
+            addState(-1);
             if (getQueue() > 0) {
                 setQueue(getQueue() - 1);
                 channel.setState(1);
                 channel.setTnext(super.getTcurr() + super.getDelay());
+                addState(1);
             }
         }
     }
