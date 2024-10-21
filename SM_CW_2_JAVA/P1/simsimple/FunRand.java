@@ -12,12 +12,11 @@ public class FunRand {
      * distribution
      */
     public static double Exp(double timeMean) {
-        double a = 0;
+        double a = Math.random();
         while (a == 0) {
             a = Math.random();
         }
-        a = -timeMean * Math.log(a);
-        return a;
+        return -timeMean * Math.log(a);
     }
 
     /**
@@ -29,12 +28,11 @@ public class FunRand {
      * @return a random value according to a uniform distribution
      */
     public static double Unif(double timeMin, double timeMax) {
-        double a = 0;
+        double a = Math.random();
         while (a == 0) {
             a = Math.random();
         }
-        a = timeMin + a * (timeMax - timeMin);
-        return a;
+        return timeMin + a * (timeMax - timeMin);
     }
 
     /**
@@ -47,9 +45,6 @@ public class FunRand {
      * distribution
      */
     public static double Norm(double timeMean, double timeDeviation) {
-        double a;
-        Random r = new Random();
-        a = timeMean + timeDeviation * r.nextGaussian();
-        return a;
+        return timeMean + timeDeviation * (new Random()).nextGaussian();
     }
 }
