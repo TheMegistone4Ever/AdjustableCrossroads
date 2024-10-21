@@ -16,7 +16,7 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
 
     public Process(double delay, int channels) {
         super(delay);
-        for (int i = 0; i < channels; i++) {
+        for (int i = 0; i < channels; ++i) {
             this.channels.add(new Channel());
         }
     }

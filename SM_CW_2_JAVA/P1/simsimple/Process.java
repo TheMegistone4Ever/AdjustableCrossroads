@@ -18,7 +18,7 @@ public class Process extends Element {
             if (getQueue() < getMaxQueue()) {
                 setQueue(getQueue() + 1);
             } else {
-                failure++;
+                ++failure;
             }
         }
     }
@@ -43,7 +43,7 @@ public class Process extends Element {
         return failure;
     }
     public void incFailure() {
-        failure++;
+        ++failure;
     }
     public void addFailure(int failureToAdd) {
         failure += failureToAdd;

@@ -20,7 +20,7 @@ public class Element implements  IElement {
         state=0;
         nextElement=null;
         id = nextId;
-        nextId++;
+        ++nextId;
         name = "element"+id;
     }
     public Element(double delay){
@@ -31,7 +31,7 @@ public class Element implements  IElement {
         state=0;
         nextElement=null;
         id = nextId;
-        nextId++;
+        ++nextId;
         name = "element"+id;
     }
     public Element(String nameOfElement, double delay){
@@ -42,7 +42,7 @@ public class Element implements  IElement {
         state=0;
         nextElement=null;
         id = nextId;
-        nextId++;
+        ++nextId;
         name = nameOfElement;
     }
     @Override
@@ -90,7 +90,7 @@ public class Element implements  IElement {
 
     @Override
     public void incQuantity() {
-        quantity++;
+        ++quantity;
     }
 
     @Override
