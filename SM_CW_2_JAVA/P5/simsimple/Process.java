@@ -6,33 +6,6 @@ import java.util.List;
 public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
     private final ArrayList<Channel> channels = new ArrayList<>();
 
-    public Process() {
-        super();
-        channels.add(new Channel());
-    }
-
-    public Process(int maxQueue) {
-        super(maxQueue);
-        channels.add(new Channel());
-    }
-
-    public Process(double delay) {
-        super(delay);
-        channels.add(new Channel());
-    }
-
-    public Process(double delay, int channels) {
-        super(delay);
-        for (int i = 0; i < channels; ++i) {
-            this.channels.add(new Channel());
-        }
-    }
-
-    public Process(String nameOfElement, double delay) {
-        super(nameOfElement, delay);
-        channels.add(new Channel());
-    }
-
     public Process(String nameOfElement, double delay, int maxQueue) {
         super(nameOfElement, delay, maxQueue);
         channels.add(new Channel());
