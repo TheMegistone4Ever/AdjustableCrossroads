@@ -9,14 +9,6 @@ import java.util.PriorityQueue;
 public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
     private final PriorityQueue<IElement> nextElements = new PriorityQueue<>();
 
-    public Process(double delay) {
-        super(delay);
-    }
-
-    public Process(double delay, int channels) {
-        super(delay, channels);
-    }
-
     public Process(String nameOfElement, double delay, int maxQueue) {
         super(nameOfElement, delay, maxQueue);
     }

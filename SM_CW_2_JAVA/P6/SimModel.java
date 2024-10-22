@@ -12,15 +12,14 @@ import java.util.Collections;
 
 public class SimModel {
     public static void main(String[] args) {
-        Model model = createModel(1., 1., 5, true);
+        final Model model = createModel(1., 1., 5, true);
         model.simulate(1000.);
         model.printResult();
     }
 
     @Contract("_, _, _, _ -> new")
     public static @NotNull Model createModel(double cDelay, double pDelay, int pMaxQueue, boolean verbose) {
-        Create c = new Create(cDelay);
-        c.setName("CREATOR");
+        Create c = new Create("CREATOR", cDelay);
         c.setDistribution("exp");
         Process[] processes = new Process[3];
         for (int i = 0; i < processes.length; ++i) {
@@ -30,9 +29,11 @@ public class SimModel {
         for (int i = 0; i < processes.length; ++i) {
             System.out.printf(" id%d=%d", i + 1, processes[i].getId());
         }
-        c.setNextElement(processes[0]);
-        for (int i = 0; i < processes.length - 1; ++i) {
-            processes[i].setNextElement(processes[i + 1]);
+        if (verbose) {
+            c.setNextElement(processes[0]);
+            for (int i = 0; i < processes.length - 1; ++i) {
+                processes[i].setNextElement(processes[i + 1]);
+            }
         }
         ArrayList<IElement> list = new ArrayList<>();
         list.add(c);
