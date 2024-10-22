@@ -16,30 +16,6 @@ public class Element implements IElement, Comparable<IElement> {
     private IElement nextElement;
     private int id;
 
-    public Element() {
-        tNext = Double.MAX_VALUE;
-        delayMean = 1.;
-        distribution = "exp";
-        tCurr = tNext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        ++nextId;
-        name = "element" + id;
-    }
-
-    public Element(double delay) {
-        tNext = .0;
-        delayMean = delay;
-        distribution = "";
-        tCurr = tNext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        ++nextId;
-        name = "element" + id;
-    }
-
     public Element(String nameOfElement, double delay) {
         tNext = .0;
         delayMean = delay;

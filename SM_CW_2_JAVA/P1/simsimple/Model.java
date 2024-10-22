@@ -7,11 +7,10 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Model {
-    final double epsilon = 1e-6;
-    final boolean verbose;
+    private final boolean verbose;
     private final Map<Integer, IElement> elements = new java.util.HashMap<>();
-    double tNext, tCurr;
-    int event;
+    private double tNext, tCurr;
+    private int event;
 
     public Model(@NotNull ArrayList<IElement> elements, boolean verbose) {
         for (IElement e : elements) {
@@ -48,6 +47,7 @@ public class Model {
 
             ArrayList<IElement> eventsToProcess = new ArrayList<>();
             for (IElement e : elements.values()) {
+                double epsilon = 1e-6;
                 if (Math.abs(e.getTNext() - tCurr) < epsilon) {
                     eventsToProcess.add(e);
                 }
@@ -89,11 +89,11 @@ public class Model {
         }
     }
 
-    protected Collection<IElement> getList() {
+    public Collection<IElement> getList() {
         return elements.values();
     }
 
-    protected double getCurrentTime() {
+    public double getCurrentTime() {
         return tCurr;
     }
 }

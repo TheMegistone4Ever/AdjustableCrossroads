@@ -16,7 +16,7 @@ public class SimModel {
         ArrayList<IElement> list = new ArrayList<>();
         list.add(c);
         list.add(p);
-        Model model = new Model(list, true);
+        final Model model = new Model(list, true);
         model.simulate(1000.);
         model.printResult();
     }

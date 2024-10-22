@@ -1,48 +1,14 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
 public class Process extends Element {
-    private int queue, maxQueue, failure;
+    private final int maxQueue;
+    private int queue, failure;
     private double meanQueue;
-
-    public Process() {
-        super();
-        queue = 0;
-        maxQueue = Integer.MAX_VALUE;
-        meanQueue = .0;
-    }
-
-    public Process(int maxQueue) {
-        super();
-        queue = 0;
-        this.maxQueue = maxQueue;
-        meanQueue = .0;
-    }
-
-    public Process(double delay) {
-        super(delay);
-        queue = 0;
-        maxQueue = Integer.MAX_VALUE;
-        meanQueue = .0;
-    }
-
-    public Process(double delay, int maxQueue) {
-        super(delay);
-        queue = 0;
-        this.maxQueue = maxQueue;
-        meanQueue = .0;
-    }
-
-    public Process(String nameOfElement, double delay) {
-        super(nameOfElement, delay);
-        queue = 0;
-        maxQueue = Integer.MAX_VALUE;
-        meanQueue = .0;
-    }
 
     public Process(String nameOfElement, double delay, int maxQueue) {
         super(nameOfElement, delay);
         queue = 0;
-        this.maxQueue = maxQueue;
+        this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
         meanQueue = .0;
     }
 
@@ -99,12 +65,6 @@ public class Process extends Element {
 
     public int getMaxQueue() {
         return maxQueue;
-    }
-
-    public void setMaxQueue(int maxQueue) {
-        if (maxQueue >= 0) {
-            this.maxQueue = maxQueue;
-        }
     }
 
     @Override
