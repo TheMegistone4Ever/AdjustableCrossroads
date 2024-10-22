@@ -12,7 +12,7 @@ import java.util.Collections;
 
 public class SimModel {
     public static void main(String[] args) {
-        Model model = createModel(1., 1., 5, true);
+        final Model model = createModel(1., 1., 5, true);
         model.simulate(1000.);
         model.printResult();
     }
@@ -25,9 +25,11 @@ public class SimModel {
         for (int i = 0; i < processes.length; ++i) {
             processes[i] = new Process("PROCESSOR_" + (i + 1), pDelay, pMaxQueue);
         }
-        System.out.printf("id0=%d", c.getId());
-        for (int i = 0; i < processes.length; ++i) {
-            System.out.printf(" id%d=%d", i + 1, processes[i].getId());
+        if (verbose) {
+            System.out.printf("id0=%d", c.getId());
+            for (int i = 0; i < processes.length; ++i) {
+                System.out.printf(" id%d=%d", i + 1, processes[i].getId());
+            }
         }
         c.setNextElement(processes[0]);
         for (int i = 0; i < processes.length - 1; ++i) {
