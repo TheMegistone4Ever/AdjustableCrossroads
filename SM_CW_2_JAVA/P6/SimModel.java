@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static SM_CW_2_JAVA.P1.simsimple.Distribution.EXPONENTIAL;
+
 public class SimModel {
     public static void main(String[] args) {
         final Model model = createModel(1., 1., 5, true);
@@ -20,7 +22,7 @@ public class SimModel {
     @Contract("_, _, _, _ -> new")
     public static @NotNull Model createModel(double cDelay, double pDelay, int pMaxQueue, boolean verbose) {
         Create c = new Create("CREATOR", cDelay);
-        c.setDistribution("exp");
+        c.setDistribution(EXPONENTIAL);
         Process[] processes = new Process[3];
         for (int i = 0; i < processes.length; ++i) {
             processes[i] = new Process("PROCESSOR_" + (i + 1), pDelay, pMaxQueue);

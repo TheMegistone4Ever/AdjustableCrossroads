@@ -47,4 +47,23 @@ public class FunRand {
     public static double Norm(double timeMean, double timeDeviation) {
         return timeMean + timeDeviation * (new Random()).nextGaussian();
     }
+
+    /**
+     * Generates a random value according to an Erlang distribution
+     *
+     * @param delayMean k (integer)
+     * @param delayDev  lambda
+     * @return a random value according to an Erlang distribution
+     */
+    public static double Erlang(double delayMean, double delayDev) {
+        double product = 1.0;
+        for (int i = 0; i < (int) delayMean; i++) {
+            double a = Math.random();
+            while (a == 0) {
+                a = Math.random();
+            }
+            product *= a;
+        }
+        return -Math.log(product) / delayDev;
+    }
 }

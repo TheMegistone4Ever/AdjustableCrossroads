@@ -7,7 +7,7 @@ public class Element implements IElement, Comparable<IElement> {
     private String name;
     private double tNext = .0;
     private double delayMean, delayDev;
-    private String distribution = "exp";
+    private Distribution distribution = Distribution.EXPONENTIAL;
     private int quantity;
     private double tCurr = .0;
     private int state = 0;
@@ -22,10 +22,11 @@ public class Element implements IElement, Comparable<IElement> {
 
     @Override
     public double getDelay() {
-        return switch (getDistribution().toLowerCase()) {
-            case "exp" -> FunRand.Exp(getDelayMean());
-            case "norm" -> FunRand.Norm(getDelayMean(), getDelayDev());
-            case "unif" -> FunRand.Unif(getDelayMean(), getDelayDev());
+        return switch (distribution) {
+            case EXPONENTIAL -> FunRand.Exp(getDelayMean());
+            case NORMAL -> FunRand.Norm(getDelayMean(), getDelayDev());
+            case UNIFORM -> FunRand.Unif(getDelayMean(), getDelayDev());
+            case ERLANG -> FunRand.Erlang(getDelayMean(), getDelayDev());
             default -> getDelayMean();
         };
     }
@@ -41,12 +42,12 @@ public class Element implements IElement, Comparable<IElement> {
     }
 
     @Override
-    public String getDistribution() {
+    public Distribution getDistribution() {
         return distribution;
     }
 
     @Override
-    public void setDistribution(String distribution) {
+    public void setDistribution(Distribution distribution) {
         this.distribution = distribution;
     }
 

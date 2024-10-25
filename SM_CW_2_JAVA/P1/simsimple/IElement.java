@@ -7,9 +7,9 @@ public interface IElement {
 
     void setDelayDev(double delayDev);
 
-    String getDistribution();
+    Distribution getDistribution();
 
-    void setDistribution(String distribution);
+    void setDistribution(Distribution distribution);
 
     int getQuantity();
 
