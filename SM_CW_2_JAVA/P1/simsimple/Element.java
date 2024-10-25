@@ -2,51 +2,32 @@ package SM_CW_2_JAVA.P1.simsimple;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 public class Element implements IElement, Comparable<IElement> {
     private static int nextId = 0;
     private String name;
-    private double tNext;
+    private double tNext = .0;
     private double delayMean, delayDev;
-    private String distribution;
+    private String distribution = "exp";
     private int quantity;
-    private double tCurr;
-    private int state;
-    private IElement nextElement;
-    private int id;
+    private double tCurr = .0;
+    private int state = 0;
+    private IElement nextElement = null;
+    private int id = nextId;
 
     public Element(String nameOfElement, double delay) {
-        tNext = .0;
         delayMean = delay;
-        distribution = "exp";
-        tCurr = tNext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        ++nextId;
         name = nameOfElement;
+        ++nextId;
     }
 
     @Override
     public double getDelay() {
-        double delay = getDelayMean();
-        if ("exp".equalsIgnoreCase(getDistribution())) {
-            delay = FunRand.Exp(getDelayMean());
-        } else {
-            if ("norm".equalsIgnoreCase(getDistribution())) {
-                delay = FunRand.Norm(getDelayMean(), getDelayDev());
-            } else {
-                if ("unif".equalsIgnoreCase(getDistribution())) {
-                    delay = FunRand.Unif(getDelayMean(), getDelayDev());
-                } else {
-                    if ("".equalsIgnoreCase(getDistribution())) {
-                        delay = getDelayMean();
-                    }
-                }
-            }
-        }
-        return delay;
+        return switch (getDistribution().toLowerCase()) {
+            case "exp" -> FunRand.Exp(getDelayMean());
+            case "norm" -> FunRand.Norm(getDelayMean(), getDelayDev());
+            case "unif" -> FunRand.Unif(getDelayMean(), getDelayDev());
+            default -> getDelayMean();
+        };
     }
 
     @Override
@@ -185,6 +166,6 @@ public class Element implements IElement, Comparable<IElement> {
 
     @Override
     public int compareTo(@NotNull IElement o) {
-        return (new Random().nextInt(3) - 1) * o.getState();
+        return o.getState();
     }
 }

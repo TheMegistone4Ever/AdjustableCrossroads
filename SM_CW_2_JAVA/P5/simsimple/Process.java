@@ -20,7 +20,7 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
             addState(1);
         } else {
             if (getQueue() < getMaxQueue()) {
-                setQueue(getQueue() + 1);
+                incQueue();
             } else {
                 super.incFailure();
             }
@@ -41,7 +41,7 @@ public class Process extends SM_CW_2_JAVA.P2.simsimple.Process {
             channel.setState(0);
             addState(-1);
             if (getQueue() > 0) {
-                setQueue(getQueue() - 1);
+                decQueue();
                 channel.setState(1);
                 channel.setTNext(super.getTCurr() + super.getDelay());
                 addState(1);

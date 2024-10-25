@@ -19,7 +19,7 @@ public class Process extends Element {
             super.setTNext(super.getTCurr() + super.getDelay());
         } else {
             if (getQueue() < getMaxQueue()) {
-                setQueue(getQueue() + 1);
+                incQueue();
             } else {
                 ++failure;
             }
@@ -37,7 +37,7 @@ public class Process extends Element {
         }
 
         if (getQueue() > 0) {
-            setQueue(getQueue() - 1);
+            decQueue();
             super.setState(1);
             super.setTNext(super.getTCurr() + super.getDelay());
         }
@@ -61,6 +61,14 @@ public class Process extends Element {
 
     public void setQueue(int queue) {
         this.queue = queue;
+    }
+
+    public void incQueue() {
+        ++queue;
+    }
+
+    public void decQueue() {
+        --queue;
     }
 
     public int getMaxQueue() {

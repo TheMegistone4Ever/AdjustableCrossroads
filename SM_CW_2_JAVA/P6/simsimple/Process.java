@@ -26,7 +26,7 @@ public class Process extends SM_CW_2_JAVA.P5.simsimple.Process {
             channel.setTNext(Double.MAX_VALUE);
             channel.setState(0);
             if (getQueue() > 0) {
-                setQueue(getQueue() - 1);
+                decQueue();
                 channel.setState(1);
                 channel.setTNext(super.getTCurr() + super.getDelay());
             }
