@@ -12,8 +12,9 @@ public class Create extends Element {
         super.setTNext(super.getTCurr() + super.getDelay());
         Task task = new Task();
         Path path = super.getNextPath(task);
-        if (path.getTo() != null && !path.isBlocked(task)) {
-            path.getTo().inAct(task);
+        Element to = path.getTo();
+        if (to != null && !path.isBlocked(task)) {
+            to.inAct(task);
         }
     }
 }
