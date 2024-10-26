@@ -28,7 +28,7 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
         return unblockedPaths.isEmpty() ? fork.peek() : switch (forking) {
             case PROBABILISTIC -> getNextProbabilistic(unblockedPaths);
             case PRIORITIZED -> getNextPriority(unblockedPaths);
-            case COMBINED -> getNextCombined(unblockedPaths);
+            default -> getNextCombined(unblockedPaths);
         };
     }
 
