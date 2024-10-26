@@ -1,22 +1,27 @@
 package SM_CW_3_JAVA.P1.simsimple;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+import static SM_CW_3_JAVA.P1.simsimple.constants.epsilon;
+
 public class Process extends Element {
     private final int maxQueue;
     private final ArrayDeque<Task> queue = new ArrayDeque<>();
-    private final ArrayList<Channel> channels = new ArrayList<>();
+    private final ArrayList<Channel> channels;
     private int failures = 0;
     private double accumulatedLoad = .0;
     private double accumulatedQueue = .0;
-    private double totalLeaveTime = .0;
+    private double accumulatedLeaveTime = .0;
     private double previousLeaveTime = .0;
 
     public Process(String nameOfElement, double delay, int maxQueue, int channels) {
         super(nameOfElement, delay);
         this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
+        this.channels = new ArrayList<>(channels);
         for (int i = 0; i < channels; ++i) {
             this.channels.add(new Channel());
         }
@@ -25,9 +30,7 @@ public class Process extends Element {
     public void inAct(Task task) {
         Channel freeChannel = getFreeChannel();
         if (freeChannel != null) {
-            freeChannel.setTask(task);
-            freeChannel.setTNext(super.getTCurr() + super.getDelay());
-            super.addState(1);
+            setChannelBusy(freeChannel, task);
         } else {
             if (queue.size() < maxQueue) {
                 queue.add(task);
@@ -47,25 +50,32 @@ public class Process extends Element {
                 continue;
             }
 
-            Element e = toNext.getTo();
-            if (e != null) {
-                e.inAct(task);
+            Element to = toNext.getTo();
+            if (to != null) {
+                to.inAct(task);
             }
 
             super.incQuantity();
-
-            channel.setTNext(Double.MAX_VALUE);
-            channel.setTask(null);
-            super.addState(-1);
-            totalLeaveTime += super.getTCurr() - previousLeaveTime;
+            accumulatedLeaveTime += super.getTCurr() - previousLeaveTime;
             previousLeaveTime = super.getTCurr();
 
+            setChannelFree(channel);
             if (!queue.isEmpty()) {
-                channel.setTask(queue.poll());
-                channel.setTNext(super.getTCurr() + super.getDelay());
-                super.addState(1);
+                setChannelBusy(channel, queue.poll());
             }
         }
+    }
+
+    private void setChannelBusy(@NotNull Channel channel, Task task) {
+        channel.setTask(task);
+        channel.setTNext(super.getTCurr() + super.getDelay());
+        super.addState(1);
+    }
+
+    private void setChannelFree(@NotNull Channel channel) {
+        channel.setTask(null);
+        channel.setTNext(Double.MAX_VALUE);
+        super.addState(-1);
     }
 
     public int getFailures() {
@@ -97,7 +107,6 @@ public class Process extends Element {
     }
 
     protected List<Channel> getSoonestChannels() {
-        double epsilon = 1e-6;
         return channels.stream()
                 .filter(channel -> channel.getState() && Math.abs(channel.getTNext() - getTNext()) < epsilon)
                 .toList();
@@ -128,5 +137,9 @@ public class Process extends Element {
 
     public double getAccumulatedLoad() {
         return accumulatedLoad;
+    }
+
+    public double getAccumulatedLeaveTime() {
+        return accumulatedLeaveTime;
     }
 }
