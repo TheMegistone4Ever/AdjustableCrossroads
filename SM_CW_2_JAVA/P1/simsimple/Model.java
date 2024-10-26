@@ -45,16 +45,11 @@ public class Model {
                 e.setTCurr(tCurr);
             }
 
-            ArrayList<IElement> eventsToProcess = new ArrayList<>();
             for (IElement e : elements.values()) {
                 double epsilon = 1e-6;
                 if (Math.abs(e.getTNext() - tCurr) < epsilon) {
-                    eventsToProcess.add(e);
+                    e.outAct();
                 }
-            }
-
-            for (IElement e : eventsToProcess) {
-                e.outAct();
             }
 
             if (verbose) {
