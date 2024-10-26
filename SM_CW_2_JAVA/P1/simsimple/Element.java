@@ -27,7 +27,6 @@ public class Element implements IElement, Comparable<IElement> {
             case NORMAL -> FunRand.Norm(getDelayMean(), getDelayDev());
             case UNIFORM -> FunRand.Unif(getDelayMean(), getDelayDev());
             case ERLANG -> FunRand.Erlang(getDelayMean(), getDelayDev());
-            default -> getDelayMean();
         };
     }
 
