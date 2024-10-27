@@ -32,13 +32,13 @@ public class Model extends SM_CW_2_JAVA.P1.simsimple.Model {
                                 failure = %d
                                 mean length of queue = %.6f
                                 mean load = %.6f
-                                processing time = %.6f
+                                mean processing time = %.6f
                                 failure probability = %.6f
                                 """,
                         p.getFailures(),
                         p.getAccumulatedQueue() / super.getCurrentTime(),
                         p.getAccumulatedLoad() / super.getCurrentTime(),
-                        p.getAccumulatedProcessingTime() / super.getCurrentTime(),
+                        p.getAccumulatedProcessingTime() / p.getQuantity(),
                         p.getFailures() / (double) p.getQuantity()
                 );
             }
