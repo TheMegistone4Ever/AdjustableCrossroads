@@ -15,7 +15,7 @@ public class Process extends Element {
     private int failures = 0;
     private double accumulatedLoad = .0;
     private double accumulatedQueue = .0;
-    private double accumulatedLeaveTime = .0;
+    private double accumulatedProcessingTime = .0;
     private double previousLeaveTime = .0;
 
     public Process(String nameOfElement, double delay, int maxQueue, int channels) {
@@ -56,7 +56,7 @@ public class Process extends Element {
             }
 
             super.incQuantity();
-            accumulatedLeaveTime += super.getTCurr() - previousLeaveTime;
+            accumulatedProcessingTime += super.getTCurr() - previousLeaveTime;
             previousLeaveTime = super.getTCurr();
 
             setChannelFree(channel);
@@ -139,7 +139,7 @@ public class Process extends Element {
         return accumulatedLoad;
     }
 
-    public double getAccumulatedLeaveTime() {
-        return accumulatedLeaveTime;
+    public double getAccumulatedProcessingTime() {
+        return accumulatedProcessingTime;
     }
 }

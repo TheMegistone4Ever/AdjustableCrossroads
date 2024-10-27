@@ -28,10 +28,18 @@ public class Model extends SM_CW_2_JAVA.P1.simsimple.Model {
         for (IElement e : super.getList()) {
             e.printResult();
             if (e instanceof Process p) {
-                System.out.printf(
-                        "failure = %d\nmean length of queue = %.6f\nmean load = %.6f\nfailure probability = %.6f\n",
-                        p.getFailures(), p.getAccumulatedQueue() / super.getCurrentTime(),
-                        p.getAccumulatedLoad() / super.getCurrentTime(), p.getFailures() / (double) p.getQuantity()
+                System.out.printf("""
+                                failure = %d
+                                mean length of queue = %.6f
+                                mean load = %.6f
+                                processing time = %.6f
+                                failure probability = %.6f
+                                """,
+                        p.getFailures(),
+                        p.getAccumulatedQueue() / super.getCurrentTime(),
+                        p.getAccumulatedLoad() / super.getCurrentTime(),
+                        p.getAccumulatedProcessingTime() / super.getCurrentTime(),
+                        p.getFailures() / (double) p.getQuantity()
                 );
             }
         }
