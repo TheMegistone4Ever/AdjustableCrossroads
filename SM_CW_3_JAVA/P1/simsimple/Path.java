@@ -49,24 +49,8 @@ public class Path implements Comparable<Path> {
         return priority;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
     public double getProbability() {
         return probability;
-    }
-
-    public void setProbability(double probability) {
-        this.probability = probability;
-    }
-
-    public Predicate<Task> getBlocker() {
-        return blocker;
-    }
-
-    public void setBlocker(Predicate<Task> blocker) {
-        this.blocker = blocker;
     }
 
     @Override

@@ -59,10 +59,6 @@ public class Process extends Element {
         return queue;
     }
 
-    public void setQueue(int queue) {
-        this.queue = queue;
-    }
-
     public void incQueue() {
         ++queue;
     }
