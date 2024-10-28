@@ -17,7 +17,7 @@ public class Model extends SM_CW_2_JAVA.P1.simsimple.Model {
         // if any remains in queue, add to failure statistics
         for (IElement e : super.getList()) {
             if (e instanceof Process p) {
-                p.addFailure(p.getQueue().size() + p.getState());
+                p.addFailures(p.getQueue().size() + p.getState());
             }
         }
     }
