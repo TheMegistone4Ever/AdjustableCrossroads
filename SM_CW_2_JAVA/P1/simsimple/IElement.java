@@ -56,4 +56,8 @@ public interface IElement {
     void setName(String name);
 
     void doStatistics(double delta);
+
+    Model getParentModel();
+
+    void setParentModel(Model parentModel);
 }

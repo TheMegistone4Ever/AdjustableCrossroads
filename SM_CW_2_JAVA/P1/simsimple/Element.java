@@ -13,6 +13,7 @@ public class Element implements IElement, Comparable<IElement> {
     private int state = 0;
     private IElement nextElement = null;
     private int id = nextId;
+    private Model parentModel;
 
     public Element(String nameOfElement, double delay) {
         delayMean = delay;
@@ -162,6 +163,16 @@ public class Element implements IElement, Comparable<IElement> {
 
     @Override
     public void doStatistics(double delta) {
+    }
+
+    @Override
+    public void setParentModel(Model parentModel) {
+        this.parentModel = parentModel;
+    }
+
+    @Override
+    public Model getParentModel() {
+        return parentModel;
     }
 
     @Override

@@ -14,6 +14,7 @@ public class Model {
 
     public Model(@NotNull ArrayList<IElement> elements, boolean verbose) {
         for (IElement e : elements) {
+            e.setParentModel(this);
             this.elements.put(e.getId(), e);
         }
         tNext = .0;
