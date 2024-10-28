@@ -8,7 +8,7 @@ public class Path implements Comparable<Path> {
     private final Element to;
     private int priority = 1;
     private double probability = 1.;
-    private Predicate<Task> blocker = null;
+    private Predicate<ITask> blocker = null;
 
     public Path() {
         this.to = null;
@@ -30,14 +30,20 @@ public class Path implements Comparable<Path> {
         this.priority = priority;
     }
 
-    public Path(Element to, double probability, int priority, Predicate<Task> blocker) {
+    public Path(Element to, double probability, int priority, Predicate<ITask> blocker) {
         this.to = to;
         this.probability = probability;
         this.priority = priority;
         this.blocker = blocker;
     }
 
-    public boolean isBlocked(Task task) {
+    public Path(Element to, int priority, Predicate<ITask> blocker) {
+        this.to = to;
+        this.priority = priority;
+        this.blocker = blocker;
+    }
+
+    public boolean isBlocked(ITask task) {
         return blocker != null && blocker.test(task);
     }
 
