@@ -1,13 +1,13 @@
 package SM_CW_3_JAVA.P1.simsimple;
 
 public class Channel {
-    private Task task = null;
+    private ITask task = null;
 
-    public Task getTask() {
+    public ITask getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(ITask task) {
         this.task = task;
     }
 
