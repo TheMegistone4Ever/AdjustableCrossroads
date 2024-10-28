@@ -20,7 +20,7 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
         this.forking = forking;
     }
 
-    public Path getNextPath(Task task) {
+    public Path getNextPath(ITask task) {
         if (fork.isEmpty()) {
             return new Path();
         }
@@ -45,7 +45,6 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
         return unblockedPaths.peek();
     }
 
-    @Contract(pure = true)
     private Path getNextPriority(@NotNull PriorityQueue<Path> unblockedPaths) {
         return unblockedPaths.peek();
     }
@@ -65,7 +64,7 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
     }
 
     @Contract("_ -> new")
-    private @NotNull PriorityQueue<Path> getUnblockedPaths(Task task) {
+    private @NotNull PriorityQueue<Path> getUnblockedPaths(ITask task) {
         return fork.stream()
                 .filter(path -> !path.isBlocked(task))
                 .collect(Collectors.toCollection(PriorityQueue::new));
@@ -75,6 +74,10 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
         Collections.addAll(fork, paths);
     }
 
-    public void inAct(Task task) {
+    public void inAct(ITask task) {
+    }
+
+    public void setForking(Forking forking) {
+        this.forking = forking;
     }
 }
