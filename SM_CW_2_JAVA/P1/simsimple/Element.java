@@ -166,13 +166,13 @@ public class Element implements IElement, Comparable<IElement> {
     }
 
     @Override
-    public void setParentModel(Model parentModel) {
-        this.parentModel = parentModel;
+    public Model getParentModel() {
+        return parentModel;
     }
 
     @Override
-    public Model getParentModel() {
-        return parentModel;
+    public void setParentModel(Model parentModel) {
+        this.parentModel = parentModel;
     }
 
     @Override
