@@ -6,11 +6,16 @@ public class Create extends Element {
         super.setTNext(.0); // імітація розпочнеться з події Create
     }
 
+    public Create(String nameOfElement, double delay, Forking forking) {
+        super(nameOfElement, delay, forking);
+        super.setTNext(.0); // імітація розпочнеться з події Create
+    }
+
     @Override
     public void outAct() {
         super.outAct();
         super.setTNext(super.getTCurr() + super.getDelay());
-        Task task = new Task();
+        ITask task = new Task();
         Path path = super.getNextPath(task);
         Element to = path.getTo();
         if (to != null && !path.isBlocked(task)) {
