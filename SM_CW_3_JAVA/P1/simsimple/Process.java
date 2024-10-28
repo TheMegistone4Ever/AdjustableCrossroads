@@ -10,7 +10,7 @@ import static SM_CW_3_JAVA.P1.simsimple.constants.epsilon;
 
 public class Process extends Element {
     private final int maxQueue;
-    private final ArrayDeque<Task> queue = new ArrayDeque<>();
+    private final ArrayDeque<ITask> queue = new ArrayDeque<>();
     private final ArrayList<Channel> channels;
     private int failures = 0;
     private double accumulatedLoad = .0;
@@ -27,7 +27,7 @@ public class Process extends Element {
         }
     }
 
-    public void inAct(Task task) {
+    public void inAct(ITask task) {
         Channel freeChannel = getFreeChannel();
         if (freeChannel != null) {
             setChannelBusy(freeChannel, task);
@@ -43,7 +43,7 @@ public class Process extends Element {
     @Override
     public void outAct() {
         for (Channel channel : getSoonestChannels()) {
-            Task task = channel.getTask();
+            ITask task = channel.getTask();
 
             Path toNext = getNextPath(task);
             if (toNext.isBlocked(task)) {
@@ -66,13 +66,13 @@ public class Process extends Element {
         }
     }
 
-    private void setChannelBusy(@NotNull Channel channel, Task task) {
+    public void setChannelBusy(@NotNull Channel channel, ITask task) {
         channel.setTask(task);
         channel.setTNext(super.getTCurr() + super.getDelay());
         super.addState(1);
     }
 
-    private void setChannelFree(@NotNull Channel channel) {
+    protected void setChannelFree(@NotNull Channel channel) {
         channel.setTask(null);
         channel.setTNext(Double.MAX_VALUE);
         super.addState(-1);
@@ -82,15 +82,27 @@ public class Process extends Element {
         return failures;
     }
 
-    public void addFailure(int failureToAdd) {
+    public void addFailures(int failureToAdd) {
         failures += failureToAdd;
     }
 
-    public ArrayDeque<Task> getQueue() {
+    public void incFailures() {
+        ++failures;
+    }
+
+    protected ITask getCurrentTask() {
+        return channels.stream()
+                .filter(Channel::getState)
+                .map(Channel::getTask)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ArrayDeque<ITask> getQueue() {
         return queue;
     }
 
-    private Channel getFreeChannel() {
+    protected Channel getFreeChannel() {
         return channels.stream()
                 .filter(channel -> !channel.getState())
                 .findFirst()
@@ -131,6 +143,10 @@ public class Process extends Element {
         accumulatedLoad += getState() * delta;
     }
 
+    public int getMaxQueue() {
+        return maxQueue;
+    }
+
     public double getAccumulatedQueue() {
         return accumulatedQueue;
     }
@@ -141,5 +157,21 @@ public class Process extends Element {
 
     public double getAccumulatedProcessingTime() {
         return accumulatedProcessingTime;
+    }
+
+    public void addAccumulatedProcessingTime(double timeToAdd) {
+        accumulatedProcessingTime += timeToAdd;
+    }
+
+    public double getPreviousLeaveTime() {
+        return previousLeaveTime;
+    }
+
+    public void setPreviousLeaveTime(double previousLeaveTime) {
+        this.previousLeaveTime = previousLeaveTime;
+    }
+
+    public ArrayList<Channel> getChannels() {
+        return channels;
     }
 }
