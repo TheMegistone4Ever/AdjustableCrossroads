@@ -4,4 +4,8 @@ public interface ITask {
     double getTNext();
 
     void setTNext(double tNext);
+
+    double getTimeIn();
+
+    int getId();
 }
