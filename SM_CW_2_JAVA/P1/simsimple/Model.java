@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import static SM_CW_3_JAVA.P1.simsimple.constants.epsilon;
+
 public class Model {
     private final boolean verbose;
     private final Map<Integer, IElement> elements = new java.util.HashMap<>();
@@ -47,7 +49,6 @@ public class Model {
             }
 
             for (IElement e : elements.values()) {
-                double epsilon = 1e-6;
                 if (Math.abs(e.getTNext() - tCurr) < epsilon) {
                     e.outAct();
                 }
