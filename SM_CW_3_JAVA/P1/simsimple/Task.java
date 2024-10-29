@@ -1,8 +1,8 @@
 package SM_CW_3_JAVA.P1.simsimple;
 
 public class Task implements ITask {
-    private static int nextId = 0;
-    private final int id = nextId++;
+    private static int nextId = -1;
+    private final int id = ++nextId;
     private double tNext = Double.MAX_VALUE;
     private double timeIn = 0;
 

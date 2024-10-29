@@ -53,7 +53,7 @@ public class SimModels {
     static void printTableBorder(int @NotNull [] columnWidths) {
         for (int width : columnWidths) {
             System.out.print("+");
-            for (int i = 0; i < width; i++) {
+            for (int i = 0; i < width; ++i) {
                 System.out.print("-");
             }
         }

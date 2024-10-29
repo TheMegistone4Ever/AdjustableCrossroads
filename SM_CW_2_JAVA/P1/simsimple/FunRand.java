@@ -57,7 +57,7 @@ public class FunRand {
      */
     public static double Erlang(double delayMean, double delayDev) {
         double product = 1.0;
-        for (int i = 0; i < (int) delayMean; i++) {
+        for (int i = 0; i < (int) delayMean; ++i) {
             double a = Math.random();
             while (a == 0) {
                 a = Math.random();

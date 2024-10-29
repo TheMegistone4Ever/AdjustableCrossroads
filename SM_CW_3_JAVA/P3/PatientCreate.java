@@ -15,7 +15,7 @@ public class PatientCreate extends Create {
 
     public void setPatientTypedFrequencies(int[] types, double[] frequencies) {
         this.patientTypedFrequencies = new HashMap<>();
-        for (int i = 0; i < types.length; i++) {
+        for (int i = 0; i < types.length; ++i) {
             this.patientTypedFrequencies.put(types[i], frequencies[i]);
         }
     }

@@ -23,7 +23,7 @@ public class TypeModifyingProcess extends Process {
 
     public void setTypeModifyingMap(int[] types, int[] modifiedTypes) {
         this.typeModifyingMap = new HashMap<>();
-        for (int i = 0; i < types.length; i++) {
+        for (int i = 0; i < types.length; ++i) {
             this.typeModifyingMap.put(types[i], modifiedTypes[i]);
         }
     }

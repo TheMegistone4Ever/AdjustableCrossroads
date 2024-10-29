@@ -4,7 +4,7 @@ import SM_CW_3_JAVA.P1.simsimple.ITask;
 import org.jetbrains.annotations.NotNull;
 
 public class Element implements IElement, Comparable<IElement> {
-    private static int nextId = 0;
+    private static int nextId = -1;
     private String name;
     private double tNext = .0;
     private double delayMean, delayDev;
@@ -13,18 +13,16 @@ public class Element implements IElement, Comparable<IElement> {
     private double tCurr = .0;
     private int state = 0;
     private IElement nextElement = null;
-    private int id = nextId;
+    private int id = ++nextId;
     private Model parentModel;
 
     public Element(String nameOfElement) {
         name = nameOfElement;
-        ++nextId;
     }
 
     public Element(String nameOfElement, double delay) {
         delayMean = delay;
         name = nameOfElement;
-        ++nextId;
     }
 
     public Element(String name, double delayMean, double delayDev) {
@@ -32,7 +30,6 @@ public class Element implements IElement, Comparable<IElement> {
         this.delayMean = delayMean;
         this.delayDev = delayDev;
         distribution = Distribution.NORMAL;
-        ++nextId;
     }
 
     @Override

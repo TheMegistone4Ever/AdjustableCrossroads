@@ -23,7 +23,7 @@ public class RegistrationProcess extends Process {
 
     public void setPatientTypedDelays(int[] types, double[] delays) {
         this.patientTypedDelays = new HashMap<>();
-        for (int i = 0; i < types.length; i++) {
+        for (int i = 0; i < types.length; ++i) {
             this.patientTypedDelays.put(types[i], delays[i]);
         }
     }
