@@ -1,5 +1,6 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
+import SM_CW_3_JAVA.P1.simsimple.Dispose;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,11 +29,13 @@ public class Model {
     public void simulate(double time) {
         while (tCurr < time) {
             tNext = Double.MAX_VALUE;
-            for (Map.Entry<Integer, IElement> entry : elements.entrySet()) {
-                IElement e = entry.getValue();
-                if (e.getTNext() < tNext) {
-                    tNext = e.getTNext();
-                    event = entry.getKey();
+
+            for (var element : elements.values()) {
+                if (!(element instanceof Dispose) &&
+                        (tCurr < element.getTNext() || tCurr == 0) &&
+                        element.getTNext() < tNext) {
+                    tNext = element.getTNext();
+                    event = element.getId();
                 }
             }
 

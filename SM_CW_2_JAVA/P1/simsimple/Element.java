@@ -1,5 +1,6 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
+import SM_CW_3_JAVA.P1.simsimple.ITask;
 import org.jetbrains.annotations.NotNull;
 
 public class Element implements IElement, Comparable<IElement> {
@@ -15,9 +16,22 @@ public class Element implements IElement, Comparable<IElement> {
     private int id = nextId;
     private Model parentModel;
 
+    public Element(String nameOfElement) {
+        name = nameOfElement;
+        ++nextId;
+    }
+
     public Element(String nameOfElement, double delay) {
         delayMean = delay;
         name = nameOfElement;
+        ++nextId;
+    }
+
+    public Element(String name, double delayMean, double delayDev) {
+        this.name = name;
+        this.delayMean = delayMean;
+        this.delayDev = delayDev;
+        distribution = Distribution.NORMAL;
         ++nextId;
     }
 
@@ -103,6 +117,10 @@ public class Element implements IElement, Comparable<IElement> {
 
     @Override
     public void inAct() {
+    }
+
+    @Override
+    public void inAct(ITask task) {
     }
 
     @Override

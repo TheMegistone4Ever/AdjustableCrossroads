@@ -1,5 +1,7 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
+import SM_CW_3_JAVA.P1.simsimple.ITask;
+
 public interface IElement {
     double getDelay();
 
@@ -32,6 +34,8 @@ public interface IElement {
     void setNextElement(IElement nextElement);
 
     void inAct();
+
+    void inAct(ITask task);
 
     void outAct();
 
