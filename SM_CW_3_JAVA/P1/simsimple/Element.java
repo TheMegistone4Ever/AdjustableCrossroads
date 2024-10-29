@@ -20,6 +20,14 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
         this.forking = forking;
     }
 
+    public Element(String nameOfElement, double delayMean, double delayDev) {
+        super(nameOfElement, delayMean, delayDev);
+    }
+
+    public Element(String name) {
+        super(name);
+    }
+
     public Path getNextPath(ITask task) {
         if (fork.isEmpty()) {
             return new Path();
@@ -72,9 +80,6 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
 
     public void addPaths(Path... paths) {
         Collections.addAll(fork, paths);
-    }
-
-    public void inAct(ITask task) {
     }
 
     public void setForking(Forking forking) {
