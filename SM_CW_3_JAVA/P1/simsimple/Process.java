@@ -1,5 +1,6 @@
 package SM_CW_3_JAVA.P1.simsimple;
 
+import SM_CW_2_JAVA.P1.simsimple.IElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
@@ -20,6 +21,15 @@ public class Process extends Element {
 
     public Process(String nameOfElement, double delay, int maxQueue, int channels) {
         super(nameOfElement, delay);
+        this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
+        this.channels = new ArrayList<>(channels);
+        for (int i = 0; i < channels; ++i) {
+            this.channels.add(new Channel());
+        }
+    }
+
+    public Process(String nameOfElement, double delayMean, double delayDev, int maxQueue, int channels) {
+        super(nameOfElement, delayMean, delayDev);
         this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
         this.channels = new ArrayList<>(channels);
         for (int i = 0; i < channels; ++i) {
@@ -50,8 +60,9 @@ public class Process extends Element {
                 continue;
             }
 
-            Element to = toNext.getTo();
+            IElement to = toNext.getTo();
             if (to != null) {
+                to.setTNext(super.getTCurr());
                 to.inAct(task);
             }
 
@@ -116,6 +127,16 @@ public class Process extends Element {
                 .map(Channel::getTNext)
                 .min(Double::compareTo)
                 .orElse(Double.MAX_VALUE);
+    }
+
+    @Override
+    public void setTNext(double tNext) {
+        double previousTNext = getTNext();
+        for (Channel channel : channels) {
+            if (Math.abs(channel.getTNext() - previousTNext) < epsilon) {
+                channel.setTNext(tNext);
+            }
+        }
     }
 
     protected List<Channel> getSoonestChannels() {
