@@ -1,7 +1,7 @@
 package SM_CW_3_JAVA.P3;
 
 import SM_CW_3_JAVA.P1.simsimple.Create;
-import SM_CW_3_JAVA.P1.simsimple.Task;
+import SM_CW_3_JAVA.P1.simsimple.ITask;
 
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ public class PatientCreate extends Create {
     }
 
     @Override
-    protected Task createTask() {
+    protected ITask createTask() {
         return new Patient(super.getTCurr(), choosePatientType());
     }
 

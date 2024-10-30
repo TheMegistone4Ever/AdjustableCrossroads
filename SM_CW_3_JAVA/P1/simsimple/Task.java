@@ -27,10 +27,6 @@ public class Task implements ITask {
         return timeIn;
     }
 
-    public void setTimeIn(double timeIn) {
-        this.timeIn = timeIn;
-    }
-
     @Override
     public int getId() {
         return id;

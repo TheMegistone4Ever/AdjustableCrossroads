@@ -14,7 +14,7 @@ public class ClinicModel extends Model {
     }
 
     private double getLaboratoryArrivalInterval() {
-        for (var element : getList()) {
+        for (IElement element : getList()) {
             if (element.getName().equals("Laboratory Transfer")) {
                 return ((Process) element).getAccumulatedProcessingTime() / element.getQuantity();
             }
@@ -33,11 +33,10 @@ public class ClinicModel extends Model {
 
     private void printPatientInfo() {
         System.out.println("-------------PATIENTS------------");
-        for (var element : getList()) {
+        for (IElement element : getList()) {
             if (element instanceof Dispose d) {
                 System.out.println("\n" + element.getName());
-                var patients = d.getProcessedJobs();
-                for (var patient : patients) {
+                for (ITask patient : d.getProcessedJobs()) {
                     System.out.println("Patient " + patient.getId() +
                             " type " + ((Patient) patient).getType() +
                             " time in " + patient.getTimeIn() +
@@ -49,14 +48,14 @@ public class ClinicModel extends Model {
     }
 
     private double getMeanTimeInSystem() {
-        var patients = new ArrayList<ITask>();
-        for (var element : getList()) {
+        ArrayList<ITask> patients = new ArrayList<>();
+        for (IElement element : getList()) {
             if (element instanceof Dispose d) {
                 patients.addAll(d.getProcessedJobs());
             }
         }
-        var sum = 0.0;
-        for (var patient : patients) {
+        double sum = 0.0;
+        for (ITask patient : patients) {
             sum += patient.getTNext() - patient.getTimeIn();
         }
         return sum / patients.size();

@@ -3,9 +3,12 @@ package SM_CW_2_JAVA.P1.simsimple;
 import SM_CW_3_JAVA.P1.simsimple.ITask;
 import org.jetbrains.annotations.NotNull;
 
+import static SM_CW_2_JAVA.P1.simsimple.FunRand.*;
+
 public class Element implements IElement, Comparable<IElement> {
     private static int nextId = -1;
-    private String name;
+    private final String name;
+    private final int id = ++nextId;
     private double tNext = .0;
     private double delayMean, delayDev;
     private Distribution distribution = Distribution.EXPONENTIAL;
@@ -13,7 +16,6 @@ public class Element implements IElement, Comparable<IElement> {
     private double tCurr = .0;
     private int state = 0;
     private IElement nextElement = null;
-    private int id = ++nextId;
     private Model parentModel;
 
     public Element(String nameOfElement) {
@@ -35,10 +37,10 @@ public class Element implements IElement, Comparable<IElement> {
     @Override
     public double getDelay() {
         return switch (distribution) {
-            case EXPONENTIAL -> FunRand.Exp(getDelayMean());
-            case NORMAL -> FunRand.Norm(getDelayMean(), getDelayDev());
-            case UNIFORM -> FunRand.Unif(getDelayMean(), getDelayDev());
-            case ERLANG -> FunRand.Erlang(getDelayMean(), getDelayDev());
+            case EXPONENTIAL -> Exp(getDelayMean());
+            case NORMAL -> Norm(getDelayMean(), getDelayDev());
+            case UNIFORM -> Unif(getDelayMean(), getDelayDev());
+            case ERLANG -> Erlang(getDelayMean(), getDelayDev());
         };
     }
 
@@ -50,11 +52,6 @@ public class Element implements IElement, Comparable<IElement> {
     @Override
     public void setDelayDev(double delayDev) {
         this.delayDev = delayDev;
-    }
-
-    @Override
-    public Distribution getDistribution() {
-        return distribution;
     }
 
     @Override
@@ -151,11 +148,6 @@ public class Element implements IElement, Comparable<IElement> {
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
     public void printResult() {
         System.out.printf("\n%s quantity=%d\n", getName(), quantity);
     }
@@ -169,11 +161,6 @@ public class Element implements IElement, Comparable<IElement> {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

@@ -3,7 +3,7 @@ package SM_CW_3_JAVA.P1.simsimple;
 import java.util.ArrayList;
 
 public class Dispose extends Element {
-    ArrayList<ITask> processedTasks = new ArrayList<>();
+    private final ArrayList<ITask> processedTasks = new ArrayList<>();
 
     public Dispose(String name) {
         super(name);

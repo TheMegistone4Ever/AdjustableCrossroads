@@ -13,16 +13,16 @@ public class SimModel {
         final double[] patientFrequencies = {0.5, 0.1, 0.4};
         final double[] patientDelays = {15, 40, 30};
 
-        var create = new PatientCreate("Patient Creator", 15);
-        var registration = new RegistrationProcess("Registration", 15, 2);
-        var wardsTransfer = new SM_CW_3_JAVA.P1.simsimple.Process("Wards Transfer", 3, 8, 3);
-        var laboratoryTransfer = new SM_CW_3_JAVA.P1.simsimple.Process("Laboratory Transfer", 2, 5, 100);
-        var laboratoryRegistration = new SM_CW_3_JAVA.P1.simsimple.Process("Laboratory Registration", 4.5, 3, 1);
-        var laboratoryAnalysis = new TypeModifyingProcess("Laboratory Analysis", 4, 2, 2);
-        var registrationTransfer = new Process("Registration Transfer", 2, 5, 100);
+        PatientCreate create = new PatientCreate("Patient Creator", 15);
+        RegistrationProcess registration = new RegistrationProcess("Registration", 15, 2);
+        Process wardsTransfer = new Process("Wards Transfer", 3, 8, -1, 3);
+        Process laboratoryTransfer = new Process("Laboratory Transfer", 2, 5, -1, 100);
+        Process laboratoryRegistration = new Process("Laboratory Registration", 4.5, 3, -1, 1);
+        TypeModifyingProcess laboratoryAnalysis = new TypeModifyingProcess("Laboratory Analysis", 4, 2, 2);
+        Process registrationTransfer = new Process("Registration Transfer", 2, 5, -1, 100);
 
-        var wardsDispose = new Dispose("Dispose [Type 1 & 2]");
-        var laboratoryDispose = new Dispose("Dispose [Type 3]");
+        Dispose wardsDispose = new Dispose("Dispose [Type 1 & 2]");
+        Dispose laboratoryDispose = new Dispose("Dispose [Type 3]");
 
 
         create.setPatientTypedFrequencies(patientTypes, patientFrequencies);
@@ -59,8 +59,8 @@ public class SimModel {
                 new Path(laboratoryAnalysis)
         );
         laboratoryAnalysis.addPaths(
-                new Path(laboratoryDispose, 0.5, 1, (ITask task) -> ((Patient) task).getType() != 3),
-                new Path(registrationTransfer, 0.5, 0)
+                new Path(laboratoryDispose, 2, (ITask task) -> ((Patient) task).getType() != 3),
+                new Path(registrationTransfer, 1)
         );
         laboratoryAnalysis.setForking(Forking.PRIORITIZED);
         registrationTransfer.addPaths(
@@ -77,7 +77,7 @@ public class SimModel {
         elements.add(registrationTransfer);
         elements.add(wardsDispose);
         elements.add(laboratoryDispose);
-        var model = new ClinicModel(elements, true);
+        ClinicModel model = new ClinicModel(elements, true);
         model.simulate(1000);
         model.printResult();
     }

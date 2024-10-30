@@ -13,11 +13,6 @@ public class Create extends Element {
         super.setTNext(.0); // імітація розпочнеться з події Create
     }
 
-    public Create(String nameOfElement, double delay, double initialTNext) {
-        super(nameOfElement, delay);
-        super.setTNext(initialTNext);
-    }
-
     @Override
     public void outAct() {
         super.outAct();
@@ -30,7 +25,7 @@ public class Create extends Element {
         }
     }
 
-    protected Task createTask() {
+    protected ITask createTask() {
         return new Task(super.getTCurr());
     }
 }

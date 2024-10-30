@@ -24,11 +24,6 @@ public class Path implements Comparable<Path> {
         this.probability = probability;
     }
 
-    public Path(IElement to, int priority) {
-        this.to = to;
-        this.priority = priority;
-    }
-
     public Path(IElement to, double probability, int priority) {
         this.to = to;
         this.probability = probability;

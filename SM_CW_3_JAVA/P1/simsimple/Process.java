@@ -101,14 +101,6 @@ public class Process extends Element {
         ++failures;
     }
 
-    protected ITask getCurrentTask() {
-        return channels.stream()
-                .filter(Channel::getState)
-                .map(Channel::getTask)
-                .findFirst()
-                .orElse(null);
-    }
-
     public ArrayDeque<ITask> getQueue() {
         return queue;
     }
@@ -190,9 +182,5 @@ public class Process extends Element {
 
     public void setPreviousLeaveTime(double previousLeaveTime) {
         this.previousLeaveTime = previousLeaveTime;
-    }
-
-    public ArrayList<Channel> getChannels() {
-        return channels;
     }
 }

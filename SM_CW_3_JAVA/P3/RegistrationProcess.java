@@ -30,11 +30,11 @@ public class RegistrationProcess extends Process {
 
     @Override
     public void inAct(ITask task) {
-        var freeChannel = getFreeChannel();
+        Channel freeChannel = getFreeChannel();
         if (freeChannel != null) {
             freeChannel.setTask(task);
-            var originalDelayMean = getDelayMean();
-            var patientType = ((Patient) task).getType();
+            double originalDelayMean = getDelayMean();
+            int patientType = ((Patient) task).getType();
             setDelayMean(patientTypedDelays.get(patientType));
             freeChannel.setTNext(super.getTCurr() + super.getDelay());
             setDelayMean(originalDelayMean);
@@ -50,7 +50,7 @@ public class RegistrationProcess extends Process {
 
     @Override
     public void outAct() {
-        var originalDelay = getDelayMean();
+        double originalDelay = getDelayMean();
         sortQueueByPatientPriority();
         for (Channel channel : getSoonestChannels()) {
             ITask task = channel.getTask();
@@ -73,8 +73,8 @@ public class RegistrationProcess extends Process {
             setChannelFree(channel);
             ArrayDeque<ITask> queue = getQueue();
             if (!queue.isEmpty()) {
-                var patient = (Patient) queue.poll();
-                var type = patient.getType();
+                Patient patient = (Patient) queue.poll();
+                int type = patient.getType();
                 setDelayMean(patientTypedDelays.get(type));
                 setChannelBusy(channel, patient);
                 setDelayMean(originalDelay);
@@ -83,11 +83,11 @@ public class RegistrationProcess extends Process {
     }
 
     private void sortQueueByPatientPriority() {
-        var prioritizedPatients = new ArrayDeque<Patient>();
-        var otherPatients = new ArrayDeque<Patient>();
+        ArrayDeque<Patient> prioritizedPatients = new ArrayDeque<>();
+        ArrayDeque<Patient> otherPatients = new ArrayDeque<>();
         ArrayDeque<ITask> queue = getQueue();
         while (!queue.isEmpty()) {
-            var patient = (Patient) queue.poll();
+            Patient patient = (Patient) queue.poll();
             if (patient.getType() == prioritizedPatientType) {
                 prioritizedPatients.add(patient);
             } else {

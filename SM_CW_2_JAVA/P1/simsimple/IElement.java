@@ -9,8 +9,6 @@ public interface IElement {
 
     void setDelayDev(double delayDev);
 
-    Distribution getDistribution();
-
     void setDistribution(Distribution distribution);
 
     int getQuantity();
@@ -49,15 +47,11 @@ public interface IElement {
 
     int getId();
 
-    void setId(int id);
-
     void printResult();
 
     void printInfo();
 
     String getName();
-
-    void setName(String name);
 
     void doStatistics(double delta);
 

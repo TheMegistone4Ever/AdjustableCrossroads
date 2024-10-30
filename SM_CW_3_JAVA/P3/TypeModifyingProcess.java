@@ -13,10 +13,6 @@ public class TypeModifyingProcess extends Process {
 
     private HashMap<Integer, Integer> typeModifyingMap;
 
-    public TypeModifyingProcess(String name, double delayMean, int channelsNum) {
-        super(name, delayMean, -1, channelsNum);
-    }
-
     public TypeModifyingProcess(String name, double delayMean, double delayDev, int channelsNum) {
         super(name, delayMean, delayDev, -1, channelsNum);
     }
@@ -33,7 +29,7 @@ public class TypeModifyingProcess extends Process {
         for (Channel channel : getSoonestChannels()) {
             ITask task = channel.getTask();
 
-            var patient = (Patient) task;
+            Patient patient = (Patient) task;
             if (typeModifyingMap.get(patient.getType()) != null) {
                 patient.setType(typeModifyingMap.get(patient.getType()));
             }

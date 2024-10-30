@@ -30,7 +30,7 @@ public class Model {
         while (tCurr < time) {
             tNext = Double.MAX_VALUE;
 
-            for (var element : elements.values()) {
+            for (IElement element : elements.values()) {
                 if (!(element instanceof Dispose) &&
                         (tCurr < element.getTNext() || tCurr == 0) &&
                         element.getTNext() < tNext) {
