@@ -1,16 +1,16 @@
 package SM_CW_3_JAVA.P2;
 
 import SM_CW_2_JAVA.P1.simsimple.Distribution;
-import SM_CW_2_JAVA.P1.simsimple.IElement;
 import SM_CW_3_JAVA.P1.simsimple.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SimModel {
     public static void main(String[] args) {
-        Create creator = new Create("CREATOR", 0.5, Forking.PRIORITIZED);
-        Teller teller1 = new Teller("TELLER_1", 0.3, 3, 1);
-        Teller teller2 = new Teller("TELLER_2", 0.3, 3, 1);
+        final Create creator = new Create("CREATOR", 0.5, Forking.PRIORITIZED);
+        final Teller teller1 = new Teller("TELLER_1", 0.3, 3, 1);
+        final Teller teller2 = new Teller("TELLER_2", 0.3, 3, 1);
 
         // Initial conditions
         teller1.setDistribution(Distribution.NORMAL);
@@ -34,25 +34,23 @@ public class SimModel {
                 new Path(teller2, 1, task -> teller2.getQueue().size() <= 3 && teller1.getQueue().size() + teller1.getState() + teller2.getQueue().size() + teller2.getState() < 8)
         );
 
-        ArrayList<IElement> list = new ArrayList<>();
-        list.add(creator);
-        list.add(teller1);
-        list.add(teller2);
-
-        Model model = new Model(list, false);
+        final Model model = new Model(new ArrayList<>(List.of(creator, teller1, teller2)), false);
         model.simulate(1000.);
         model.printResult();
 
         // Calculate and print additional metrics
-        double avgTeller1Load = teller1.getAccumulatedLoad() / model.getCurrentTime();
-        double avgTeller2Load = teller2.getAccumulatedLoad() / model.getCurrentTime();
-        double avgClientsInBank = (teller1.getAccumulatedQueue() + teller2.getAccumulatedQueue() + teller1.getAccumulatedLoad() + teller2.getAccumulatedLoad()) / model.getCurrentTime(); // Little's Law
-        double avgTimeBetweenDepartures = model.getCurrentTime() / (teller1.getQuantity() + teller2.getQuantity());
-        double avgTimeInBank = (teller1.getAccumulatedProcessingTime() + teller2.getAccumulatedProcessingTime()) / (teller1.getQuantity() + teller2.getQuantity());
-        double avgQueue1Length = teller1.getAccumulatedQueue() / model.getCurrentTime();
-        double avgQueue2Length = teller2.getAccumulatedQueue() / model.getCurrentTime();
-        double refusalPercentage = (teller1.getFailures() + teller2.getFailures()) / (double) creator.getQuantity() * 100;
-        double laneChanges = teller1.getLaneChanges() + teller2.getLaneChanges(); // Assuming laneChanges are tracked in Teller class
+        final double avgTeller1Load = teller1.getAccumulatedLoad() / model.getCurrentTime();
+        final double avgTeller2Load = teller2.getAccumulatedLoad() / model.getCurrentTime();
+        final double avgClientsInBank = (teller1.getAccumulatedQueue() + teller2.getAccumulatedQueue()
+                + teller1.getAccumulatedLoad() + teller2.getAccumulatedLoad()) / model.getCurrentTime();
+        final double avgTimeBetweenDepartures = model.getCurrentTime() / (teller1.getQuantity() + teller2.getQuantity());
+        final double avgTimeInBank = (teller1.getAccumulatedProcessingTime() + teller2.getAccumulatedProcessingTime())
+                / (teller1.getQuantity() + teller2.getQuantity());
+        final double avgQueue1Length = teller1.getAccumulatedQueue() / model.getCurrentTime();
+        final double avgQueue2Length = teller2.getAccumulatedQueue() / model.getCurrentTime();
+        final double refusalPercentage = (teller1.getFailures() + teller2.getFailures())
+                / (double) creator.getQuantity() * 100;
+        final double laneChanges = teller1.getLaneChanges() + teller2.getLaneChanges();
 
         System.out.println("\n-------------ADDITIONAL METRICS-------------");
         System.out.printf("1. Average Teller 1 Load: %.6f\n", avgTeller1Load);
