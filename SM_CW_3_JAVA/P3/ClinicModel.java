@@ -19,7 +19,7 @@ public class ClinicModel extends Model {
                 return ((Process) element).getAccumulatedProcessingTime() / element.getQuantity();
             }
         }
-        return 0.0;
+        return 0;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ClinicModel extends Model {
                 sicks.addAll(d.getProcessedJobs());
             }
         }
-        double sum = 0.0;
+        double sum = 0;
         int size = 0;
         for (ITask sick : sicks) {
             if (sick == null) {

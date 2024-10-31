@@ -6,7 +6,7 @@ public class Process extends SM_CW_2_JAVA.P1.simsimple.Process {
     public Process(String nameOfElement, double delay, int maxQueue) {
         super(nameOfElement, delay, maxQueue);
 
-        meanLoad = .0;
+        meanLoad = 0;
     }
 
     @Override

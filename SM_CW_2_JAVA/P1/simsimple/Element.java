@@ -10,11 +10,11 @@ public class Element implements IElement, Comparable<IElement> {
     private static int nextId = -1;
     private final String name;
     private final int id = ++nextId;
-    private double tNext = .0;
+    private double tNext = 0;
     private double delayMean, delayDev;
     private Distribution distribution = Distribution.EXPONENTIAL;
     private int quantity;
-    private double tCurr = .0;
+    private double tCurr = 0;
     private int state = 0;
     private IElement nextElement = null;
     private Model parentModel;

@@ -9,7 +9,7 @@ public class Process extends Element {
         super(nameOfElement, delay);
         queue = 0;
         this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
-        meanQueue = .0;
+        meanQueue = 0;
     }
 
     @Override

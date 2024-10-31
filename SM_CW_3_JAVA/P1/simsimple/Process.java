@@ -15,10 +15,10 @@ public class Process extends Element {
     private final ArrayDeque<ITask> queue = new ArrayDeque<>();
     private final ArrayList<Channel> channels;
     private int failures = 0;
-    private double accumulatedLoad = .0;
-    private double accumulatedQueue = .0;
-    private double accumulatedProcessingTime = .0;
-    private double previousLeaveTime = .0;
+    private double accumulatedLoad = 0;
+    private double accumulatedQueue = 0;
+    private double accumulatedProcessingTime = 0;
+    private double previousLeaveTime = 0;
 
     public Process(String nameOfElement, double delay, int maxQueue, int channels) {
         super(nameOfElement, delay);

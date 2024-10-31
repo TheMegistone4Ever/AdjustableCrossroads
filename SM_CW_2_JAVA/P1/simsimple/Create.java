@@ -3,7 +3,7 @@ package SM_CW_2_JAVA.P1.simsimple;
 public class Create extends Element {
     public Create(String nameOfElement, double delay) {
         super(nameOfElement, delay);
-        super.setTNext(.0); // імітація розпочнеться з події Create
+        super.setTNext(0); // імітація розпочнеться з події Create
     }
 
     @Override

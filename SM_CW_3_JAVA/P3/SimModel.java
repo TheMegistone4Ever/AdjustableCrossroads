@@ -10,7 +10,7 @@ import java.util.List;
 public class SimModel {
     public static void main(String[] args) {
         final int[] sickTypes = {1, 2, 3};
-        final double[] sickFrequencies = {0.5, 0.1, 0.4};
+        final double[] sickFrequencies = {.5, .1, .4};
         final double[] sickDelays = {15, 40, 30};
 
         final CreateSick create = new CreateSick("Sick Creator", 15);
@@ -35,8 +35,8 @@ public class SimModel {
         formTransfer.setDistribution(Distribution.UNIFORM);
 
         create.addPaths(new Path(form));
-        form.addPaths(new Path(wardsTransfer, 0.5, 2, (ITask task) -> ((Sick) task).getType() != 1
-                || wardsTransfer.getQueue().size() == wardsTransfer.getMaxQueue()), new Path(labTransfer, 0.5, 1));
+        form.addPaths(new Path(wardsTransfer, .5, 2, (ITask task) -> ((Sick) task).getType() != 1
+                || wardsTransfer.getQueue().size() == wardsTransfer.getMaxQueue()), new Path(labTransfer, .5, 1));
         form.setForking(Forking.PRIORITIZED);
         wardsTransfer.addPaths(new Path(wardsDispose));
         labTransfer.addPaths(new Path(labForm));

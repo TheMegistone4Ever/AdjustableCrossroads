@@ -20,7 +20,7 @@ public class Model {
             e.setParentModel(this);
             this.elements.put(e.getId(), e);
         }
-        tNext = .0;
+        tNext = 0;
         event = 0;
         tCurr = tNext;
         this.verbose = verbose;

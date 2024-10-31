@@ -8,24 +8,24 @@ import java.util.List;
 
 public class SimModel {
     public static void main(String[] args) {
-        final Create creator = new Create("CREATOR", 0.5, Forking.PRIORITIZED);
-        final Teller teller1 = new Teller("TELLER_1", 0.3, 3, 1);
-        final Teller teller2 = new Teller("TELLER_2", 0.3, 3, 1);
+        final Create creator = new Create("CREATOR", .5, Forking.PRIORITIZED);
+        final Teller teller1 = new Teller("TELLER_1", .3, 3, 1);
+        final Teller teller2 = new Teller("TELLER_2", .3, 3, 1);
 
         // Initial conditions
         teller1.setDistribution(Distribution.NORMAL);
         teller1.setDelayMean(1.);
-        teller1.setDelayDev(0.3);
+        teller1.setDelayDev(.3);
         teller1.setState(1);
         teller1.addTasksToQueue(new Task(), new Task());
 
         teller2.setDistribution(Distribution.NORMAL);
         teller2.setDelayMean(1.);
-        teller2.setDelayDev(0.3);
+        teller2.setDelayDev(.3);
         teller2.setState(1);
         teller2.addTasksToQueue(new Task(), new Task());
 
-        creator.setTNext(0.1); // First arrival
+        creator.setTNext(.1); // First arrival
 
         // Define paths with priorities and probabilities
         creator.addPaths(new Path(teller1, 4, task -> teller1.getQueue().size() > teller2.getQueue().size() + 1),
