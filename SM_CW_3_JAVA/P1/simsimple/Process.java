@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static SM_CW_3_JAVA.P1.simsimple.constants.epsilon;
@@ -23,18 +24,14 @@ public class Process extends Element {
         super(nameOfElement, delay);
         this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
         this.channels = new ArrayList<>(channels);
-        for (int i = 0; i < channels; ++i) {
-            this.channels.add(new Channel());
-        }
+        this.channels.addAll(Collections.nCopies(channels, new Channel()));
     }
 
     public Process(String nameOfElement, double delayMean, double delayDev, int maxQueue, int channels) {
         super(nameOfElement, delayMean, delayDev);
         this.maxQueue = maxQueue >= 0 ? maxQueue : Integer.MAX_VALUE;
         this.channels = new ArrayList<>(channels);
-        for (int i = 0; i < channels; ++i) {
-            this.channels.add(new Channel());
-        }
+        this.channels.addAll(Collections.nCopies(channels, new Channel()));
     }
 
     public void inAct(ITask task) {
@@ -43,7 +40,9 @@ public class Process extends Element {
             setChannelBusy(freeChannel, task);
         } else {
             if (queue.size() < maxQueue) {
-                queue.add(task);
+                if (task != null) {
+                    queue.add(task);
+                }
             } else {
                 ++failures;
             }

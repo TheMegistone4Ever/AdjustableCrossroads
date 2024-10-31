@@ -1,6 +1,7 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
 import SM_CW_3_JAVA.P1.simsimple.ITask;
+import SM_CW_3_JAVA.P1.simsimple.Path;
 import org.jetbrains.annotations.NotNull;
 
 import static SM_CW_2_JAVA.P1.simsimple.FunRand.*;
@@ -175,6 +176,10 @@ public class Element implements IElement, Comparable<IElement> {
     @Override
     public void setParentModel(Model parentModel) {
         this.parentModel = parentModel;
+    }
+
+    @Override
+    public void addPaths(Path... paths) {
     }
 
     @Override

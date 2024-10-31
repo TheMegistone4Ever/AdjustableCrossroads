@@ -9,33 +9,36 @@ import SM_CW_3_JAVA.P1.simsimple.Process;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 
-public class RegistrationProcess extends Process {
-    private int prioritizedPatientType;
-    private HashMap<Integer, Double> patientTypedDelays;
+public class FormProcess extends Process {
+    private int prioritizedSickType;
+    private HashMap<Integer, Double> sickTypedDelays;
 
-    public RegistrationProcess(String name, double delayMean, int channelsNum) {
+    public FormProcess(String name, double delayMean, int channelsNum) {
         super(name, delayMean, -1, channelsNum);
     }
 
-    public void setPrioritizedPatientType(int type) {
-        this.prioritizedPatientType = type;
+    public void setPrioritizedSickType(int type) {
+        this.prioritizedSickType = type;
     }
 
-    public void setPatientTypedDelays(int[] types, double[] delays) {
-        this.patientTypedDelays = new HashMap<>();
+    public void setSickTypedDelays(int[] types, double[] delays) {
+        this.sickTypedDelays = new HashMap<>();
         for (int i = 0; i < types.length; ++i) {
-            this.patientTypedDelays.put(types[i], delays[i]);
+            this.sickTypedDelays.put(types[i], delays[i]);
         }
     }
 
     @Override
     public void inAct(ITask task) {
+        if (task == null) {
+            return;
+        }
         Channel freeChannel = getFreeChannel();
         if (freeChannel != null) {
             freeChannel.setTask(task);
             double originalDelayMean = getDelayMean();
-            int patientType = ((Patient) task).getType();
-            setDelayMean(patientTypedDelays.get(patientType));
+            int sickType = ((Sick) task).getType();
+            setDelayMean(sickTypedDelays.get(sickType));
             freeChannel.setTNext(super.getTCurr() + super.getDelay());
             setDelayMean(originalDelayMean);
         } else {
@@ -51,7 +54,7 @@ public class RegistrationProcess extends Process {
     @Override
     public void outAct() {
         double originalDelay = getDelayMean();
-        sortQueueByPatientPriority();
+        sortQueueBySickPriority();
         for (Channel channel : getSoonestChannels()) {
             ITask task = channel.getTask();
 
@@ -73,28 +76,28 @@ public class RegistrationProcess extends Process {
             setChannelFree(channel);
             ArrayDeque<ITask> queue = getQueue();
             if (!queue.isEmpty()) {
-                Patient patient = (Patient) queue.poll();
-                int type = patient.getType();
-                setDelayMean(patientTypedDelays.get(type));
-                setChannelBusy(channel, patient);
+                Sick sick = (Sick) queue.poll();
+                int type = sick.getType();
+                setDelayMean(sickTypedDelays.get(type));
+                setChannelBusy(channel, sick);
                 setDelayMean(originalDelay);
             }
         }
     }
 
-    private void sortQueueByPatientPriority() {
-        ArrayDeque<Patient> prioritizedPatients = new ArrayDeque<>();
-        ArrayDeque<Patient> otherPatients = new ArrayDeque<>();
+    private void sortQueueBySickPriority() {
+        ArrayDeque<Sick> prioritizedSicks = new ArrayDeque<>();
+        ArrayDeque<Sick> otherSicks = new ArrayDeque<>();
         ArrayDeque<ITask> queue = getQueue();
         while (!queue.isEmpty()) {
-            Patient patient = (Patient) queue.poll();
-            if (patient.getType() == prioritizedPatientType) {
-                prioritizedPatients.add(patient);
+            Sick sick = (Sick) queue.poll();
+            if (sick.getType() == prioritizedSickType) {
+                prioritizedSicks.add(sick);
             } else {
-                otherPatients.add(patient);
+                otherSicks.add(sick);
             }
         }
-        queue.addAll(prioritizedPatients);
-        queue.addAll(otherPatients);
+        queue.addAll(prioritizedSicks);
+        queue.addAll(otherSicks);
     }
 }

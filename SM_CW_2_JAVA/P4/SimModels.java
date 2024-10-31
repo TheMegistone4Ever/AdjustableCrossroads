@@ -50,7 +50,7 @@ public class SimModels {
         }
     }
 
-    static void printTableBorder(int @NotNull [] columnWidths) {
+    public static void printTableBorder(int @NotNull [] columnWidths) {
         for (int width : columnWidths) {
             System.out.print("+");
             for (int i = 0; i < width; ++i) {

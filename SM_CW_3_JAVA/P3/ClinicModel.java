@@ -25,39 +25,49 @@ public class ClinicModel extends Model {
     @Override
     public void printResult() {
         System.out.println("\n-------------RESULTS-------------");
-        printPatientInfo();
+        super.printResult();
+        printSickInfo();
         System.out.println("\n-----------STATISTICS------------");
         System.out.println("Mean time in system (processed): " + getMeanTimeInSystem());
         System.out.println("Mean laboratory arrival interval: " + getLaboratoryArrivalInterval());
     }
 
-    private void printPatientInfo() {
-        System.out.println("-------------PATIENTS------------");
+    private void printSickInfo() {
+        System.out.println("-------------SICKS------------");
         for (IElement element : getList()) {
             if (element instanceof Dispose d) {
                 System.out.println("\n" + element.getName());
-                for (ITask patient : d.getProcessedJobs()) {
-                    System.out.println("Patient " + patient.getId() +
-                            " type " + ((Patient) patient).getType() +
-                            " time in " + patient.getTimeIn() +
-                            " time out " + patient.getTNext() +
-                            " time in system " + (patient.getTNext() - patient.getTimeIn()));
+                for (ITask sick : d.getProcessedJobs()) {
+                    if (sick == null) {
+                        continue;
+                    }
+                    System.out.println("Sick " + sick.getId() +
+                            " type " + ((Sick) sick).getType() +
+                            " time in " + sick.getTimeIn() +
+                            " time out " + sick.getTNext() +
+                            String.format("time in %s %.6f", ((Sick) sick).getType() == 3 ? "system" : "ward",
+                                    sick.getTNext() - sick.getTimeIn()));
                 }
             }
         }
     }
 
     private double getMeanTimeInSystem() {
-        ArrayList<ITask> patients = new ArrayList<>();
+        ArrayList<ITask> sicks = new ArrayList<>();
         for (IElement element : getList()) {
             if (element instanceof Dispose d) {
-                patients.addAll(d.getProcessedJobs());
+                sicks.addAll(d.getProcessedJobs());
             }
         }
         double sum = 0.0;
-        for (ITask patient : patients) {
-            sum += patient.getTNext() - patient.getTimeIn();
+        int size = 0;
+        for (ITask sick : sicks) {
+            if (sick == null) {
+                continue;
+            }
+            sum += sick.getTNext() - sick.getTimeIn();
+            ++size;
         }
-        return sum / patients.size();
+        return sum / size;
     }
 }

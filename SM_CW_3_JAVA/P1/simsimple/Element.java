@@ -78,6 +78,7 @@ public class Element extends SM_CW_2_JAVA.P1.simsimple.Element {
                 .collect(Collectors.toCollection(PriorityQueue::new));
     }
 
+    @Override
     public void addPaths(Path... paths) {
         Collections.addAll(fork, paths);
     }

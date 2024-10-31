@@ -2,10 +2,10 @@ package SM_CW_3_JAVA.P3;
 
 import SM_CW_3_JAVA.P1.simsimple.Task;
 
-public class Patient extends Task {
+public class Sick extends Task {
     int type;
 
-    public Patient(double timeIn, int type) {
+    public Sick(double timeIn, int type) {
         super(timeIn);
         this.type = type;
     }

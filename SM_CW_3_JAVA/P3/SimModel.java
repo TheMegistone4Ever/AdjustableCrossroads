@@ -9,72 +9,73 @@ import java.util.ArrayList;
 
 public class SimModel {
     public static void main(String[] args) {
-        final int[] patientTypes = {1, 2, 3};
-        final double[] patientFrequencies = {0.5, 0.1, 0.4};
-        final double[] patientDelays = {15, 40, 30};
+        final int[] sickTypes = {1, 2, 3};
+        final double[] sickFrequencies = {0.5, 0.1, 0.4};
+        final double[] sickDelays = {15, 40, 30};
 
-        var create = new PatientCreate("Patient Creator", 15);
-        var registration = new RegistrationProcess("Registration", 15, 2);
-        var wardsTransfer = new Process("Wards Transfer", 3, 8, 3);
-        var laboratoryTransfer = new Process("Laboratory Transfer", 2, 5, 100);
-        var laboratoryRegistration = new Process("Laboratory Registration", 4.5, 3, 1);
-        var laboratoryAnalysis = new TypeModifyingProcess("Laboratory Analysis", 4, 2, 2);
-        var registrationTransfer = new Process("Registration Transfer", 2, 5, 100);
+        CreateSick create = new CreateSick("Sick Creator", 15);
+        FormProcess form = new FormProcess("Form", 15, 2);
+        Process wardsTransfer = new Process("Wards Transfer", 3, 8, -1,3);
+        Process laboratoryTransfer = new Process("Laboratory Transfer", 2, 5, -1, 100);
+        Process laboratoryForm = new Process("Laboratory Form", 4.5, 3, -1, 1);
+        TypeModifyingProcess laboratoryAnalysis = new TypeModifyingProcess("Laboratory Analysis", 4, 2, 2);
+        Process FormTransfer = new Process("Form Transfer", 2, 5, 100);
 
-        Dispose wardsDispose = new Dispose("Dispose [Type 1 & 2]");
-        Dispose laboratoryDispose = new Dispose("Dispose [Type 3]");
+        Dispose wardsDispose = new Dispose("Dispose 1,2");
+        Dispose laboratoryDispose = new Dispose("Dispose 3");
 
 
-        create.setPatientTypedFrequencies(patientTypes, patientFrequencies);
-        registration.setPatientTypedDelays(patientTypes, patientDelays);
-        registration.setPrioritizedPatientType(1);
+        create.setSickTypedFrequencies(sickTypes, sickFrequencies);
+        form.setSickTypedDelays(sickTypes, sickDelays);
+        form.setPrioritizedSickType(1);
         laboratoryAnalysis.setTypeModifyingMap(
                 new int[]{2},
                 new int[]{1}
         );
 
-        create.setDistribution(Distribution.EXPONENTIAL);
-        registration.setDistribution(Distribution.EXPONENTIAL);
         wardsTransfer.setDistribution(Distribution.UNIFORM);
         laboratoryTransfer.setDistribution(Distribution.UNIFORM);
-        laboratoryRegistration.setDistribution(Distribution.ERLANG);
+        laboratoryForm.setDistribution(Distribution.ERLANG);
         laboratoryAnalysis.setDistribution(Distribution.ERLANG);
-        registrationTransfer.setDistribution(Distribution.UNIFORM);
+        FormTransfer.setDistribution(Distribution.UNIFORM);
 
         create.addPaths(
-                new Path(registration)
+                new Path(form)
         );
-        registration.addPaths(
-                new Path(wardsTransfer, 0.5, 1, (ITask task) -> ((Patient) task).getType() != 1),
-                new Path(laboratoryTransfer, 0.5, 0)
+        form.addPaths(
+                new Path(wardsTransfer, 0.5, 2, (ITask task) -> (
+                        (Sick) task).getType() != 1
+                        || wardsTransfer.getQueue().size() == wardsTransfer.getMaxQueue()
+                ),
+                new Path(laboratoryTransfer, 0.5, 1)
         );
-        registration.setForking(Forking.PRIORITIZED);
+        form.setForking(Forking.PRIORITIZED);
         wardsTransfer.addPaths(
                 new Path(wardsDispose)
         );
         laboratoryTransfer.addPaths(
-                new Path(laboratoryRegistration)
+                new Path(laboratoryForm)
         );
-        laboratoryRegistration.addPaths(
+        laboratoryForm.addPaths(
                 new Path(laboratoryAnalysis)
         );
         laboratoryAnalysis.addPaths(
-                new Path(laboratoryDispose, 2, (ITask task) -> ((Patient) task).getType() != 3),
-                new Path(registrationTransfer, 1)
+                new Path(laboratoryDispose, 2, (ITask task) -> ((Sick) task).getType() != 3),
+                new Path(FormTransfer, 1)
         );
         laboratoryAnalysis.setForking(Forking.PRIORITIZED);
-        registrationTransfer.addPaths(
-                new Path(registration)
+        FormTransfer.addPaths(
+                new Path(form)
         );
 
         ArrayList<IElement> elements = new ArrayList<>();
         elements.add(create);
-        elements.add(registration);
+        elements.add(form);
         elements.add(wardsTransfer);
         elements.add(laboratoryTransfer);
-        elements.add(laboratoryRegistration);
+        elements.add(laboratoryForm);
         elements.add(laboratoryAnalysis);
-        elements.add(registrationTransfer);
+        elements.add(FormTransfer);
         elements.add(wardsDispose);
         elements.add(laboratoryDispose);
         ClinicModel model = new ClinicModel(elements, true);

@@ -1,6 +1,7 @@
 package SM_CW_2_JAVA.P1.simsimple;
 
 import SM_CW_3_JAVA.P1.simsimple.ITask;
+import SM_CW_3_JAVA.P1.simsimple.Path;
 
 public interface IElement {
     double getDelay();
@@ -58,4 +59,6 @@ public interface IElement {
     Model getParentModel();
 
     void setParentModel(Model parentModel);
+
+    void addPaths(Path... paths);
 }

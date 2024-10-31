@@ -44,6 +44,9 @@ public class Path implements Comparable<Path> {
     }
 
     public boolean isBlocked(ITask task) {
+        if (task == null) {
+            return false;
+        }
         return blocker != null && blocker.test(task);
     }
 

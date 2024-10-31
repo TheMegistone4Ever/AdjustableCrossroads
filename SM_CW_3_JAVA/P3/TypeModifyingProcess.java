@@ -29,9 +29,9 @@ public class TypeModifyingProcess extends Process {
         for (Channel channel : getSoonestChannels()) {
             ITask task = channel.getTask();
 
-            Patient patient = (Patient) task;
-            if (typeModifyingMap.get(patient.getType()) != null) {
-                patient.setType(typeModifyingMap.get(patient.getType()));
+            Sick sick = (Sick) task;
+            if (sick != null && typeModifyingMap.get(sick.getType()) != null) {
+                sick.setType(typeModifyingMap.get(sick.getType()));
             }
 
             Path toNext = getNextPath(task);
