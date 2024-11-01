@@ -5,6 +5,7 @@ import SM_CW_3_JAVA.P1.simsimple.Channel;
 import SM_CW_3_JAVA.P1.simsimple.ITask;
 import SM_CW_3_JAVA.P1.simsimple.Path;
 import SM_CW_3_JAVA.P1.simsimple.Process;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class TypeModifyingProcess extends Process {
         super(name, delayMean, delayDev, -1, channelsNum);
     }
 
-    public void setTypeModifyingMap(int[] types, int[] modifiedTypes) {
+    public void setTypeModifyingMap(int @NotNull [] types, int[] modifiedTypes) {
         this.typeModifyingMap = new HashMap<>();
         for (int i = 0; i < types.length; ++i) {
             this.typeModifyingMap.put(types[i], modifiedTypes[i]);

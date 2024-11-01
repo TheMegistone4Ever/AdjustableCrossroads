@@ -5,6 +5,7 @@ import SM_CW_3_JAVA.P1.simsimple.Channel;
 import SM_CW_3_JAVA.P1.simsimple.ITask;
 import SM_CW_3_JAVA.P1.simsimple.Path;
 import SM_CW_3_JAVA.P1.simsimple.Process;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class FormProcess extends Process {
         this.prioritizedSickType = type;
     }
 
-    public void setSickTypedDelays(int[] types, double[] delays) {
+    public void setSickTypedDelays(int @NotNull [] types, double[] delays) {
         this.sickTypedDelays = new HashMap<>();
         for (int i = 0; i < types.length; ++i) {
             this.sickTypedDelays.put(types[i], delays[i]);
