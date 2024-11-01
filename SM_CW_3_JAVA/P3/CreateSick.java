@@ -6,7 +6,6 @@ import SM_CW_3_JAVA.P1.simsimple.ITask;
 import java.util.HashMap;
 
 public class CreateSick extends Create {
-
     private HashMap<Integer, Double> sickTypedFrequencies;
 
     public CreateSick(String name, double delay) {

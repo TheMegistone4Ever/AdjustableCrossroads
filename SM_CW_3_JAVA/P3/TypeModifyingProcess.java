@@ -10,7 +10,6 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 
 public class TypeModifyingProcess extends Process {
-
     private HashMap<Integer, Integer> typeModifyingMap;
 
     public TypeModifyingProcess(String name, double delayMean, double delayDev, int channelsNum) {

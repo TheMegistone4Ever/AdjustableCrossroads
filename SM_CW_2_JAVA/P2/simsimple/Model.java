@@ -6,7 +6,6 @@ import SM_CW_2_JAVA.P1.simsimple.IElement;
 import java.util.ArrayList;
 
 public class Model extends SM_CW_2_JAVA.P1.simsimple.Model {
-
     public Model(ArrayList<IElement> elements, boolean verbose) {
         super(elements, verbose);
     }
