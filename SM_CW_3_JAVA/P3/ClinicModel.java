@@ -28,8 +28,8 @@ public class ClinicModel extends Model {
         super.printResult();
         printSickInfo();
         System.out.println("\n-----------STATISTICS------------");
-        System.out.println("Mean time in system (processed): " + getMeanTimeInSystem());
-        System.out.println("Mean laboratory arrival interval: " + getLaboratoryArrivalInterval());
+        System.out.printf("Mean time in system (processed): %.6f\n", getMeanTimeInSystem());
+        System.out.printf("Mean laboratory arrival interval: %.6f\n", getLaboratoryArrivalInterval());
     }
 
     private void printSickInfo() {
@@ -41,12 +41,9 @@ public class ClinicModel extends Model {
                     if (sick == null) {
                         continue;
                     }
-                    System.out.println("Sick " + sick.getId() +
-                            " type " + ((Sick) sick).getType() +
-                            " time in " + sick.getTimeIn() +
-                            " time out " + sick.getTNext() +
-                            String.format("time in %s %.6f", ((Sick) sick).getType() == 3 ? "system" : "ward",
-                                    sick.getTNext() - sick.getTimeIn()));
+                    System.out.printf("Sick %d type %d time in %.6f time out %.6f time in %s %.6f\n",
+                            sick.getId(), ((Sick) sick).getType(), sick.getTimeIn(), sick.getTNext(),
+                            ((Sick) sick).getType() == 3 ? "system" : "ward", sick.getTNext() - sick.getTimeIn());
                 }
             }
         }
@@ -68,6 +65,6 @@ public class ClinicModel extends Model {
             sum += sick.getTNext() - sick.getTimeIn();
             ++size;
         }
-        return sum / size;
+        return size == 0 ? 0 : sum / size;
     }
 }
