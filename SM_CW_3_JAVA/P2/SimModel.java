@@ -50,7 +50,7 @@ public class SimModel {
         final double avgQueue2Length = teller2.getAccumulatedQueue() / model.getCurrentTime();
         final double refusalPercentage = (teller1.getFailures() + teller2.getFailures())
                 / (double) creator.getQuantity() * 100;
-        final double laneChanges = teller1.getLaneChanges() + teller2.getLaneChanges();
+        final int laneChanges = teller1.getLaneChanges() + teller2.getLaneChanges();
 
         System.out.println("\n-------------ADDITIONAL METRICS-------------");
         System.out.printf("1. Average Teller 1 Load: %.6f\n", avgTeller1Load);
@@ -61,6 +61,6 @@ public class SimModel {
         System.out.printf("5. Average Queue 1 Length: %.6f\n", avgQueue1Length);
         System.out.printf("   Average Queue 2 Length: %.6f\n", avgQueue2Length);
         System.out.printf("6. Refusal Percentage: %.6f%%\n", refusalPercentage);
-        System.out.printf("7. Lane Changes: %.0f\n", laneChanges);
+        System.out.printf("7. Lane Changes: %d\n", laneChanges);
     }
 }
