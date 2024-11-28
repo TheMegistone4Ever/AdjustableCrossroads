@@ -1,6 +1,13 @@
+### User-specific files and directories ###
+PetriObjModelPaint/*
+!PetriObjModelPaint/src/
+PetriObjModelPaint/src/*
+!PetriObjModelPaint/src/LibTest/
+PetriObjModelPaint/src/LibTest/*
+!PetriObjModelPaint/src/LibTest/SM_CW_7_JAVA
+
 ### IntelliJ IDEA ###
 out/
-PetriObjModelPaint/
 !**/src/main/**/out/
 !**/src/test/**/out/
 

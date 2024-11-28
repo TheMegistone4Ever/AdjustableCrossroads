@@ -4,7 +4,20 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/META-INF" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/nbproject" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/out" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/LibNet" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/PetriObj" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/graphnet" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/graphpresentation" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/graphreuse" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/petriobjmodelpaint_v8" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/target" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/test" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
