@@ -17,7 +17,7 @@ public class AdjustableCrossroads {
     /**
      * Час моделювання руху транспорту.
      */
-    private static final double SIMULATION_TIME = 1_000;
+    public static final double SIMULATION_TIME = 1_000;
 
     /**
      * Головний метод для запуску симуляції руху на перехресті.
@@ -54,7 +54,7 @@ public class AdjustableCrossroads {
     /**
      * Створення моделей для симуляції: генератор, роботи та верстати.
      */
-    private static @NotNull ArrayList<PetriSim> createSimulationModels(double[] phaseTimes, double[] arrivalTimes) throws ExceptionInvalidTimeDelay {
+    public static @NotNull ArrayList<PetriSim> createSimulationModels(double[] phaseTimes, double[] arrivalTimes) throws ExceptionInvalidTimeDelay {
         ArrayList<PetriSim> simulationModels = new ArrayList<>();
 
         // Додавання підсистеми управління
