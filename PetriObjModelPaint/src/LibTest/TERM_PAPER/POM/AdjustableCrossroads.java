@@ -71,7 +71,7 @@ public class AdjustableCrossroads {
     /**
      * З'єднання підсистем руху транспорту з підсистемою управління.
      */
-    private static void connectTrafficSubsystems(@NotNull List<PetriSim> models) {
+    public static void connectTrafficSubsystems(@NotNull List<PetriSim> models) {
         // Перша та друга фази (зелене світло в 1 та 2 напрямках)
         models.get(1).getNet().getListP()[3] = models.get(0).getNet().getListP()[0];
         models.get(2).getNet().getListP()[3] = models.get(0).getNet().getListP()[0];
