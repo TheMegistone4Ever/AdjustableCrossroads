@@ -4,165 +4,56 @@ import LibTest.TERM_PAPER.POM.AdjustableCrossroads;
 import PetriObj.ExceptionInvalidTimeDelay;
 import PetriObj.PetriObjModel;
 import PetriObj.PetriSim;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
 /**
- * Genetic Algorithm for Traffic Light Phase Optimization
- * Aims to minimize the maximum average number of cars waiting at an intersection
+ * Advanced Genetic Algorithm for Traffic Light Phase Optimization
+ * <p>
+ * This class implements a genetic algorithm to optimize traffic light phase durations
+ * with the goal of minimizing the maximum average number of waiting cars at an intersection.
+ * <p>
+ * Key Features:
+ * - Tournament selection for parent selection
+ * - Elitism preservation
+ * - Mutation and crossover strategies
+ * - Fitness tracking and visualization
+ *
+ * @author Assistant
+ * @version 2.0
  */
 public class TrafficLightOptimizer {
-    // Genetic Algorithm Parameters
-    private static final int POPULATION_SIZE = 50;
-    private static final int MAX_GENERATIONS = 100;
-    private static final double MUTATION_RATE = 0.2;
-    private static final double CROSSOVER_RATE = 0.7;
-    private static final double MUTATION_DEVIATION = 1.0;
+    // Genetic Algorithm Configuration
+    private static final int POPULATION_SIZE = 100;  // Increased for more diversity
+    private static final int MAX_GENERATIONS = 1000; // Extended for more thorough exploration
+    private static final double MUTATION_RATE = 0.15;
+    private static final double CROSSOVER_RATE = 0.75;
+    private static final double MUTATION_DEVIATION = 1.5; // Slightly increased mutation range
 
     private static final Random RANDOM = new Random();
 
     /**
-     * Individual representing a traffic light phase configuration
-     */
-    public static class Individual {
-        double[] phaseTimes;
-        double fitness;
-
-        public Individual(double[] phaseTimes) {
-            this.phaseTimes = Arrays.copyOf(phaseTimes, phaseTimes.length);
-            this.fitness = evaluateFitness();
-        }
-
-        private double evaluateFitness() {
-            try {
-                double[] arrivalTimes = {15.0, 9.0, 20.0, 35.0};
-                ArrayList<PetriSim> simulationModels = AdjustableCrossroads.createSimulationModels(phaseTimes, arrivalTimes);
-                AdjustableCrossroads.connectTrafficSubsystems(simulationModels);
-
-                PetriObjModel model = new PetriObjModel(simulationModels);
-                model.setIsProtokol(false);
-                model.go(AdjustableCrossroads.SIMULATION_TIME);
-
-                return AdjustableCrossroads.getIndividualMetric(model);
-            } catch (ExceptionInvalidTimeDelay e) {
-                e.printStackTrace();
-                return Double.MAX_VALUE;
-            }
-        }
-
-        public void mutate() {
-            if (RANDOM.nextDouble() < MUTATION_RATE) {
-                // Mutate first phase time (index 0)
-                phaseTimes[0] += (RANDOM.nextDouble() - 0.5) * 2 * MUTATION_DEVIATION;
-                phaseTimes[0] = Math.max(10, Math.min(phaseTimes[0], 40)); // Constraining mutation range
-            }
-            if (RANDOM.nextDouble() < MUTATION_RATE) {
-                // Mutate third phase time (index 2)
-                phaseTimes[2] += (RANDOM.nextDouble() - 0.5) * 2 * MUTATION_DEVIATION;
-                phaseTimes[2] = Math.max(10, Math.min(phaseTimes[2], 40)); // Constraining mutation range
-            }
-            // Re-evaluate fitness after mutation
-            fitness = evaluateFitness();
-        }
-    }
-
-    /**
-     * Population management class for genetic algorithm
-     */
-    public static class Population {
-        Individual[] individuals;
-
-        public Population(int size, double[] initialPhaseTimes) {
-            individuals = new Individual[size];
-            for (int i = 0; i < size; i++) {
-                // Create variations of initial phase times
-                double[] variedPhaseTimes = Arrays.copyOf(initialPhaseTimes, initialPhaseTimes.length);
-                variedPhaseTimes[0] += (RANDOM.nextDouble() - 0.5) * 10;
-                variedPhaseTimes[2] += (RANDOM.nextDouble() - 0.5) * 10;
-                individuals[i] = new Individual(variedPhaseTimes);
-            }
-        }
-
-        public void evolve() {
-            // Sort individuals by fitness
-            Arrays.sort(individuals, Comparator.comparingDouble(ind -> ind.fitness));
-
-            // Selection and reproduction
-            Individual[] newGeneration = new Individual[individuals.length];
-
-            // Elitism: keep top 20% of individuals
-            int eliteCount = individuals.length / 5;
-            for (int i = 0; i < eliteCount; i++) {
-                newGeneration[i] = individuals[i];
-            }
-
-            // Fill rest of the population through crossover and mutation
-            for (int i = eliteCount; i < newGeneration.length; i++) {
-                if (RANDOM.nextDouble() < CROSSOVER_RATE) {
-                    // Tournament selection
-                    Individual parent1 = tournamentSelection();
-                    Individual parent2 = tournamentSelection();
-
-                    // Crossover
-                    double[] childPhaseTimes = crossover(parent1.phaseTimes, parent2.phaseTimes);
-                    Individual child = new Individual(childPhaseTimes);
-                    child.mutate();
-
-                    newGeneration[i] = child;
-                } else {
-                    // Direct mutation or copy
-                    Individual mutatedIndividual = new Individual(individuals[RANDOM.nextInt(individuals.length)].phaseTimes);
-                    mutatedIndividual.mutate();
-                    newGeneration[i] = mutatedIndividual;
-                }
-            }
-
-            individuals = newGeneration;
-        }
-
-        private Individual tournamentSelection() {
-            int tournamentSize = 5;
-            Individual best = individuals[RANDOM.nextInt(individuals.length)];
-            for (int i = 1; i < tournamentSize; i++) {
-                Individual candidate = individuals[RANDOM.nextInt(individuals.length)];
-                if (candidate.fitness < best.fitness) {
-                    best = candidate;
-                }
-            }
-            return best;
-        }
-
-        private double[] crossover(double[] parent1, double[] parent2) {
-            double[] child = Arrays.copyOf(parent1, parent1.length);
-            // Uniform crossover
-            for (int i = 0; i < child.length; i++) {
-                if (RANDOM.nextDouble() < 0.5) {
-                    child[i] = parent2[i];
-                }
-            }
-            return child;
-        }
-
-        public Individual getBestIndividual() {
-            return Arrays.stream(individuals)
-                    .min(Comparator.comparingDouble(ind -> ind.fitness))
-                    .orElse(null);
-        }
-    }
-
-    /**
-     * Main method to run the genetic algorithm optimization
+     * Runs the genetic algorithm optimization and visualizes fitness progression.
+     *
+     * @param args Command-line arguments (not used)
      */
     public static void main(String[] args) {
-        // Initial phase times from the original implementation
+        // Initial phase times [First direction, Second direction, Third direction, Fourth direction]
         double[] initialPhaseTimes = {20.0, 10.0, 30.0, 10.0};
 
         Population population = new Population(POPULATION_SIZE, initialPhaseTimes);
 
-        // Tracking fitness progression
+        // Track fitness progression for visualization
         double[] fitnessProgression = new double[MAX_GENERATIONS];
 
         // Evolution process
@@ -175,20 +66,219 @@ public class TrafficLightOptimizer {
             if (generation % 10 == 0) {
                 System.out.printf("Generation %d: Best Fitness = %.4f%n",
                         generation, bestIndividual.fitness);
-                System.out.println("Phase Times: " +
-                        Arrays.toString(bestIndividual.phaseTimes));
+                System.out.println("Phase Times: " + Arrays.toString(bestIndividual.phaseTimes));
             }
         }
 
         // Final results
         Individual bestSolution = population.getBestIndividual();
         System.out.println("\n--- Optimization Results ---");
-        System.out.printf("Best Phase Times: [%.2f, %n\t%n\t%n\t%.2f]%n",
-                bestSolution.phaseTimes[0], bestSolution.phaseTimes[2]);
-        System.out.printf("Best Fitness (Max Waiting Cars): %.4f%n",
-                bestSolution.fitness);
+        System.out.printf("Best Phase Times: [%.2f, %.2f, %.2f, %.2f]%n",
+                bestSolution.phaseTimes[0], bestSolution.phaseTimes[1],
+                bestSolution.phaseTimes[2], bestSolution.phaseTimes[3]);
+        System.out.printf("Best Fitness (Max Waiting Cars): %.4f%n", bestSolution.fitness);
 
-        // Optional: Here you could add code to generate visualization
-        // of fitness progression
+        // Visualize fitness progression
+        visualizeFitnessProgression(fitnessProgression);
+    }
+
+    /**
+     * Creates and displays a chart showing fitness progression over generations.
+     * Uses JFreeChart to generate a line graph of fitness values.
+     *
+     * @param fitnessValues Array of fitness values across generations
+     */
+    private static void visualizeFitnessProgression(double[] fitnessValues) {
+        XYSeries series = new XYSeries("Fitness Progression");
+        for (int i = 0; i < fitnessValues.length; i++) {
+            series.add(i, fitnessValues[i]);
+        }
+
+        XYSeriesCollection dataset = new XYSeriesCollection(series);
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Genetic Algorithm - Fitness Progression",
+                "Generation",
+                "Fitness (Waiting Cars)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        JFrame frame = new JFrame("Fitness Progression");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(chartPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    /**
+     * Represents an individual solution (chromosome) in the genetic algorithm.
+     * Each individual encapsulates traffic light phase times and its fitness score.
+     */
+    public static class Individual {
+        double[] phaseTimes;
+        double fitness;
+
+        /**
+         * Constructs an individual with given phase times and evaluates its fitness.
+         *
+         * @param phaseTimes Array of traffic light phase durations
+         */
+        public Individual(double[] phaseTimes) {
+            this.phaseTimes = Arrays.copyOf(phaseTimes, phaseTimes.length);
+            this.fitness = evaluateFitness();
+        }
+
+        /**
+         * Evaluates the fitness of the current traffic light configuration.
+         * Lower fitness indicates better performance (fewer waiting cars).
+         *
+         * @return Fitness score representing the traffic congestion metric
+         */
+        private double evaluateFitness() {
+            try {
+                // Predefined arrival times for different traffic streams
+                double[] arrivalTimes = {15.0, 9.0, 20.0, 35.0};
+
+                // Create and run Petri net simulation
+                ArrayList<PetriSim> simulationModels = AdjustableCrossroads.createSimulationModels(phaseTimes, arrivalTimes);
+                AdjustableCrossroads.connectTrafficSubsystems(simulationModels);
+
+                PetriObjModel model = new PetriObjModel(simulationModels);
+                model.setIsProtokol(false);
+                model.go(AdjustableCrossroads.SIMULATION_TIME);
+
+                return AdjustableCrossroads.getIndividualMetric(model);
+            } catch (ExceptionInvalidTimeDelay e) {
+                System.out.printf("Error: %s%n", e.getMessage());
+                return Double.MAX_VALUE; // Penalize invalid configurations
+            }
+        }
+
+        /**
+         * Mutates the individual's phase times with probabilistic variation.
+         * Mutation helps explore the solution space and prevent premature convergence.
+         */
+        public void mutate() {
+            // Mutate first and third phase times with controlled randomness
+            for (int i = 0; i < phaseTimes.length; i += 2) {
+                if (RANDOM.nextDouble() < MUTATION_RATE) {
+                    phaseTimes[i] += (RANDOM.nextDouble() - 0.5) * 2 * MUTATION_DEVIATION;
+                    phaseTimes[i] = Math.max(10, Math.min(phaseTimes[i], 45)); // Constrain mutation range
+                }
+            }
+            fitness = evaluateFitness(); // Re-evaluate after mutation
+        }
+    }
+
+    /**
+     * Manages the population of individuals throughout the genetic algorithm's evolution.
+     */
+    public static class Population {
+        Individual[] individuals;
+
+        /**
+         * Creates a population with variations of initial phase times.
+         *
+         * @param size              Number of individuals in the population
+         * @param initialPhaseTimes Base phase times for initial population
+         */
+        public Population(int size, double[] initialPhaseTimes) {
+            individuals = new Individual[size];
+            for (int i = 0; i < size; i++) {
+                // Generate varied initial phase times
+                double[] variedPhaseTimes = Arrays.copyOf(initialPhaseTimes, initialPhaseTimes.length);
+                variedPhaseTimes[0] += (RANDOM.nextDouble() - 0.5) * 15;
+                variedPhaseTimes[2] += (RANDOM.nextDouble() - 0.5) * 15;
+                individuals[i] = new Individual(variedPhaseTimes);
+            }
+        }
+
+        /**
+         * Evolves the population through selection, crossover, and mutation.
+         */
+        public void evolve() {
+            // Sort individuals by fitness in ascending order
+            Arrays.sort(individuals, Comparator.comparingDouble(ind -> ind.fitness));
+
+            Individual[] newGeneration = new Individual[individuals.length];
+
+            // Elitism: preserve top performers
+            int eliteCount = individuals.length / 5;
+            System.arraycopy(individuals, 0, newGeneration, 0, eliteCount);
+
+            // Fill remaining population through reproduction
+            for (int i = eliteCount; i < newGeneration.length; i++) {
+                if (RANDOM.nextDouble() < CROSSOVER_RATE) {
+                    Individual parent1 = tournamentSelection();
+                    Individual parent2 = tournamentSelection();
+
+                    // Crossover and mutation
+                    double[] childPhaseTimes = crossover(parent1.phaseTimes, parent2.phaseTimes);
+                    Individual child = new Individual(childPhaseTimes);
+                    child.mutate();
+
+                    newGeneration[i] = child;
+                } else {
+                    // Direct mutation or replication
+                    Individual mutatedIndividual = new Individual(
+                            individuals[RANDOM.nextInt(individuals.length)].phaseTimes
+                    );
+                    mutatedIndividual.mutate();
+                    newGeneration[i] = mutatedIndividual;
+                }
+            }
+
+            individuals = newGeneration;
+        }
+
+        /**
+         * Tournament selection method for choosing parent individuals.
+         *
+         * @return Best individual from a random tournament subset
+         */
+        private Individual tournamentSelection() {
+            int tournamentSize = 5;
+            Individual best = individuals[RANDOM.nextInt(individuals.length)];
+            for (int i = 1; i < tournamentSize; i++) {
+                Individual candidate = individuals[RANDOM.nextInt(individuals.length)];
+                if (candidate.fitness < best.fitness) {
+                    best = candidate;
+                }
+            }
+            return best;
+        }
+
+        /**
+         * Performs uniform crossover between two parent individuals.
+         *
+         * @param parent1 First parent's phase times
+         * @param parent2 Second parent's phase times
+         * @return Child's phase times generated through crossover
+         */
+        private double[] crossover(double[] parent1, double[] parent2) {
+            double[] child = Arrays.copyOf(parent1, parent1.length);
+            for (int i = 0; i < child.length; i++) {
+                if (RANDOM.nextDouble() < 0.5) {
+                    child[i] = parent2[i];
+                }
+            }
+            return child;
+        }
+
+        /**
+         * Retrieves the best-performing individual in the current population.
+         *
+         * @return Individual with lowest fitness (best solution)
+         */
+        public Individual getBestIndividual() {
+            return Arrays.stream(individuals)
+                    .min(Comparator.comparingDouble(ind -> ind.fitness))
+                    .orElse(null);
+        }
     }
 }
