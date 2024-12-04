@@ -45,7 +45,7 @@ public class AdjustableCrossroads {
      * Ця метрика використовується для оцінки ефективності роботи перехрестя (метрика індивіда популяції).
      */
     public static double getIndividualMetric(PetriObjModel model) {
-        return IntStream.range(1, 5)
+        return IntStream.range(1, model.getListObj().size())
                 .mapToDouble(i -> model.getListObj().get(i).getNet().getListP()[1].getMean())
                 .max()
                 .orElse(0);
@@ -88,7 +88,7 @@ public class AdjustableCrossroads {
         // Виведення середньої кількості автомобілів, що очікують переїзду
         System.out.println("\nСередня кількість автомобілів, що очікують переїзду перехрестя в різних напрямках:");
         double[] meanValues = new double[4];
-        for (int i = 1; i < 5; ++i) {
+        for (int i = 1; i < model.getListObj().size(); ++i) {
             meanValues[i - 1] = model.getListObj().get(i).getNet().getListP()[1].getMean();
             System.out.printf(String.format("Напрямок %s: %.4f%n", model.getListObj().get(i).getName(), meanValues[i - 1]));
         }
