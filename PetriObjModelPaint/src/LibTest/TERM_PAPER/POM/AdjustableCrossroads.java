@@ -5,8 +5,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Клас для моделювання адаптивного перехрестя з використанням мереж Петрі.
@@ -34,6 +34,21 @@ public class AdjustableCrossroads {
         model.go(SIMULATION_TIME);
 
         printStatistics(model);
+
+        // Виведення максимальної середньої кількості очікування (метрика індивіда популяції)
+        System.out.printf(String.format("\nМаксимальна кількість автомобілів, що очікують переїзду перехрестя: %.4f%n",
+                getIndividualMetric(model)));
+    }
+
+    /**
+     * Отримання максимальної середньої кількості автомобілів, що очікують переїзду перехрестя.
+     * Ця метрика використовується для оцінки ефективності роботи перехрестя (метрика індивіда популяції).
+     */
+    public static double getIndividualMetric(PetriObjModel model) {
+        return IntStream.range(1, 5)
+                .mapToDouble(i -> model.getListObj().get(i).getNet().getListP()[1].getMean())
+                .max()
+                .orElse(0);
     }
 
     /**
@@ -86,10 +101,6 @@ public class AdjustableCrossroads {
             }
             System.out.printf(String.format("Напрямок %s: %d%n", objModel.getName(), objModel.getNet().getListP()[2].getMark()));
         }
-
-        // Виведення максимальної середньої кількості очікування (метрика індивіда популяції)
-        System.out.printf(String.format("\nМаксимальна кількість автомобілів, що очікують переїзду перехрестя: %.4f%n"),
-                Arrays.stream(meanValues).max().orElse(0));
     }
 
     /**
@@ -97,15 +108,15 @@ public class AdjustableCrossroads {
      */
     private static @NotNull PetriNet createDirectionalTrafficSubsystem(int num, double arrivalTime) throws ExceptionInvalidTimeDelay {
         ArrayList<PetriP> places = new ArrayList<>(List.of(
-                new PetriP(String.format("Надходження №%d", num+1), 1),
-                new PetriP(String.format("Кількість автомобілів, що очікують переїзду перехрестя №%d", num+1), 0),
-                new PetriP(String.format("Всього автомобілів проїхало у напрямку №%d", num+1), 0),
-                new PetriP(String.format("Є зелене світло у напрямку №%d", num+1), 0)
+                new PetriP(String.format("Надходження №%d", num + 1), 1),
+                new PetriP(String.format("Кількість автомобілів, що очікують переїзду перехрестя №%d", num + 1), 0),
+                new PetriP(String.format("Всього автомобілів проїхало у напрямку №%d", num + 1), 0),
+                new PetriP(String.format("Є зелене світло у напрямку №%d", num + 1), 0)
         ));
 
         ArrayList<PetriT> transitions = new ArrayList<>(List.of(
-                new PetriT(String.format("Надходження автомобілів №%d", num+1), arrivalTime),
-                new PetriT(String.format("Переїзд перехрестя №%d", num+1), 2.0)
+                new PetriT(String.format("Надходження автомобілів №%d", num + 1), arrivalTime),
+                new PetriT(String.format("Переїзд перехрестя №%d", num + 1), 2.0)
         ));
 
         PetriNet petriNet = getPetriNetDirectionalTrafficSubsystem(num, places, transitions);
@@ -117,7 +128,7 @@ public class AdjustableCrossroads {
     /**
      * Створення мережі Петрі для підсистеми руху транспорту в одному напрямку.
      */
-    @Contract("_, _ -> new")
+    @Contract("_, _, _ -> new")
     private static @NotNull PetriNet getPetriNetDirectionalTrafficSubsystem(int num, @NotNull ArrayList<PetriP> places, @NotNull ArrayList<PetriT> transitions) throws ExceptionInvalidTimeDelay {
         ArrayList<ArcIn> arcIns = new ArrayList<>(List.of(
                 new ArcIn(places.get(0), transitions.get(0), 1),
