@@ -5,6 +5,7 @@ PetriObjModelPaint/src/*
 !PetriObjModelPaint/src/LibTest/
 PetriObjModelPaint/src/LibTest/*
 !PetriObjModelPaint/src/LibTest/SM_CW_7_JAVA
+!PetriObjModelPaint/src/LibTest/TERM_PAPER
 
 ### IntelliJ IDEA ###
 out/
