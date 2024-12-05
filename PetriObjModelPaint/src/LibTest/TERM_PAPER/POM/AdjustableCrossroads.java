@@ -37,6 +37,15 @@ public class AdjustableCrossroads {
                 ITERATIONS,
                 getIndividualMetric(stats)
         ));
+
+        // print table from 10 to 90 by 0 and 2 phase (like matrix) for getIndividualMetric(stats)
+//        for (int phase1 = 10; phase1 <= 90; ++phase1) {
+//            for (int phase3 = 10; phase3 <= 90; ++phase3) {
+//                double[][] stats = goStats(new int[]{phase1, 10, phase3, 10}, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
+//                System.out.printf("%.4f ", getIndividualMetric(stats));
+//            }
+//            System.out.println();
+//        }
     }
 
     public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
@@ -154,6 +163,9 @@ public class AdjustableCrossroads {
                 new PetriT(String.format("Надходження автомобілів №%d", num + 1), arrivalTime),
                 new PetriT(String.format("Переїзд перехрестя №%d", num + 1), 2.0)
         ));
+
+        transitions.getFirst().setDistribution("exp", transitions.getFirst().getTimeServ());
+        transitions.getFirst().setParamDeviation(0.0);
 
         PetriNet petriNet = getPetriNetDirectionalTrafficSubsystem(num, places, transitions);
 

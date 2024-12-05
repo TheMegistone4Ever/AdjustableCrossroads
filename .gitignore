@@ -1,5 +1,6 @@
 ### User-specific files and directories ###
 *.png
+*.txt
 PetriObjModelPaint/*
 !PetriObjModelPaint/src/
 PetriObjModelPaint/src/*
