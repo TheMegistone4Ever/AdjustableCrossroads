@@ -20,7 +20,7 @@ public class AdjustableCrossroads {
      */
     public static final double SIMULATION_TIME = 1_000;
     public static final int ITERATIONS = 20;
-    public static final double[] phaseTimesInit = {20.0, 10.0, 30.0, 10.0};
+    public static final int[] phaseTimesInit = {20, 10, 30, 10};
     public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
 
     /**
@@ -39,7 +39,7 @@ public class AdjustableCrossroads {
         ));
     }
 
-    public static double[][] goStats(double[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
+    public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
         return IntStream.range(0, iterations)
                 .mapToObj(_ -> {
                     try {
@@ -112,7 +112,7 @@ public class AdjustableCrossroads {
     /**
      * Створення моделей для симуляції: генератор, роботи та верстати.
      */
-    public static @NotNull ArrayList<PetriSim> createSimulationModels(double[] phaseTimes, double[] arrivalTimes) throws ExceptionInvalidTimeDelay {
+    public static @NotNull ArrayList<PetriSim> createSimulationModels(int[] phaseTimes, double[] arrivalTimes) throws ExceptionInvalidTimeDelay {
         ArrayList<PetriSim> simulationModels = new ArrayList<>();
 
         // Додавання підсистеми управління
@@ -185,7 +185,7 @@ public class AdjustableCrossroads {
     /**
      * Створення мережі Петрі для підсистеми управління світлофорами.
      */
-    private static @NotNull PetriNet createManagementSubsystem(double @NotNull [] phaseTimes) throws ExceptionInvalidTimeDelay {
+    private static @NotNull PetriNet createManagementSubsystem(int @NotNull [] phaseTimes) throws ExceptionInvalidTimeDelay {
         ArrayList<PetriP> places = new ArrayList<>(List.of(
                 new PetriP("Є зелене світло в 1 та 2 напрямках", 1),
                 new PetriP("До 2 фази", 1),
