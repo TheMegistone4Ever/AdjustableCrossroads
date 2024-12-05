@@ -54,15 +54,19 @@ public class TrafficLightOptimizer {
         Population population = new Population(POPULATION_SIZE, initialPhaseTimes);
 
         // Track fitness progression for visualization
-        double[] fitnessProgression = new double[MAX_GENERATIONS];
+        double[][] populationFitnesses = new double[MAX_GENERATIONS][POPULATION_SIZE];
 
         // Evolution process
         for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
+            // Store fitness values for current generation
+            for (int i = 0; i < population.individuals.length; i++) {
+                populationFitnesses[generation][i] = population.individuals[i].fitness;
+            }
+
             population.evolve();
-            Individual bestIndividual = population.getBestIndividual();
-            fitnessProgression[generation] = bestIndividual.fitness;
 
             // Print progress periodically
+            Individual bestIndividual = population.getBestIndividual();
             if (generation % 10 == 0) {
                 System.out.printf("Generation %d: Best Fitness = %.4f%n",
                         generation, bestIndividual.fitness);
@@ -78,8 +82,8 @@ public class TrafficLightOptimizer {
                 bestSolution.phaseTimes[2], bestSolution.phaseTimes[3]);
         System.out.printf("Best Fitness (Max Waiting Cars): %.4f%n", bestSolution.fitness);
 
-        // Visualize fitness progression
-        visualizeFitnessProgression(fitnessProgression);
+        // Visualize fitness progression with box plots
+        EnhancedFitnessVisualization.visualizeFitnessProgression(populationFitnesses);
     }
 
     /**
