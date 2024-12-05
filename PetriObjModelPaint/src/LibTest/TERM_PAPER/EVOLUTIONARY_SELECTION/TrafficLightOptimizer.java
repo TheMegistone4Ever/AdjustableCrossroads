@@ -4,14 +4,10 @@ import LibTest.TERM_PAPER.POM.AdjustableCrossroads;
 import PetriObj.ExceptionInvalidTimeDelay;
 import PetriObj.PetriObjModel;
 import PetriObj.PetriSim;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
-import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,9 +23,9 @@ import java.util.Random;
  * - Tournament selection for parent selection
  * - Elitism preservation
  * - Mutation and crossover strategies
- * - Fitness tracking and visualization
+ * - Fitness tracking
  *
- * @author Assistant
+ * @author Mykyta Kyselov
  * @version 2.0
  */
 public class TrafficLightOptimizer {
@@ -39,6 +35,7 @@ public class TrafficLightOptimizer {
     private static final double MUTATION_RATE = 0.15;
     private static final double CROSSOVER_RATE = 0.75;
     private static final double MUTATION_DEVIATION = 1.5; // Slightly increased mutation range
+    private static final String CSV_FILE_PATH = "fitness_data.csv";
 
     private static final Random RANDOM = new Random();
 
@@ -54,24 +51,36 @@ public class TrafficLightOptimizer {
         Population population = new Population(POPULATION_SIZE, initialPhaseTimes);
 
         // Track fitness progression for visualization
-        double[][] populationFitnesses = new double[MAX_GENERATIONS][POPULATION_SIZE];
+        try (BufferedWriter csvWriter = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
+            // Write header row
+            csvWriter.append("Generation,Individual,Fitness\n");
 
-        // Evolution process
-        for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
-            // Store fitness values for current generation
-            for (int i = 0; i < population.individuals.length; i++) {
-                populationFitnesses[generation][i] = population.individuals[i].fitness;
+            // Evolution process
+            for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
+                // Store fitness values for current generation
+                for (int i = 0; i < population.individuals.length; ++i) {
+                    csvWriter.append(String.valueOf(generation));
+                    csvWriter.append(",");
+                    csvWriter.append(String.valueOf(i));
+                    csvWriter.append(",");
+                    csvWriter.append(String.valueOf(population.individuals[i].fitness));
+                    csvWriter.append("\n");
+                }
+                population.evolve();
+
+                // Print progress periodically
+                Individual bestIndividual = population.getBestIndividual();
+                if (generation % 10 == 9 || generation == 0) {
+                    System.out.printf("Generation %d: Best Fitness = %.4f%n",
+                            generation + 1, bestIndividual.fitness);
+                    System.out.println("Phase Times: " + Arrays.toString(bestIndividual.phaseTimes));
+                }
             }
 
-            population.evolve();
+            System.out.println("Fitness data saved to: " + CSV_FILE_PATH);
 
-            // Print progress periodically
-            Individual bestIndividual = population.getBestIndividual();
-            if (generation % 10 == 0) {
-                System.out.printf("Generation %d: Best Fitness = %.4f%n",
-                        generation, bestIndividual.fitness);
-                System.out.println("Phase Times: " + Arrays.toString(bestIndividual.phaseTimes));
-            }
+        } catch (IOException e) {
+            System.err.println("Error writing to CSV file: " + e.getMessage());
         }
 
         // Final results
@@ -81,42 +90,6 @@ public class TrafficLightOptimizer {
                 bestSolution.phaseTimes[0], bestSolution.phaseTimes[1],
                 bestSolution.phaseTimes[2], bestSolution.phaseTimes[3]);
         System.out.printf("Best Fitness (Max Waiting Cars): %.4f%n", bestSolution.fitness);
-
-        // Visualize fitness progression with box plots
-        EnhancedFitnessVisualization.visualizeFitnessProgression(populationFitnesses);
-    }
-
-    /**
-     * Creates and displays a chart showing fitness progression over generations.
-     * Uses JFreeChart to generate a line graph of fitness values.
-     *
-     * @param fitnessValues Array of fitness values across generations
-     */
-    private static void visualizeFitnessProgression(double[] fitnessValues) {
-        XYSeries series = new XYSeries("Fitness Progression");
-        for (int i = 0; i < fitnessValues.length; i++) {
-            series.add(i, fitnessValues[i]);
-        }
-
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart(
-                "Genetic Algorithm - Fitness Progression",
-                "Generation",
-                "Fitness (Waiting Cars)",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true, true, false
-        );
-
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-
-        JFrame frame = new JFrame("Fitness Progression");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(chartPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
     /**
