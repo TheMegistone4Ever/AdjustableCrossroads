@@ -18,6 +18,9 @@
       <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/utils" />
       <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/target" />
       <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/test" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/LibTest/TERM_PAPER/EVOLUTIONARY_SELECTION/VISUALIZATION/.venv/Lib" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/LibTest/TERM_PAPER/EVOLUTIONARY_SELECTION/VISUALIZATION/.venv/Scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/PetriObjModelPaint/src/LibTest/TERM_PAPER/EVOLUTIONARY_SELECTION/VISUALIZATION/.venv/share" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,6 +1,5 @@
 package LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -138,7 +137,7 @@ public class EnhancedFitnessVisualization {
     /**
      * Calculate specific percentile of an array of doubles.
      *
-     * @param values Array of fitness values
+     * @param values     Array of fitness values
      * @param percentile Percentile to calculate (e.g., 25 for first quartile)
      * @return Percentile value
      */
