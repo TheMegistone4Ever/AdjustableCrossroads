@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
+import static LibTest.TERM_PAPER.POM.AdjustableCrossroads.*;
+
 /**
  * Advanced Genetic Algorithm for Traffic Light Phase Optimization
  * <p>
@@ -46,9 +48,9 @@ public class TrafficLightOptimizer {
      */
     public static void main(String[] args) {
         // Initial phase times [First direction, Second direction, Third direction, Fourth direction]
-        double[] initialPhaseTimes = {20.0, 10.0, 30.0, 10.0};
+//        double[] initialPhaseTimes = {20.0, 10.0, 30.0, 10.0};
 
-        Population population = new Population(POPULATION_SIZE, initialPhaseTimes);
+        Population population = new Population(POPULATION_SIZE, phaseTimesInit);
 
         // Track fitness progression for visualization
         try (BufferedWriter csvWriter = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
@@ -119,19 +121,19 @@ public class TrafficLightOptimizer {
         private double evaluateFitness() {
             try {
                 // Predefined arrival times for different traffic streams
-                double[] arrivalTimes = {15.0, 9.0, 20.0, 35.0};
-
-                // Create and run Petri net simulation
-                ArrayList<PetriSim> simulationModels = AdjustableCrossroads.createSimulationModels(phaseTimes, arrivalTimes);
-                AdjustableCrossroads.connectTrafficSubsystems(simulationModels);
-
-                PetriObjModel model = new PetriObjModel(simulationModels);
-                model.setIsProtokol(false);
-                model.go(AdjustableCrossroads.SIMULATION_TIME);
-
-                return AdjustableCrossroads.getIndividualMetric(model);
+//                double[] arrivalTimes = {15.0, 9.0, 20.0, 35.0};
+//                 Create and run Petri net simulation
+//                ArrayList<PetriSim> connectedSimulationModels = createSimulationModels(phaseTimes, arrivalTimes);
+//                connectTrafficSubsystems(connectedSimulationModels);
+//
+//                PetriObjModel model = new PetriObjModel(connectedSimulationModels);
+//                model.setIsProtokol(false);
+//                model.go(SIMULATION_TIME);
+//
+//                double[][] stats = goStats(phaseTimes, arrivalTimes, SIMULATION_TIME, ITERATIONS);
+                return getIndividualMetric(goStats(phaseTimes, arrivalTimesInit, SIMULATION_TIME, ITERATIONS));
             } catch (ExceptionInvalidTimeDelay e) {
-                System.out.printf("Error: %s%n", e.getMessage());
+                System.err.printf("[ERROR] Invalid time delay: %s%n", e.getMessage());
                 return Double.MAX_VALUE; // Penalize invalid configurations
             }
         }
