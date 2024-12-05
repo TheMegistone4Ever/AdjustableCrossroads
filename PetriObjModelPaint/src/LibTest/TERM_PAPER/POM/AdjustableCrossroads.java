@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -18,37 +19,94 @@ public class AdjustableCrossroads {
      * Час моделювання руху транспорту.
      */
     public static final double SIMULATION_TIME = 1_000;
+    public static final int ITERATIONS = 20;
+    public static final double[] phaseTimesInit = {20.0, 10.0, 30.0, 10.0};
+    public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
 
     /**
      * Головний метод для запуску симуляції руху на перехресті.
      */
     public static void main(String[] args) throws ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
-        double[] phaseTimes = {20.0, 10.0, 30.0, 10.0};
-        double[] arrivalTimes = {15.0, 9.0, 20.0, 35.0};
+        double[][] stats = goStats(phaseTimesInit, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
 
-        ArrayList<PetriSim> simulationModels = createSimulationModels(phaseTimes, arrivalTimes);
-        connectTrafficSubsystems(simulationModels);
-
-        PetriObjModel model = new PetriObjModel(simulationModels);
-        model.setIsProtokol(false);
-        model.go(SIMULATION_TIME);
-
-        printStatistics(model);
+        printStatistics(stats);
 
         // Виведення максимальної середньої кількості очікування (метрика індивіда популяції)
-        System.out.printf(String.format("\nМаксимальна кількість автомобілів, що очікують переїзду перехрестя: %.4f%n",
-                getIndividualMetric(model)));
+        System.out.printf(String.format(
+                "\nМаксимальна кількість автомобілів, що очікують переїзду перехрестя в середньому за %d ітерацій: %.4f%n",
+                ITERATIONS,
+                getIndividualMetric(stats)
+        ));
+    }
+
+    public static double[][] goStats(double[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
+        return IntStream.range(0, iterations)
+                .mapToObj(_ -> {
+                    try {
+                        ArrayList<PetriSim> connectedSimulationModels = createSimulationModels(phaseTimes, arrivalTimes);
+                        connectTrafficSubsystems(connectedSimulationModels);
+                        PetriObjModel model = new PetriObjModel(connectedSimulationModels);
+                        model.setIsProtokol(false);
+                        model.go(simulationTime);
+                        return getStatistics(model);
+                    } catch (ExceptionInvalidTimeDelay e) {
+                        System.err.printf("[ERROR] Invalid time delay: %s%n", e.getMessage());
+                        return new double[8];
+                    }
+                })
+                .toArray(double[][]::new);
     }
 
     /**
      * Отримання максимальної середньої кількості автомобілів, що очікують переїзду перехрестя.
      * Ця метрика використовується для оцінки ефективності роботи перехрестя (метрика індивіда популяції).
      */
-    public static double getIndividualMetric(PetriObjModel model) {
-        return IntStream.range(1, model.getListObj().size())
-                .mapToDouble(i -> model.getListObj().get(i).getNet().getListP()[1].getMean())
+    public static double getIndividualMetric(double[][] stats) {
+        return Arrays.stream(IntStream.range(0, 4)
+                        .mapToDouble(i -> Arrays.stream(stats)
+                                .mapToDouble(stat -> stat[i])
+                                .average()
+                                .orElse(0))
+                        .toArray())
                 .max()
                 .orElse(0);
+    }
+
+    /**
+     * Виведення статистичних даних симуляції.
+     */
+    private static void printStatistics(double[][] stats) {
+        double[] averages = new double[stats[0].length];
+        for (int i = 0; i < stats[0].length; ++i) {
+            int finalI = i;
+            averages[i] = Arrays.stream(stats)
+                    .mapToDouble(stat -> stat[finalI])
+                    .average()
+                    .orElse(0);
+        }
+
+        System.out.printf("%nСередня кількість автомобілів, що очікують переїзду перехрестя в різних напрямках в середньому за %d ітерацій:%n", ITERATIONS);
+        for (int i = 0; i < 4; ++i) {
+            System.out.printf(String.format("Напрямок %d: %.4f%n", i + 1, averages[i]));
+        }
+
+        System.out.printf("%nКількість автомобілів, що проїхало перехрестя в різних напрямках в середньому за %d ітерацій:%n", ITERATIONS);
+        for (int i = 4; i < 8; ++i) {
+            System.out.printf(String.format("Напрямок %d: %.4f%n", i - 3, averages[i]));
+        }
+    }
+
+    private static double[] getStatistics(PetriObjModel model) {
+        return new double[]{
+                model.getListObj().get(1).getNet().getListP()[1].getMean(),
+                model.getListObj().get(2).getNet().getListP()[1].getMean(),
+                model.getListObj().get(3).getNet().getListP()[1].getMean(),
+                model.getListObj().get(4).getNet().getListP()[1].getMean(),
+                model.getListObj().get(1).getNet().getListP()[2].getMark(),
+                model.getListObj().get(2).getNet().getListP()[2].getMark(),
+                model.getListObj().get(3).getNet().getListP()[2].getMark(),
+                model.getListObj().get(4).getNet().getListP()[2].getMark(),
+        };
     }
 
     /**
@@ -79,28 +137,6 @@ public class AdjustableCrossroads {
         // Третя та четверта фази (зелене світло в 3 та 4 напрямках)
         models.get(3).getNet().getListP()[3] = models.get(0).getNet().getListP()[5];
         models.get(4).getNet().getListP()[3] = models.get(0).getNet().getListP()[5];
-    }
-
-    /**
-     * Виведення статистичних даних симуляції.
-     */
-    private static void printStatistics(@NotNull PetriObjModel model) {
-        // Виведення середньої кількості автомобілів, що очікують переїзду
-        System.out.println("\nСередня кількість автомобілів, що очікують переїзду перехрестя в різних напрямках:");
-        double[] meanValues = new double[4];
-        for (int i = 1; i < model.getListObj().size(); ++i) {
-            meanValues[i - 1] = model.getListObj().get(i).getNet().getListP()[1].getMean();
-            System.out.printf(String.format("Напрямок %s: %.4f%n", model.getListObj().get(i).getName(), meanValues[i - 1]));
-        }
-
-        // Виведення кількості автомобілів, що проїхали перехрестя
-        System.out.println("\nКількість автомобілів, що проїхало перехрестя в різних напрямках:");
-        for (PetriSim objModel : model.getListObj()) {
-            if (objModel.getNet().getListP().length > 4) {
-                continue;
-            }
-            System.out.printf(String.format("Напрямок %s: %d%n", objModel.getName(), objModel.getNet().getListP()[2].getMark()));
-        }
     }
 
     /**
