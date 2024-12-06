@@ -16,11 +16,11 @@ import java.util.stream.IntStream;
 public class AdjustableCrossroads {
 
     /**
-     * Час моделювання руху транспорту.
+     * Константи для симуляції руху на перехресті.
      */
     public static final double SIMULATION_TIME = 1_000;
     public static final int ITERATIONS = 20;
-    public static final int[] phaseTimesInit = {20, 10, 30, 10};
+    public static final int[] phaseTimesInit = {30, 10, 10, 10};
     public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
 
     /**
@@ -39,15 +39,23 @@ public class AdjustableCrossroads {
         ));
 
         // print table from 10 to 90 by 0 and 2 phase (like matrix) for getIndividualMetric(stats)
+//        double minIndividualMetric = Double.MAX_VALUE;
 //        for (int phase1 = 10; phase1 <= 90; ++phase1) {
 //            for (int phase3 = 10; phase3 <= 90; ++phase3) {
 //                double[][] stats = goStats(new int[]{phase1, 10, phase3, 10}, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
-//                System.out.printf("%.4f ", getIndividualMetric(stats));
+//                double individualMetric = getIndividualMetric(stats);
+////                System.out.printf("%.4f ", individualMetric);
+//                if (individualMetric < minIndividualMetric) {
+//                    minIndividualMetric = individualMetric;
+//                    System.out.printf("%.4f: [%d, %d, %d, %d]%n", minIndividualMetric, phase1, 10, phase3, 10);
+//                }
 //            }
-//            System.out.println();
 //        }
     }
 
+    /**
+     * Запуск симуляції руху на перехресті з використанням мереж Петрі.
+     */
     public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
         return IntStream.range(0, iterations)
                 .mapToObj(_ -> {
@@ -100,11 +108,14 @@ public class AdjustableCrossroads {
         }
 
         System.out.printf("%nКількість автомобілів, що проїхало перехрестя в різних напрямках в середньому за %d ітерацій:%n", ITERATIONS);
-        for (int i = 4; i < 8; ++i) {
+        for (int i = 4; i < stats[0].length; ++i) {
             System.out.printf(String.format("Напрямок %d: %.4f%n", i - 3, averages[i]));
         }
     }
 
+    /**
+     * Отримання статистичних даних з моделі.
+     */
     private static double[] getStatistics(PetriObjModel model) {
         return new double[]{
                 model.getListObj().get(1).getNet().getListP()[1].getMean(),
