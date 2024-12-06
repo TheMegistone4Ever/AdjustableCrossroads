@@ -1,24 +1,26 @@
 package LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION;
 
-import PetriObj.ExceptionInvalidTimeDelay;
-
 import java.util.Arrays;
 
 import static LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION.TrafficLightOptimizer.*;
 import static LibTest.TERM_PAPER.POM.AdjustableCrossroads.*;
 
 /**
- * Represents an individual solution (chromosome) in the genetic algorithm.
- * Each individual encapsulates traffic light phase times and its fitness score.
+ * Представляє індивідуальне рішення (хромосому) в генетичному алгоритмі.
+ * Кожен індивідуум інкапсулює часи фаз світлофора та його оцінку придатності.
  */
 public class Individual {
+
+    /**
+     * Ймовірність мутації генів індивідуума та оцінка придатності.
+     */
     protected final int[] phaseTimes;
     protected double fitness;
 
     /**
-     * Constructs an individual with given phase times and evaluates its fitness.
+     * Створює індивідуума з заданими часами фаз та оцінює його придатність.
      *
-     * @param phaseTimes Array of traffic light phase durations
+     * @param phaseTimes Масив тривалостей фаз світлофора
      */
     public Individual(int[] phaseTimes) {
         this.phaseTimes = Arrays.copyOf(phaseTimes, phaseTimes.length);
@@ -26,23 +28,18 @@ public class Individual {
     }
 
     /**
-     * Evaluates the fitness of the current traffic light configuration.
-     * Lower fitness indicates better performance (fewer waiting cars).
+     * Оцінює придатність поточної конфігурації світлофора.
+     * Нижча придатність вказує на кращу продуктивність (менше машин, що очікують).
      *
-     * @return Fitness score representing the traffic congestion metric
+     * @return Оцінка придатності, що представляє метрику заторів руху
      */
     private double evaluateFitness() {
-        try {
-            return getIndividualMetric(goStats(phaseTimes, arrivalTimesInit, SIMULATION_TIME, ITERATIONS));
-        } catch (ExceptionInvalidTimeDelay e) {
-            System.err.printf("[ERROR] Invalid time delay: %s%n", e.getMessage());
-            return penalty;
-        }
+        return getIndividualMetric(goStats(phaseTimes, arrivalTimesInit, SIMULATION_TIME, ITERATIONS));
     }
 
     /**
-     * Mutates the individual's phase times with probabilistic variation.
-     * Mutation helps explore the solution space and prevent premature convergence.
+     * Мутує часи фаз індивідуума з імовірнісною варіацією.
+     * Мутація допомагає досліджувати простір рішень та запобігати передчасній конвергенції.
      */
     public void mutate() {
         for (int i = 0; i < phaseTimes.length; i += 2) {
