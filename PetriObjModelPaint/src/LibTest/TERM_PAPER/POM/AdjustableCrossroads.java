@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION.TrafficLightOptimizer.MAX_PHASE_TIME;
+import static LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION.TrafficLightOptimizer.MIN_PHASE_TIME;
+
 /**
  * Клас для моделювання адаптивного перехрестя з використанням мереж Петрі.
  * Симулює рух транспорту з урахуванням світлофорного регулювання.
@@ -19,8 +22,8 @@ public class AdjustableCrossroads {
      * Константи для симуляції руху на перехресті.
      */
     public static final double SIMULATION_TIME = 1_000;
-    public static final int ITERATIONS = 20;
-    public static final int[] phaseTimesInit = {30, 10, 10, 10};
+    public static final int ITERATIONS = 2;
+    public static final int[] phaseTimesInit = {20, 10, 30, 10};
     public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
 
     /**
@@ -38,19 +41,34 @@ public class AdjustableCrossroads {
                 getIndividualMetric(stats)
         ));
 
-        // print table from 10 to 90 by 0 and 2 phase (like matrix) for getIndividualMetric(stats)
-//        double minIndividualMetric = Double.MAX_VALUE;
-//        for (int phase1 = 10; phase1 <= 90; ++phase1) {
-//            for (int phase3 = 10; phase3 <= 90; ++phase3) {
-//                double[][] stats = goStats(new int[]{phase1, 10, phase3, 10}, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
-//                double individualMetric = getIndividualMetric(stats);
-////                System.out.printf("%.4f ", individualMetric);
-//                if (individualMetric < minIndividualMetric) {
-//                    minIndividualMetric = individualMetric;
-//                    System.out.printf("%.4f: [%d, %d, %d, %d]%n", minIndividualMetric, phase1, 10, phase3, 10);
-//                }
-//            }
-//        }
+        double minIndividualMetric = findOptimalPhaseTimes(false);
+        System.out.printf("Мінімальна метрика індивіда популяції (найкраща ефективність): %.4f%n", minIndividualMetric);
+    }
+
+    /**
+     * Пошук оптимальних часів фаз для перехрестя.
+     */
+    private static double findOptimalPhaseTimes(boolean isSearching) throws ExceptionInvalidTimeDelay {
+        double minIndividualMetric = Double.MAX_VALUE;
+        for (int phase1 = MIN_PHASE_TIME; phase1 <= MAX_PHASE_TIME; ++phase1) {
+            for (int phase3 = MIN_PHASE_TIME; phase3 <= MAX_PHASE_TIME; ++phase3) {
+                double[][] stats = goStats(new int[]{phase1, 10, phase3, 10}, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
+                double individualMetric = getIndividualMetric(stats);
+                if (!isSearching) {
+                    System.out.printf("%.4f ", individualMetric);
+                }
+                if (individualMetric < minIndividualMetric) {
+                    minIndividualMetric = individualMetric;
+                    if (isSearching) {
+                        System.out.printf("%.4f: [%d, %d, %d, %d]%n", minIndividualMetric, phase1, 10, phase3, 10);
+                    }
+                }
+            }
+            if (!isSearching) {
+                System.out.println();
+            }
+        }
+        return minIndividualMetric;
     }
 
     /**
