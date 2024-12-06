@@ -89,9 +89,8 @@ public class Population {
      * @return Найкраща особа з випадкової підмножини турніру
      */
     private Individual tournamentSelection() {
-        int tournamentSize = 5;
         Individual best = individuals[RANDOM.nextInt(individuals.length)];
-        for (int i = 1; i < tournamentSize; ++i) {
+        for (int i = 1; i < TOURNEY_SIZE; ++i) {
             Individual candidate = individuals[RANDOM.nextInt(individuals.length)];
             if (candidate.fitness < best.fitness) {
                 best = candidate;
@@ -124,6 +123,7 @@ public class Population {
      */
     public Individual getBestIndividual() {
         return Arrays.stream(individuals)
+                .parallel()
                 .min(Comparator.comparingDouble(ind -> ind.fitness))
                 .orElse(null);
     }
