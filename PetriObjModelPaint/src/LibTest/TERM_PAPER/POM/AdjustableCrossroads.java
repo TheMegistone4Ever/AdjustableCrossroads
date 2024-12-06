@@ -25,6 +25,7 @@ public class AdjustableCrossroads {
     public static final int ITERATIONS = 2;
     public static final int[] phaseTimesInit = {20, 10, 30, 10};
     public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
+    private static final boolean IS_SEARCHING = false;
 
     /**
      * Головний метод для запуску симуляції руху на перехресті.
@@ -41,30 +42,30 @@ public class AdjustableCrossroads {
                 getIndividualMetric(stats)
         ));
 
-        double minIndividualMetric = findOptimalPhaseTimes(true);
+        double minIndividualMetric = findOptimalPhaseTimes();
         System.out.printf("Мінімальна метрика індивіда популяції (найкраща ефективність): %.4f%n", minIndividualMetric);
     }
 
     /**
      * Пошук оптимальних часів фаз для перехрестя.
      */
-    private static double findOptimalPhaseTimes(boolean isSearching) {
+    private static double findOptimalPhaseTimes() {
         double minIndividualMetric = Double.MAX_VALUE;
         for (int phase1 = MIN_PHASE_TIME; phase1 <= MAX_PHASE_TIME; ++phase1) {
             for (int phase3 = MIN_PHASE_TIME; phase3 <= MAX_PHASE_TIME; ++phase3) {
                 double[][] stats = goStats(new int[]{phase1, 10, phase3, 10}, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
                 double individualMetric = getIndividualMetric(stats);
-                if (!isSearching) {
+                if (!IS_SEARCHING) {
                     System.out.printf("%.4f ", individualMetric);
                 }
                 if (individualMetric < minIndividualMetric) {
                     minIndividualMetric = individualMetric;
-                    if (isSearching) {
+                    if (IS_SEARCHING) {
                         System.out.printf("%.4f: [%d, %d, %d, %d]%n", minIndividualMetric, phase1, 10, phase3, 10);
                     }
                 }
             }
-            if (!isSearching) {
+            if (!IS_SEARCHING) {
                 System.out.println();
             }
         }
@@ -76,6 +77,7 @@ public class AdjustableCrossroads {
      */
     public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) {
         return IntStream.range(0, iterations)
+                .parallel()
                 .mapToObj(_ -> {
                     try {
                         ArrayList<PetriSim> connectedSimulationModels = createSimulationModels(phaseTimes, arrivalTimes);
@@ -98,7 +100,9 @@ public class AdjustableCrossroads {
      */
     public static double getIndividualMetric(double[][] stats) {
         return Arrays.stream(IntStream.range(0, 4)
+                        .parallel()
                         .mapToDouble(i -> Arrays.stream(stats)
+                                .parallel()
                                 .mapToDouble(stat -> stat[i])
                                 .average()
                                 .orElse(0))
@@ -115,6 +119,7 @@ public class AdjustableCrossroads {
         for (int i = 0; i < stats[0].length; ++i) {
             int finalI = i;
             averages[i] = Arrays.stream(stats)
+                    .parallel()
                     .mapToDouble(stat -> stat[finalI])
                     .average()
                     .orElse(0);

@@ -32,6 +32,7 @@ public class TrafficLightOptimizer {
      */
     public static final int MIN_PHASE_TIME = 10;
     public static final int MAX_PHASE_TIME = 90;
+    protected static final int TOURNEY_SIZE = 5;
     protected static final double CROSSOVER_RATE = 0.75;
     protected static final double CROSSOVER_ALPHA = 0.5;
     protected static final double MUTATION_RATE = 0.15;
