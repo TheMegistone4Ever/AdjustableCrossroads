@@ -25,7 +25,7 @@ def load_and_validate_data(file_path: str) -> Optional[pd.DataFrame]:
     try:
         df = pd.read_csv(file_path)
         print("Дані успішно завантажені з CSV.")
-        numeric_columns = ["Generation", "Individual", "Fitness"]
+        numeric_columns = ["Generation", "Individual", "Fitness", "1'st phase", "3'rd phase"]
         for col in numeric_columns:
             df[col] = pd.to_numeric(df[col], errors="raise")
 
