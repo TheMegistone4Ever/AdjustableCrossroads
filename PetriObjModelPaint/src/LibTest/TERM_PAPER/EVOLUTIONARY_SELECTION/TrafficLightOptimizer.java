@@ -34,10 +34,11 @@ public class TrafficLightOptimizer {
     static final int MAX_GENERATIONS = 1000;
     static final double MUTATION_RATE = 0.15;
     static final double CROSSOVER_RATE = 0.75;
+    static final double CROSSOVER_ALPHA = 0.5;
     static final double penalty = Double.MAX_VALUE;
-    static final int MUTATION_DEVIATION = 4;
-    static final int MIN_PHASE_TIME = 10;
-    static final int MAX_PHASE_TIME = 90;
+    static final int MUTATION_DEV = 4;
+    public static final int MIN_PHASE_TIME = 10;
+    public static final int MAX_PHASE_TIME = 90;
     static final String CSV_FILE_PATH = "fitness_data.csv";
     static final String csvHeader = "Generation,Individual,Fitness\n";
 
