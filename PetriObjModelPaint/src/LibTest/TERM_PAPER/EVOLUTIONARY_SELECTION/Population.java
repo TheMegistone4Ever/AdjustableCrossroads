@@ -8,20 +8,24 @@ import java.util.Comparator;
 import static LibTest.TERM_PAPER.EVOLUTIONARY_SELECTION.TrafficLightOptimizer.*;
 
 /**
- * Manages the population of individuals throughout the genetic algorithm's evolution.
+ * Керує популяцією осіб протягом еволюції генетичного алгоритму.
  */
 public class Population {
-    Individual[] individuals;
 
     /**
-     * Creates a population with variations of initial phase times.
+     * Масив осіб, що складають популяцію.
+     */
+    protected Individual[] individuals;
+
+    /**
+     * Створює популяцію з варіаціями початкових часів фаз.
      *
-     * @param size              Number of individuals in the population
-     * @param initialPhaseTimes Base phase times for initial population
+     * @param size              Кількість осіб у популяції
+     * @param initialPhaseTimes Базові часи фаз для початкової популяції
      */
     public Population(int size, int[] initialPhaseTimes) {
         individuals = new Individual[size];
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; ++i) {
             int[] variedPhaseTimes = Arrays.copyOf(initialPhaseTimes, initialPhaseTimes.length);
             variedPhaseTimes[0] += RANDOM.nextInt(MAX_PHASE_TIME - MIN_PHASE_TIME + 1) + MIN_PHASE_TIME;
             variedPhaseTimes[2] += RANDOM.nextInt(MAX_PHASE_TIME - MIN_PHASE_TIME + 1) + MIN_PHASE_TIME;
@@ -30,19 +34,19 @@ public class Population {
     }
 
     /**
-     * Evolves the population through selection, crossover, and mutation.
+     * Еволюція популяції: сортування, елітизм, відтворення та мутація.
      */
     public void evolve() {
         Arrays.sort(individuals, Comparator.comparingDouble(ind -> ind.fitness));
 
         Individual[] newGeneration = new Individual[individuals.length];
 
-        // Elitism: preserve top performers
+        // Елітизм: збереження кращих виконавців
         int eliteCount = individuals.length / 5;
         System.arraycopy(individuals, 0, newGeneration, 0, eliteCount);
 
-        // Fill remaining population through reproduction
-        for (int i = eliteCount; i < newGeneration.length; i++) {
+        // Заповнення решти популяції через відтворення
+        for (int i = eliteCount; i < newGeneration.length; ++i) {
             newGeneration[i] = (RANDOM.nextDouble() < CROSSOVER_RATE) ? createChild() : createMutatedIndividual();
         }
 
@@ -50,15 +54,15 @@ public class Population {
     }
 
     /**
-     * Creates a child individual through tournament selection, crossover, and mutation.
+     * Створює дочірню особу через турнірний відбір, схрещування та мутацію.
      *
-     * @return Child individual
+     * @return Дочірня особа
      */
     private @NotNull Individual createChild() {
         Individual parent1 = tournamentSelection();
         Individual parent2 = tournamentSelection();
 
-        // Crossover and mutation
+        // Схрещування та мутація
         int[] childPhaseTimes = crossover(parent1.phaseTimes, parent2.phaseTimes);
         Individual child = new Individual(childPhaseTimes);
         child.mutate();
@@ -67,9 +71,9 @@ public class Population {
     }
 
     /**
-     * Creates a mutated individual from a randomly selected individual in the population.
+     * Створює мутовану особу з випадково вибраної особи у популяції.
      *
-     * @return Mutated individual
+     * @return Мутована особа
      */
     private @NotNull Individual createMutatedIndividual() {
         Individual mutatedIndividual = new Individual(
@@ -80,14 +84,14 @@ public class Population {
     }
 
     /**
-     * Tournament selection method for choosing parent individuals.
+     * Метод турнірного відбору для вибору батьківських осіб.
      *
-     * @return Best individual from a random tournament subset
+     * @return Найкраща особа з випадкової підмножини турніру
      */
     private Individual tournamentSelection() {
         int tournamentSize = 5;
         Individual best = individuals[RANDOM.nextInt(individuals.length)];
-        for (int i = 1; i < tournamentSize; i++) {
+        for (int i = 1; i < tournamentSize; ++i) {
             Individual candidate = individuals[RANDOM.nextInt(individuals.length)];
             if (candidate.fitness < best.fitness) {
                 best = candidate;
@@ -97,15 +101,15 @@ public class Population {
     }
 
     /**
-     * Performs uniform crossover between two parent individuals.
+     * Виконує рівномірне схрещування між двома батьківськими особами.
      *
-     * @param parent1 First parent's phase times
-     * @param parent2 Second parent's phase times
-     * @return Child's phase times generated through crossover
+     * @param parent1 Часи фаз першого батька
+     * @param parent2 Часи фаз другого батька
+     * @return Часи фаз дочірньої особи, згенеровані через схрещування
      */
     private int @NotNull [] crossover(int[] parent1, int[] parent2) {
         int[] child = Arrays.copyOf(parent1, parent1.length);
-        for (int i = 0; i < child.length; i++) {
+        for (int i = 0; i < child.length; ++i) {
             if (RANDOM.nextDouble() < CROSSOVER_ALPHA) {
                 child[i] = parent2[i];
             }
@@ -114,9 +118,9 @@ public class Population {
     }
 
     /**
-     * Retrieves the best-performing individual in the current population.
+     * Отримує найкращу особу в поточній популяції.
      *
-     * @return Individual with the lowest fitness ( the best solution)
+     * @return Особа з найнижчою придатністю (найкраще рішення)
      */
     public Individual getBestIndividual() {
         return Arrays.stream(individuals)

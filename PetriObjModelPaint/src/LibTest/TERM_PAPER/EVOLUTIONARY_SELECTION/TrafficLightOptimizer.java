@@ -11,43 +11,40 @@ import java.util.Random;
 import static LibTest.TERM_PAPER.POM.AdjustableCrossroads.phaseTimesInit;
 
 /**
- * Advanced Genetic Algorithm for Traffic Light Phase Optimization
+ * Модифікований генетичний алгоритм для оптимізації фаз світлофора
  * <p>
- * This class implements a genetic algorithm to optimize traffic light phase durations
- * with the goal of minimizing the maximum average number of waiting cars at an intersection.
+ * Цей клас реалізує генетичний алгоритм для оптимізації тривалості фаз світлофора
+ * з метою мінімізації максимальної середньої кількості автомобілів, що очікують на перехресті.
  * <p>
- * Key Features:
- * - Tournament selection for parent selection
- * - Elitism preservation
- * - Mutation and crossover strategies
- * - Fitness tracking
+ * Ключові особливості:
+ * - Турнірний відбір для вибору батьків
+ * - Збереження елітності
+ * - Стратегії мутації та схрещування
+ * - Відстеження придатності
  *
- * @author Mykyta Kyselov
+ * @author Микита Кисельов
  * @version 2.0
  */
 public class TrafficLightOptimizer {
 
     /**
-     * Genetic algorithm parameters and constants.
+     * Параметри генетичного алгоритму та константи.
      */
-    static final int POPULATION_SIZE = 100;
-    static final int MAX_GENERATIONS = 1000;
-    static final double MUTATION_RATE = 0.15;
-    static final double CROSSOVER_RATE = 0.75;
-    static final double CROSSOVER_ALPHA = 0.5;
-    static final double penalty = Double.MAX_VALUE;
-    static final int MUTATION_DEV = 4;
     public static final int MIN_PHASE_TIME = 10;
     public static final int MAX_PHASE_TIME = 90;
-    static final String CSV_FILE_PATH = "fitness_data.csv";
-    static final String csvHeader = "Generation,Individual,Fitness\n";
-
-    static final Random RANDOM = new Random();
+    protected static final double CROSSOVER_RATE = 0.75;
+    protected static final double CROSSOVER_ALPHA = 0.5;
+    protected static final double MUTATION_RATE = 0.15;
+    protected static final int MUTATION_DEV = 4;
+    protected static final double penalty = Double.MAX_VALUE;
+    protected static final Random RANDOM = new Random();
+    private static final int POPULATION_SIZE = 100;
+    private static final int MAX_GENERATIONS = 1000;
+    private static final String CSV_FILE_PATH = "fitness_data.csv";
+    private static final String csvHeader = "Generation,Individual,Fitness\n";
 
     /**
-     * Runs the genetic algorithm optimization and visualizes fitness progression.
-     *
-     * @param args Command-line arguments (not used)
+     * Запускає оптимізацію генетичним алгоритмом та відображує прогрес придатності.
      */
     public static void main(String[] args) {
         Population population = new Population(POPULATION_SIZE, phaseTimesInit);
@@ -55,7 +52,7 @@ public class TrafficLightOptimizer {
         try (BufferedWriter csvWriter = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
             csvWriter.append(csvHeader);
 
-            for (int generation = 0; generation < MAX_GENERATIONS; generation++) {
+            for (int generation = 0; generation < MAX_GENERATIONS; ++generation) {
                 writeFitnessData(csvWriter, generation, population);
                 population.evolve();
 
@@ -63,16 +60,17 @@ public class TrafficLightOptimizer {
                     printBestIndividual(generation, population.getBestIndividual());
                 }
             }
-
-            System.out.println("Fitness data saved to: " + CSV_FILE_PATH);
-
+            System.out.println("Дані придатності збережено в: " + CSV_FILE_PATH);
         } catch (IOException e) {
-            System.err.println("Error writing to CSV file: " + e.getMessage());
+            System.err.println("[ПОМИЛКА] Помилка запису до CSV-файлу: " + e.getMessage());
         }
 
         printOptimizationResults(population.getBestIndividual());
     }
 
+    /**
+     * Записує дані придатності популяції в CSV-файл.
+     */
     private static void writeFitnessData(BufferedWriter csvWriter, int generation, @NotNull Population population) throws IOException {
         for (int i = 0; i < population.individuals.length; ++i) {
             csvWriter.append(String.valueOf(generation));
@@ -84,17 +82,21 @@ public class TrafficLightOptimizer {
         }
     }
 
+    /**
+     * Виводить найкращу особу та її придатність для поточного покоління.
+     */
     private static void printBestIndividual(int generation, @NotNull Individual best) {
-        System.out.printf("Generation %d: Best Fitness = %.4f%n",
-                generation + 1, best.fitness);
-        System.out.println("Phase Times: " + Arrays.toString(best.phaseTimes));
+        System.out.printf("Покоління %d: Найкраща придатність = %.4f%n", generation + 1, best.fitness);
+        System.out.println("Тривалості фаз: " + Arrays.toString(best.phaseTimes));
     }
 
+    /**
+     * Виводить результати оптимізації.
+     */
     private static void printOptimizationResults(@NotNull Individual best) {
-        System.out.println("\n--- Optimization Results ---");
-        System.out.printf("Best Phase Times: %d, %d, %d, %d%n",
+        System.out.printf("\n--- Результати оптимізації ---%nНайкращі тривалості фаз: %d, %d, %d, %d%n",
                 best.phaseTimes[0], best.phaseTimes[1],
                 best.phaseTimes[2], best.phaseTimes[3]);
-        System.out.printf("Best Fitness (Max Waiting Cars): %.4f%n", best.fitness);
+        System.out.printf("Найкраща придатність (Макс. очікуючих автомобілів): %.4f%n", best.fitness);
     }
 }

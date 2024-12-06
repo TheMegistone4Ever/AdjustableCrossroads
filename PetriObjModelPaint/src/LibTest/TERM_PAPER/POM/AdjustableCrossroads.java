@@ -29,7 +29,7 @@ public class AdjustableCrossroads {
     /**
      * Головний метод для запуску симуляції руху на перехресті.
      */
-    public static void main(String[] args) throws ExceptionInvalidTimeDelay, ExceptionInvalidNetStructure {
+    public static void main(String[] args) {
         double[][] stats = goStats(phaseTimesInit, arrivalTimesInit, SIMULATION_TIME, ITERATIONS);
 
         printStatistics(stats);
@@ -41,14 +41,14 @@ public class AdjustableCrossroads {
                 getIndividualMetric(stats)
         ));
 
-        double minIndividualMetric = findOptimalPhaseTimes(false);
+        double minIndividualMetric = findOptimalPhaseTimes(true);
         System.out.printf("Мінімальна метрика індивіда популяції (найкраща ефективність): %.4f%n", minIndividualMetric);
     }
 
     /**
      * Пошук оптимальних часів фаз для перехрестя.
      */
-    private static double findOptimalPhaseTimes(boolean isSearching) throws ExceptionInvalidTimeDelay {
+    private static double findOptimalPhaseTimes(boolean isSearching) {
         double minIndividualMetric = Double.MAX_VALUE;
         for (int phase1 = MIN_PHASE_TIME; phase1 <= MAX_PHASE_TIME; ++phase1) {
             for (int phase3 = MIN_PHASE_TIME; phase3 <= MAX_PHASE_TIME; ++phase3) {
@@ -74,7 +74,7 @@ public class AdjustableCrossroads {
     /**
      * Запуск симуляції руху на перехресті з використанням мереж Петрі.
      */
-    public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) throws ExceptionInvalidTimeDelay {
+    public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) {
         return IntStream.range(0, iterations)
                 .mapToObj(_ -> {
                     try {
@@ -85,7 +85,7 @@ public class AdjustableCrossroads {
                         model.go(simulationTime);
                         return getStatistics(model);
                     } catch (ExceptionInvalidTimeDelay e) {
-                        System.err.printf("[ERROR] Invalid time delay: %s%n", e.getMessage());
+                        System.err.printf("[ПОМИЛКА] Недійсна затримка часу: %s%n", e.getMessage());
                         return new double[8];
                     }
                 })
@@ -134,7 +134,8 @@ public class AdjustableCrossroads {
     /**
      * Отримання статистичних даних з моделі.
      */
-    private static double[] getStatistics(PetriObjModel model) {
+    @Contract("_ -> new")
+    private static double @NotNull [] getStatistics(@NotNull PetriObjModel model) {
         return new double[]{
                 model.getListObj().get(1).getNet().getListP()[1].getMean(),
                 model.getListObj().get(2).getNet().getListP()[1].getMean(),
