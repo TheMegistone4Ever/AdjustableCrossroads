@@ -54,13 +54,13 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
     ax = fig.add_subplot(111, projection="3d")
 
     X, Y = np.meshgrid(phase3_values, phase1_values)
-    surf = ax.plot_surface(X, Y, z_values, cmap="viridis", edgecolor="none", alpha=0.8)
+    surf = ax.plot_surface(X, Y, z_values, cmap="viridis", edgecolor="none", alpha=.8)
 
     ax.set_xlabel("Фаза 3", fontsize=20)
     ax.set_ylabel("Фаза 1", fontsize=20)
     ax.set_zlabel("Функція придатності (max(L_i))", fontsize=20)
     ax.set_title("3D Поверхневий графік метрик", fontsize=24)
-    fig.colorbar(surf, shrink=0.6, aspect=10)
+    fig.colorbar(surf, shrink=.6, aspect=10)
     ax.view_init(elev=30, azim=120)
     plt.tight_layout()
     plt.savefig("3d_surface_plot.png", bbox_inches="tight")
