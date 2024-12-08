@@ -1,4 +1,5 @@
 ### User-specific files and directories ###
+*.mp4
 *.png
 *.txt
 PetriObjModelPaint/*
