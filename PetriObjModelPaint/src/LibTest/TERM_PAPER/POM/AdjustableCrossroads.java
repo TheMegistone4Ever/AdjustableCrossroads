@@ -77,7 +77,6 @@ public class AdjustableCrossroads {
      */
     public static double[][] goStats(int[] phaseTimes, double[] arrivalTimes, double simulationTime, int iterations) {
         return IntStream.range(0, iterations)
-                .parallel()
                 .mapToObj(_ -> {
                     try {
                         ArrayList<PetriSim> connectedSimulationModels = createSimulationModels(phaseTimes, arrivalTimes);
