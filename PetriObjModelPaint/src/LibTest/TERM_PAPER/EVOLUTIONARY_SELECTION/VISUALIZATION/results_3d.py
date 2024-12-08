@@ -29,16 +29,13 @@ def prepare_surface_data(data):
         Tuple[np.ndarray, np.ndarray, np.ndarray]: Значення для осей та значення функції придатності.
     """
 
-    phase1_values = np.arange(10, 92)
-    phase3_values = np.arange(10, 92)
+    phase1_values = np.arange(10, 91)
+    phase3_values = np.arange(10, 91)
     z_values = np.zeros((len(phase1_values), len(phase3_values)))
-    flat_data = data.flatten()
 
     for i, phase1 in enumerate(phase1_values):
         for j, phase3 in enumerate(phase3_values):
-            index = i * len(phase3_values) + j
-            if index < len(flat_data):
-                z_values[i, j] = flat_data[index]
+            z_values[i, j] = data[i, j]
 
     return phase1_values, phase3_values, z_values
 
@@ -53,7 +50,7 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
         z_values (np.ndarray): Значення функції придатності.
     """
 
-    fig = plt.figure(figsize=(30, 30), dpi=400)
+    fig = plt.figure(figsize=(30, 30), dpi=200)
     ax = fig.add_subplot(111, projection="3d")
 
     X, Y = np.meshgrid(phase3_values, phase1_values)
