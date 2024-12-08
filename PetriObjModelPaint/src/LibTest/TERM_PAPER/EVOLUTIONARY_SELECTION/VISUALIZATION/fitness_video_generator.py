@@ -1,116 +1,140 @@
+import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.animation as animation
+import pandas as pd
 
-from visualization import CSV_FILE_PATH
+from results_3d import prepare_surface_data, read_data
+from visualization import CSV_FILE_PATH, load_and_validate_data
 
 
-def read_data(filename):
+def create_surface_plot(ax, X, Y, z_values, min_z, max_z):
     """
-    Читання даних з файлу.
+    Створення поверхневого графіку.
 
     Args:
-        filename (str): Шлях до файлу.
-
-    Returns:
-        np.ndarray: Дані.
+        ax (matplotlib.axes.Axes): 3D вісь для графіку.
+        X (np.ndarray): Масив значень для осі X.
+        Y (np.ndarray): Масив значень для осі Y.
+        z_values (np.ndarray): Значення функції придатності.
+        min_z (float): Мінімальне значення Z.
+        max_z (float): Максимальне значення Z.
     """
 
-    with open(filename, "r") as file:
-        data = [[float(val.replace(",", ".")) for val in line.split()] for line in file.readlines()]
-    return np.array(data)
+    z_values_clipped = np.clip(z_values, min_z, max_z)
+    ax.plot_surface(X, Y, z_values_clipped,
+                    cmap='viridis',
+                    edgecolor='none',
+                    alpha=0.6)
+    ax.set_zlim(min_z, max_z)
 
-def prepare_surface_data(data):
+
+def plot_generation_data(ax, generation_data, best_individual, phase1_values, phase3_values, gen):
     """
-    Підготовка даних для побудови 3D поверхневого графіка.
+    Відображення даних генерації на графіку.
 
     Args:
-        data (np.ndarray): Дані.
-
-    Returns:
-        Tuple[np.ndarray, np.ndarray, np.ndarray]: Значення для осей та значення функції придатності.
+        ax (matplotlib.axes.Axes): 3D вісь для графіку.
+        generation_data (pd.DataFrame): Дані поточної генерації.
+        best_individual (pd.Series): Найкращий індивід генерації.
+        phase1_values (np.ndarray): Значення фази 1.
+        phase3_values (np.ndarray): Значення фази 3.
+        gen (int): Номер генерації.
     """
 
-    phase1_values = np.arange(10, 92)
-    phase3_values = np.arange(10, 92)
-    z_values = np.zeros((len(phase1_values), len(phase3_values)))
-    flat_data = data.flatten()
+    for collection in ax.collections[1:]:
+        collection.remove()
+    for text in ax.texts:
+        text.remove()
 
-    for i, phase1 in enumerate(phase1_values):
-        for j, phase3 in enumerate(phase3_values):
-            index = i * len(phase3_values) + j
-            if index < len(flat_data):
-                z_values[i, j] = flat_data[index]
+    valid_data = generation_data[
+        (phase1_values.min() <= generation_data["1'st phase"]) &
+        (generation_data["1'st phase"] <= phase1_values.max()) &
+        (phase3_values.min() <= generation_data["3'rd phase"]) &
+        (generation_data["3'rd phase"] <= phase3_values.max())
+        ]
 
-    return phase1_values, phase3_values, z_values
+    ax.scatter(
+        valid_data["3'rd phase"],
+        valid_data["1'st phase"],
+        valid_data["Fitness"],
+        c='gray',
+        s=100,
+        alpha=0.8
+    )
 
-def read_fitness_data(filename):
+    ax.scatter(
+        best_individual["3'rd phase"],
+        best_individual["1'st phase"],
+        best_individual["Fitness"],
+        c='red',
+        s=200,
+        alpha=0.9
+    )
+
+    ax.text2D(0.05, 0.95, f"Generation: {gen}",
+              transform=ax.transAxes, fontsize=16)
+
+
+def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_df):
     """
-    Reads fitness data from a CSV file.
+    Створення 3D анімації поверхні придатності.
 
     Args:
-        filename (str): Path to the CSV file.
-
-    Returns:
-        pandas.DataFrame: DataFrame containing the fitness data.
-    """
-    import pandas as pd
-    try:
-        df = pd.read_csv(filename)
-        return df
-    except FileNotFoundError:
-        print(f"Error: CSV file not found at path: {filename}")
-        return None
-
-def plot_3d_surface_with_animation(phase1_values, phase3_values, z_values, fitness_df):
-    """
-    Ploats a 3D surface graph with animation of individuals from each generation.
-
-    Args:
-        phase1_values (np.ndarray): Values for axis 1.
-        phase3_values (np.ndarray): Values for axis 3.
-        z_values (np.ndarray): Fitness function values.
-        fitness_df (pd.DataFrame): DataFrame with fitness data for each generation.
+        phase1_values (np.ndarray): Значення для осі 1.
+        phase3_values (np.ndarray): Значення для осі 3.
+        z_values (np.ndarray): Значення функції придатності.
+        fitness_df (pd.DataFrame): DataFrame з даними придатності кожної генерації.
     """
 
-    fig = plt.figure(figsize=(15, 15), dpi=200)
+    fig = plt.figure(figsize=(20, 20), dpi=200)
     ax = fig.add_subplot(111, projection='3d')
-
-    X, Y = np.meshgrid(phase3_values, phase1_values)
-    surf = ax.plot_surface(X, Y, z_values, cmap='viridis', edgecolor='none', alpha=0.6)
 
     ax.set_xlabel("Фаза 3", fontsize=10)
     ax.set_ylabel("Фаза 1", fontsize=10)
     ax.set_zlabel("Функція придатності (max(L_i))", fontsize=10)
     ax.set_title("3D Поверхневий графік метрик", fontsize=12)
-    fig.colorbar(surf, shrink=0.6, aspect=10)
-    ax.view_init(elev=30, azim=120)
 
-    scat = ax.scatter([], [], [], s=100, c='gray', depthshade=True)
-    best_scat = ax.scatter([], [], [], s=200, c='white', depthshade=True)
-    gen_text = ax.text2D(0.05, 0.95, "", transform=ax.transAxes, fontsize=12)
+    X, Y = np.meshgrid(phase3_values, phase1_values)
 
-    def animate(i):
-        generation_data = fitness_df[fitness_df["Generation"] == i]
-        phase1 = generation_data["1'st phase"].values
-        phase3 = generation_data["3'rd phase"].values
-        fitness = generation_data["Fitness"].values
+    min_z, max_z = fitness_df['Fitness'].min(), fitness_df['Fitness'].max()
 
-        scat._offsets3d = (phase3, phase1, fitness)
-        scat.set_color('gray')
+    create_surface_plot(ax, X, Y, z_values, min_z, max_z)
 
-        best_individual = generation_data.loc[generation_data["Fitness"].idxmin()]
-        best_scat._offsets3d = ([best_individual["3'rd phase"]], [best_individual["1'st phase"]], [best_individual["Fitness"]])
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter('3d_surface_animation_opencv.mp4', fourcc, 10.0, (1600, 1600))
 
-        gen_text.set_text(f"Generation: {i}")
+    best_individuals = {}
+    for gen in fitness_df['Generation'].unique():
+        gen_data = fitness_df[fitness_df['Generation'] == gen]
+        best_individuals[gen] = gen_data.loc[gen_data['Fitness'].idxmin()]
 
-        return scat, best_scat, gen_text
+    for gen in fitness_df['Generation'].unique():
+        generation_data = fitness_df[fitness_df["Generation"] == gen]
+        best_individual = best_individuals[gen]
 
-    ani = animation.FuncAnimation(fig, animate, frames=fitness_df["Generation"].nunique(), interval=1000/15, blit=False)
+        plot_generation_data(ax, generation_data, best_individual,
+                             phase1_values, phase3_values, gen)
 
-    ani.save("3d_surface_animation.mp4", writer=animation.FFMpegWriter(fps=15))
+        ax.view_init(elev=30, azim=120)
+
+        plt.tight_layout()
+        plt.draw()
+
+        fig = plt.gcf()
+        fig.canvas.draw()
+        image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+        image = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+
+        image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        image_resized = cv2.resize(image_bgr, (1600, 1600))
+
+        out.write(image_resized)
+        print(f"Processed generation {gen}")
+
+    out.release()
     plt.close()
-    print("3D surface animation saved as \"3d_surface_animation.mp4\"")
+    print('3D surface animation saved as "3d_surface_animation_opencv.mp4"')
+
 
 def main():
     """Головна функція для виконання прикладу."""
@@ -118,9 +142,10 @@ def main():
     data = read_data("paste.txt")
     phase1_values, phase3_values, z_values = prepare_surface_data(data)
 
-    fitness_df = read_fitness_data(CSV_FILE_PATH)
+    fitness_df = load_and_validate_data(CSV_FILE_PATH)
     if fitness_df is not None:
-      plot_3d_surface_with_animation(phase1_values, phase3_values, z_values, fitness_df)
+        create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_df)
+
 
 if __name__ == "__main__":
     main()
