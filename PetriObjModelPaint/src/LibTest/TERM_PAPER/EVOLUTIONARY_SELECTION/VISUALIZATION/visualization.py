@@ -66,8 +66,8 @@ def plot_fitness_boxplot_with_means(df: pd.DataFrame, ax: Optional[plt.Axes] = N
         ax (Optional[plt.Axes]): Вісь для малювання. Якщо None, створюється нова.
     """
 
-    generations = df["Generation"].unique()
-    fitness_data_by_generation = [df[df["Generation"] == g]["Fitness"].values for g in generations]
+    generations = df.Generation.unique()
+    fitness_data_by_generation = [df[df.Generation == g]["Fitness"].values for g in generations]
     ax = ax or plt.subplots(1, 1, figsize=(12, 8), dpi=150)[1]
     box_plot = ax.boxplot(fitness_data_by_generation, positions=generations,
                           showfliers=False, widths=.6, patch_artist=True)
@@ -111,12 +111,12 @@ def plot_best_fitness_log_scale(df: pd.DataFrame, ax: Optional[plt.Axes] = None,
         is_boxplot (bool): Чи є графік боксплотом.
     """
 
-    generations = df["Generation"].unique()
+    generations = df.Generation.unique()
     log_generations = _safe_log_transformation(generations)
     ax = ax or plt.subplots(1, 1, figsize=(12, 8), dpi=150)[1]
 
     if is_boxplot:
-        fitness_data_by_generation = [df[df["Generation"] == g]["Fitness"].values for g in generations]
+        fitness_data_by_generation = [df[df.Generation == g]["Fitness"].values for g in generations]
         box_plot = ax.boxplot(fitness_data_by_generation, positions=log_generations,
                               showfliers=False, widths=.6, patch_artist=True)
         means = [np.mean(fitness) for fitness in fitness_data_by_generation]
