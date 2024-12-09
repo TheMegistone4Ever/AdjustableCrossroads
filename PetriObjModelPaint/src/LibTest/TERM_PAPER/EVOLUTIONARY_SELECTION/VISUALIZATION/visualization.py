@@ -7,7 +7,6 @@ import pandas as pd
 CSV_FILE_PATH = r"..\..\..\..\..\fitness_data.csv"
 OUTPUT_FILENAME = "fitness_data_plots.png"
 FIGURE_SIZE = (25, 25)
-DPI = 500
 COLORS = ["lightblue", "lightgreen", "lightyellow", "lightcoral"]
 
 
@@ -148,7 +147,7 @@ def main():
     if df is None:
         return
 
-    fig, axes = plt.subplots(2, 2, figsize=FIGURE_SIZE, dpi=DPI)
+    fig, axes = plt.subplots(2, 2, figsize=FIGURE_SIZE, dpi=150)
 
     plot_functions = [
         plot_best_fitness_per_generation,
