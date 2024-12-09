@@ -39,7 +39,7 @@ public class TrafficLightOptimizer {
     protected static final int MUTATION_DEV = 4;
     protected static final double penalty = Double.MAX_VALUE;
     protected static final Random RANDOM = new Random();
-    private static final int POPULATION_SIZE = 100;
+    private static final int POPULATION_SIZE = 20;
     private static final int MAX_GENERATIONS = 1000;
     private static final String CSV_FILE_PATH = "fitness_data.csv";
     private static final String CSV_HEADER = "Generation,Individual,Fitness,1'st phase,3'rd phase\n";
