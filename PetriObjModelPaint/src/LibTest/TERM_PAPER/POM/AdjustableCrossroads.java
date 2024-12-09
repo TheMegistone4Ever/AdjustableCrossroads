@@ -21,8 +21,8 @@ public class AdjustableCrossroads {
     /**
      * Константи для симуляції руху на перехресті.
      */
-    public static final double SIMULATION_TIME = 1_000;
-    public static final int ITERATIONS = 2;
+    public static final double SIMULATION_TIME = 100_000;
+    public static final int ITERATIONS = 20;
     public static final int[] phaseTimesInit = {20, 10, 30, 10};
     public static final double[] arrivalTimesInit = {15.0, 9.0, 20.0, 35.0};
     private static final boolean IS_SEARCHING = false;
@@ -139,7 +139,7 @@ public class AdjustableCrossroads {
      * Отримання статистичних даних з моделі.
      */
     @Contract("_ -> new")
-    private static double @NotNull [] getStatistics(@NotNull PetriObjModel model) {
+    public static double @NotNull [] getStatistics(@NotNull PetriObjModel model) {
         return new double[]{
                 model.getListObj().get(1).getNet().getListP()[1].getMean(),
                 model.getListObj().get(2).getNet().getListP()[1].getMean(),
