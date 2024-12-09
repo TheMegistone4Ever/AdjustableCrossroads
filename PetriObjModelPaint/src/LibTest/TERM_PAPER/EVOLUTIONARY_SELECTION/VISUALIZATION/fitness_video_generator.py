@@ -104,7 +104,7 @@ def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_
         file_path: Шлях до файлу для збереження анімації.
     """
 
-    fig = plt.figure(figsize=(16, 16), dpi=200)
+    fig = plt.figure(figsize=(16, 16), dpi=150)
     ax = fig.add_subplot(111, projection="3d")
 
     ax.set_xlabel("Фаза 3", fontsize=14)
