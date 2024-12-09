@@ -42,7 +42,7 @@ public class TrafficLightOptimizer {
     private static final int POPULATION_SIZE = 100;
     private static final int MAX_GENERATIONS = 1000;
     private static final String CSV_FILE_PATH = "fitness_data.csv";
-    private static final String csvHeader = "Generation,Individual,Fitness,1'st phase,3'rd phase\n";
+    private static final String CSV_HEADER = "Generation,Individual,Fitness,1'st phase,3'rd phase\n";
 
     /**
      * Запускає оптимізацію генетичним алгоритмом та відображує прогрес придатності.
@@ -51,7 +51,7 @@ public class TrafficLightOptimizer {
         Population population = new Population(POPULATION_SIZE, phaseTimesInit);
 
         try (BufferedWriter csvWriter = new BufferedWriter(new FileWriter(CSV_FILE_PATH))) {
-            csvWriter.append(csvHeader);
+            csvWriter.append(CSV_HEADER);
 
             for (int generation = 0; generation < MAX_GENERATIONS; ++generation) {
                 writeFitnessData(csvWriter, generation, population);
