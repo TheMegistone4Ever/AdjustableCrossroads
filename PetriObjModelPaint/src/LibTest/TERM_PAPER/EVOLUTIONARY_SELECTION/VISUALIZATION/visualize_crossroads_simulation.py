@@ -5,6 +5,13 @@ from matplotlib.ticker import MaxNLocator
 
 
 def visualize_crossroads_simulation(csv_file_path):
+    """
+    Візуалізація статистики симуляції перехресть за ітераціями.
+
+    Args:
+        csv_file_path (str): Шлях до CSV файлу, що містить дані симуляції.
+    """
+
     df = pd.read_csv(csv_file_path, sep=";", decimal=",")
 
     fig, axes = plt.subplots(4, 2, figsize=(60, 40))
