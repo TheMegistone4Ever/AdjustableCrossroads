@@ -50,7 +50,7 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
         z_values (np.ndarray): Значення функції придатності.
     """
 
-    fig = plt.figure(figsize=(30, 30), dpi=200)
+    fig = plt.figure(figsize=(30, 30), dpi=150)
     ax = fig.add_subplot(111, projection="3d")
 
     X, Y = np.meshgrid(phase3_values, phase1_values)
