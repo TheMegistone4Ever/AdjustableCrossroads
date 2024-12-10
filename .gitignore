@@ -9,6 +9,7 @@ PetriObjModelPaint/src/*
 PetriObjModelPaint/src/LibTest/*
 !PetriObjModelPaint/src/LibTest/SM_CW_7_JAVA
 !PetriObjModelPaint/src/LibTest/TERM_PAPER
+!PetriObjModelPaint/src/LibTest/MCW_2
 
 ### IntelliJ IDEA ###
 out/
