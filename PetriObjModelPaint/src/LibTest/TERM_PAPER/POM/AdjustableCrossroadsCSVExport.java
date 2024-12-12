@@ -12,6 +12,9 @@ import java.util.stream.IntStream;
 
 import static LibTest.TERM_PAPER.POM.AdjustableCrossroads.*;
 
+/**
+ * Клас для експорту статистики симуляції до CSV файлу з деталізацією по часу та ітераціям.
+ */
 public class AdjustableCrossroadsCSVExport {
 
     private static final String CSV_HEADER = "ITERATION;TIME;MEAN_QUEUE_1;MEAN_QUEUE_2;MEAN_QUEUE_3;MEAN_QUEUE_4;MARK_1;MARK_2;MARK_3;MARK_4\n";
