@@ -1,16 +1,16 @@
 from typing import Optional
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+from matplotlib.pyplot import Axes, subplots, tight_layout, savefig, show
+from numpy import mean, ndarray, log10, min as np_min
+from pandas import DataFrame, read_csv, to_numeric
 
 CSV_FILE_PATH = r"..\..\..\..\..\fitness_data.csv"
-OUTPUT_FILENAME = "fitness_data_plots.png"
+OUTPUT_FILENAME = "../../media/fitness_data_plots.png"
 FIGURE_SIZE = (25, 25)
 COLORS = ["lightblue", "lightgreen", "lightyellow", "lightcoral"]
 
 
-def load_and_validate_data(file_path: str) -> Optional[pd.DataFrame]:
+def load_and_validate_data(file_path: str) -> Optional[DataFrame]:
     """
     Завантаження та перевірка даних з CSV-файлу.
 
@@ -22,11 +22,11 @@ def load_and_validate_data(file_path: str) -> Optional[pd.DataFrame]:
     """
 
     try:
-        df = pd.read_csv(file_path)
+        df = read_csv(file_path)
         print("Дані успішно завантажені з CSV.")
         numeric_columns = ["Generation", "Individual", "Fitness", "1'st phase", "3'rd phase"]
         for col in numeric_columns:
-            df[col] = pd.to_numeric(df[col], errors="raise")
+            df[col] = to_numeric(df[col], errors="raise")
 
         return df
     except FileNotFoundError:
@@ -37,7 +37,7 @@ def load_and_validate_data(file_path: str) -> Optional[pd.DataFrame]:
     return None
 
 
-def plot_best_fitness_per_generation(df: pd.DataFrame, ax: Optional[plt.Axes] = None) -> None:
+def plot_best_fitness_per_generation(df: DataFrame, ax: Optional[Axes] = None) -> None:
     """
     Побудова графіку найкращого (мінімального) значення фітнесу для кожного покоління.
 
@@ -47,7 +47,7 @@ def plot_best_fitness_per_generation(df: pd.DataFrame, ax: Optional[plt.Axes] = 
     """
 
     best_fitness_per_generation = df.groupby("Generation")["Fitness"].min()
-    ax = ax or plt.subplots(1, 1, figsize=(10, 6), dpi=150)[1]
+    ax = ax or subplots(1, 1, figsize=(10, 6), dpi=150)[1]
     ax.plot(best_fitness_per_generation.index, best_fitness_per_generation.values,
             linestyle="-", color="m", linewidth=2)
     ax.set_xlabel("Покоління")
@@ -56,7 +56,7 @@ def plot_best_fitness_per_generation(df: pd.DataFrame, ax: Optional[plt.Axes] = 
     ax.grid(True)
 
 
-def plot_fitness_boxplot_with_means(df: pd.DataFrame, ax: Optional[plt.Axes] = None) -> None:
+def plot_fitness_boxplot_with_means(df: DataFrame, ax: Optional[Axes] = None) -> None:
     """
     Генерація боксплотів значень фітнесу для кожного покоління з підключеними середніми значеннями.
 
@@ -67,10 +67,10 @@ def plot_fitness_boxplot_with_means(df: pd.DataFrame, ax: Optional[plt.Axes] = N
 
     generations = df.Generation.unique()
     fitness_data_by_generation = [df[df.Generation == g]["Fitness"].values for g in generations]
-    ax = ax or plt.subplots(1, 1, figsize=(12, 8), dpi=150)[1]
+    ax = ax or subplots(1, 1, figsize=(12, 8), dpi=150)[1]
     box_plot = ax.boxplot(fitness_data_by_generation, positions=generations,
                           showfliers=False, widths=.6, patch_artist=True)
-    means = [np.mean(fitness) for fitness in fitness_data_by_generation]
+    means = [mean(fitness) for fitness in fitness_data_by_generation]
     mean_line, = ax.plot(generations, means, linestyle="--", color="m",
                          linewidth=2, label="Середній фітнес")
 
@@ -85,7 +85,7 @@ def plot_fitness_boxplot_with_means(df: pd.DataFrame, ax: Optional[plt.Axes] = N
     ax.legend(handles=[mean_line], loc="upper right")
 
 
-def _safe_log_transformation(generations: np.ndarray) -> np.ndarray:
+def _safe_log_transformation(generations: ndarray) -> ndarray:
     """
     Безпечне логарифмічне перетворення для послідовності поколінь.
 
@@ -96,10 +96,10 @@ def _safe_log_transformation(generations: np.ndarray) -> np.ndarray:
         np.ndarray: Логарифмічно трансформовані покоління.
     """
 
-    return np.log10(generations + max(1 - np.min(generations), 0) + 1)
+    return log10(generations + max(1 - np_min(generations), 0) + 1)
 
 
-def plot_best_fitness_log_scale(df: pd.DataFrame, ax: Optional[plt.Axes] = None,
+def plot_best_fitness_log_scale(df: DataFrame, ax: Optional[Axes] = None,
                                 is_boxplot: bool = False) -> None:
     """
     Побудова графіку фітнесу з логарифмічною шкалою для поколінь.
@@ -112,13 +112,13 @@ def plot_best_fitness_log_scale(df: pd.DataFrame, ax: Optional[plt.Axes] = None,
 
     generations = df.Generation.unique()
     log_generations = _safe_log_transformation(generations)
-    ax = ax or plt.subplots(1, 1, figsize=(12, 8), dpi=150)[1]
+    ax = ax or subplots(1, 1, figsize=(12, 8), dpi=150)[1]
 
     if is_boxplot:
         fitness_data_by_generation = [df[df.Generation == g]["Fitness"].values for g in generations]
         box_plot = ax.boxplot(fitness_data_by_generation, positions=log_generations,
                               showfliers=False, widths=.6, patch_artist=True)
-        means = [np.mean(fitness) for fitness in fitness_data_by_generation]
+        means = [mean(fitness) for fitness in fitness_data_by_generation]
         mean_line, = ax.plot(log_generations, means, linestyle="--", color="m",
                              linewidth=2, label="Середній фітнес")
 
@@ -147,7 +147,7 @@ def main():
     if df is None:
         return
 
-    fig, axes = plt.subplots(2, 2, figsize=FIGURE_SIZE, dpi=150)
+    fig, axes = subplots(2, 2, figsize=FIGURE_SIZE, dpi=150)
 
     plot_functions = [
         plot_best_fitness_per_generation,
@@ -159,9 +159,9 @@ def main():
     for func, ax in zip(plot_functions, axes.ravel()):
         func(df, ax)
 
-    plt.tight_layout()
-    plt.savefig(OUTPUT_FILENAME)
-    plt.show()
+    tight_layout()
+    savefig(OUTPUT_FILENAME)
+    show()
 
 
 if __name__ == "__main__":
