@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95ad2d03-71a4-4600-add8-74b177a46e0f" name="Changes" comment="Do refactor." />
+    <list default="true" id="95ad2d03-71a4-4600-add8-74b177a46e0f" name="Changes" comment="Do refactor.">
+      <change beforePath="$PROJECT_DIR$/../../../../../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fitness_video_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/fitness_video_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results_3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/results_3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stability_crossroads_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/stability_crossroads_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualization.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,8 +205,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
-        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PY-243.22562.180" />
+        <option value="bundled-python-sdk-85c76a3b01b3-9a18a617cbe4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.22562.180" />
       </set>
     </attachedChunks>
   </component>
@@ -231,6 +238,7 @@
       <workItem from="1733808974775" duration="927000" />
       <workItem from="1733839050377" duration="11000" />
       <workItem from="1733840051265" duration="10000" />
+      <workItem from="1734095921009" duration="581000" />
     </task>
     <task id="LOCAL-00001" summary="PoC: 3D video gen">
       <option name="closed" value="true" />
