@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95ad2d03-71a4-4600-add8-74b177a46e0f" name="Changes" comment="Do refactor." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;TheMegistone4Ever&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TheMegistone4Ever/SystemsModeling&quot;,
+    &quot;accountId&quot;: &quot;78900c43-b0b3-45f6-ae0b-d7b97b1f45ba&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2pn83KGZIcdTXSTcc1Yxy8a2tdn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.3d_results.executor&quot;: &quot;Run&quot;,
+    &quot;Python.fitness_video_generator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.population_video_generator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.results_3d (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.results_3d.executor&quot;: &quot;Run&quot;,
+    &quot;Python.stability_crossroads_simulation (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.visualization.executor&quot;: &quot;Run&quot;,
+    &quot;Python.visualize_crossroads_simulation.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/megis/IdeaProjects/SystemsModeling/PetriObjModelPaint/src/LibTest/TERM_PAPER/EVOLUTIONARY_SELECTION/VISUALIZATION&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Python.stability_crossroads_simulation">
+    <configuration name="fitness_video_generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VISUALIZATION" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fitness_video_generator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="results_3d" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VISUALIZATION" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\megis\IdeaProjects\SystemsModeling\PetriObjModelPaint\src\LibTest\TERM_PAPER\EVOLUTIONARY_SELECTION\VISUALIZATION\results_3d.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="results_3d" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="VISUALIZATION" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/results_3d.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="stability_crossroads_simulation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="VISUALIZATION" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/stability_crossroads_simulation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="visualization" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VISUALIZATION" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/visualization.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.fitness_video_generator" />
+      <item itemvalue="Python.results_3d" />
+      <item itemvalue="Python.stability_crossroads_simulation" />
+      <item itemvalue="Python.visualization" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.stability_crossroads_simulation" />
+        <item itemvalue="Python.fitness_video_generator" />
+        <item itemvalue="Python.results_3d" />
+        <item itemvalue="Python.visualization" />
+        <item itemvalue="Python.stability_crossroads_simulation" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
+        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95ad2d03-71a4-4600-add8-74b177a46e0f" name="Changes" comment="" />
+      <created>1733390279019</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733390279019</updated>
+      <workItem from="1733390280183" duration="2145000" />
+      <workItem from="1733393582080" duration="93000" />
+      <workItem from="1733393784244" duration="79000" />
+      <workItem from="1733438075970" duration="586000" />
+      <workItem from="1733438821946" duration="652000" />
+      <workItem from="1733507180550" duration="1035000" />
+      <workItem from="1733514408967" duration="9289000" />
+      <workItem from="1733524509304" duration="3186000" />
+      <workItem from="1733570134324" duration="1041000" />
+      <workItem from="1733616076014" duration="120000" />
+      <workItem from="1733616207058" duration="3759000" />
+      <workItem from="1733694903448" duration="27000" />
+      <workItem from="1733746081066" duration="38000" />
+      <workItem from="1733749128545" duration="2269000" />
+      <workItem from="1733751611063" duration="6000" />
+      <workItem from="1733751970078" duration="946000" />
+      <workItem from="1733768217071" duration="1280000" />
+      <workItem from="1733808974775" duration="927000" />
+      <workItem from="1733839050377" duration="11000" />
+      <workItem from="1733840051265" duration="10000" />
+    </task>
+    <task id="LOCAL-00001" summary="PoC: 3D video gen">
+      <option name="closed" value="true" />
+      <created>1733518435227</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1733518435227</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733616751568</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733616751568</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733617656692</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733617656692</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733617817551</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733617817551</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733619485857</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733619485857</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Optimized video size.">
+      <option name="closed" value="true" />
+      <created>1733619980263</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1733619980263</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added crossroads simulation statistics over time for stable-state analysis purpose.">
+      <option name="closed" value="true" />
+      <created>1733769328830</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769328830</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733769457230</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769457230</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733769460286</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769460286</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733769462772</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769462772</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733769465552</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769465552</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733769469898</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733769469898</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Do refactor.">
+      <option name="closed" value="true" />
+      <created>1733809081143</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733809081143</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="PoC: 3D video gen" />
+    <MESSAGE value="Optimized video size." />
+    <MESSAGE value="Added crossroads simulation statistics over time for stable-state analysis purpose." />
+    <MESSAGE value="Do refactor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Do refactor." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/VISUALIZATION$population_video_generator.coverage" NAME="population_video_generator Coverage Results" MODIFIED="1733515189958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$3d_results.coverage" NAME="3d_results Coverage Results" MODIFIED="1733520452527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$visualize_crossroads_simulation.coverage" NAME="visualize_crossroads_simulation Coverage Results" MODIFIED="1733768924649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$stability_crossroads_simulation__1_.coverage" NAME="stability_crossroads_simulation (1) Coverage Results" MODIFIED="1733809276102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$results_3d__1_.coverage" NAME="results_3d Coverage Results" MODIFIED="1733809266342" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$fitness_video_generator.coverage" NAME="fitness_video_generator Coverage Results" MODIFIED="1733809273241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/VISUALIZATION$visualization.coverage" NAME="visualization Coverage Results" MODIFIED="1733809095227" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
