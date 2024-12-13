@@ -1,10 +1,9 @@
-import subprocess
 from os import path, remove, rename
+from subprocess import run
 
 import cv2
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+from matplotlib.pyplot import figure, tight_layout, draw, gcf, close
+from numpy import clip, meshgrid, frombuffer, uint8
 
 from results_3d import prepare_surface_data, read_data
 from visualization import CSV_FILE_PATH, load_and_validate_data
@@ -22,7 +21,7 @@ def convert_video_ffmpeg(file_path):
         return ["ffmpeg", "-i", input_file, "-vcodec", "libx265", "-vf", "scale=1600:1600", output_file, "-r", "10"]
 
     def execute_ffmpeg_command(command):
-        return subprocess.run(command, capture_output=True, text=True)
+        return run(command, capture_output=True, text=True)
 
     def handle_conversion_result(result_temp, original_file, temp_file):
         if result_temp.returncode == 0:
@@ -56,7 +55,7 @@ def create_surface_plot(ax, X, Y, z_values, min_z, max_z):
         max_z (float): Максимальне значення Z.
     """
 
-    z_values_clipped = np.clip(z_values, min_z, max_z)
+    z_values_clipped = clip(z_values, min_z, max_z)
     ax.plot_surface(X, Y, z_values_clipped, cmap="viridis", edgecolor="none", alpha=.6)
     ax.set_zlim(min_z, max_z)
 
@@ -104,7 +103,7 @@ def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_
         file_path: Шлях до файлу для збереження анімації.
     """
 
-    fig = plt.figure(figsize=(16, 16), dpi=150)
+    fig = figure(figsize=(16, 16), dpi=150)
     ax = fig.add_subplot(111, projection="3d")
 
     ax.set_xlabel("Фаза 3", fontsize=14)
@@ -112,7 +111,7 @@ def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_
     ax.set_zlabel("Функція придатності (max(L_i))", fontsize=14)
     ax.set_title("3D Поверхневий графік метрик", fontsize=20)
 
-    X, Y = np.meshgrid(phase3_values, phase1_values)
+    X, Y = meshgrid(phase3_values, phase1_values)
 
     min_z, max_z = fitness_df.Fitness.min(), fitness_df.Fitness.max()
 
@@ -135,12 +134,12 @@ def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_
 
         ax.view_init(elev=30, azim=120)
 
-        plt.tight_layout()
-        plt.draw()
+        tight_layout()
+        draw()
 
-        fig = plt.gcf()
+        fig = gcf()
         fig.canvas.draw()
-        image = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
+        image = frombuffer(fig.canvas.buffer_rgba(), dtype=uint8)
         image = image.reshape(fig.canvas.get_width_height()[::-1] + (4,))
 
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -150,7 +149,7 @@ def create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_
         print(f"Опрацьована генерація {gen + 1}")
 
     out.release()
-    plt.close()
+    close()
     print(f"3D поверхневу анімацію збережено як \"{file_path}\"")
 
 
@@ -163,7 +162,7 @@ def main():
     fitness_df = load_and_validate_data(CSV_FILE_PATH)
 
     if fitness_df is not None:
-        file_path = "3d_surface_anim.mp4"
+        file_path = "../../media/3d_surface_anim.mp4"
         create_3d_surface_animation(phase1_values, phase3_values, z_values, fitness_df, file_path)
         convert_video_ffmpeg(file_path)
 

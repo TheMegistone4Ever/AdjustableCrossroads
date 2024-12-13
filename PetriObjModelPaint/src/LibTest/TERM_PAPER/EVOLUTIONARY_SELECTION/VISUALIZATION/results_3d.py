@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure, savefig, close, tight_layout
 from numpy import array, arange, zeros, meshgrid
 
 
@@ -50,7 +50,7 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
         z_values (np.ndarray): Значення функції придатності.
     """
 
-    fig = plt.figure(figsize=(30, 30), dpi=150)
+    fig = figure(figsize=(30, 30), dpi=150)
     ax = fig.add_subplot(111, projection="3d")
 
     X, Y = meshgrid(phase3_values, phase1_values)
@@ -62,9 +62,9 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
     ax.set_title("3D Поверхневий графік метрик", fontsize=24)
     fig.colorbar(surf, shrink=.6, aspect=10)
     ax.view_init(elev=30, azim=120)
-    plt.tight_layout()
-    plt.savefig("3d_surface_plot.png", bbox_inches="tight")
-    plt.close()
+    tight_layout()
+    savefig("3d_surface_plot.png", bbox_inches="tight")
+    close()
 
 
 def main():
