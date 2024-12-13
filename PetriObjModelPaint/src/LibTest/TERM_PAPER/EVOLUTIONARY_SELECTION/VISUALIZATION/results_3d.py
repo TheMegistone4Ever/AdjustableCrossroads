@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import numpy as np
+from numpy import array, arange, zeros, meshgrid
 
 
 def read_data(filename):
@@ -15,7 +15,7 @@ def read_data(filename):
 
     with open(filename, "r") as file:
         data = [[float(val.replace(",", ".")) for val in line.split()] for line in file.readlines()]
-    return np.array(data)
+    return array(data)
 
 
 def prepare_surface_data(data):
@@ -29,9 +29,9 @@ def prepare_surface_data(data):
         Tuple[np.ndarray, np.ndarray, np.ndarray]: Значення для осей та значення функції придатності.
     """
 
-    phase1_values = np.arange(10, 91)
-    phase3_values = np.arange(10, 91)
-    z_values = np.zeros((len(phase1_values), len(phase3_values)))
+    phase1_values = arange(10, 91)
+    phase3_values = arange(10, 91)
+    z_values = zeros((len(phase1_values), len(phase3_values)))
 
     for i, phase1 in enumerate(phase1_values):
         for j, phase3 in enumerate(phase3_values):
@@ -53,7 +53,7 @@ def plot_3d_surface(phase1_values, phase3_values, z_values):
     fig = plt.figure(figsize=(30, 30), dpi=150)
     ax = fig.add_subplot(111, projection="3d")
 
-    X, Y = np.meshgrid(phase3_values, phase1_values)
+    X, Y = meshgrid(phase3_values, phase1_values)
     surf = ax.plot_surface(X, Y, z_values, cmap="viridis", edgecolor="none", alpha=.8)
 
     ax.set_xlabel("Фаза 3", fontsize=20)
