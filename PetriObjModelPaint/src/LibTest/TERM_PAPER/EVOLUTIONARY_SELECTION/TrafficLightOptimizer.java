@@ -55,6 +55,7 @@ public class TrafficLightOptimizer {
 
             for (int generation = 0; generation < MAX_GENERATIONS; ++generation) {
                 writeFitnessData(csvWriter, generation, population);
+                population.setGeneration(generation);
                 population.evolve();
 
                 if (generation % 10 == 9 || generation == 0) {

@@ -1,7 +1,7 @@
 from matplotlib.pyplot import subplots, cm, tight_layout, savefig, close
 from matplotlib.ticker import MaxNLocator
 from numpy import linspace
-from pd import read_csv
+from pandas import read_csv
 
 
 def visualize_crossroads_simulation(csv_file_path):
@@ -14,12 +14,12 @@ def visualize_crossroads_simulation(csv_file_path):
 
     df = read_csv(csv_file_path, sep=";", decimal=",")
 
-    fig, axes = subplots(4, 2, figsize=(60, 40))
+    fig, axes = subplots(5, 2, figsize=(75, 40))
     fig.suptitle("Статистика симуляції перехресть за ітераціями", fontsize=16)
     axes = axes.flatten()
 
     columns_to_plot = ["MEAN_QUEUE_1", "MEAN_QUEUE_2", "MEAN_QUEUE_3", "MEAN_QUEUE_4",
-                       "MARK_1", "MARK_2", "MARK_3", "MARK_4", ]
+                       "MAX_QUEUE", "MARK_1", "MARK_2", "MARK_3", "MARK_4", ]
     colors = cm.tab10(linspace(0, 1, len(df.ITERATION.unique())))
 
     for i, col in enumerate(columns_to_plot):
@@ -34,7 +34,7 @@ def visualize_crossroads_simulation(csv_file_path):
         axes[i].legend()
 
     tight_layout()
-    filename = f"crossroads_simulation_statistics_time_{int(df.TIME.max())}_iterations_{df.ITERATION.max()}.png"
+    filename = f"../../media/crossroads_simulation_statistics_time_{int(df.TIME.max())}_iterations_{df.ITERATION.max()}.png"
     savefig(filename, dpi=150, bbox_inches="tight")
     close()
     print(f"Статистику симуляції збережено як \"{filename}\"...")

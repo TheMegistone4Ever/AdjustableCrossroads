@@ -17,7 +17,8 @@ import static LibTest.TERM_PAPER.POM.AdjustableCrossroads.*;
  */
 public class AdjustableCrossroadsCSVExport {
 
-    private static final String CSV_HEADER = "ITERATION;TIME;MEAN_QUEUE_1;MEAN_QUEUE_2;MEAN_QUEUE_3;MEAN_QUEUE_4;MARK_1;MARK_2;MARK_3;MARK_4\n";
+    private static final String CSV_HEADER = "ITERATION;TIME;MEAN_QUEUE_1;MEAN_QUEUE_2;MEAN_QUEUE_3;MEAN_QUEUE_4;" +
+            "MAX_QUEUE;MARK_1;MARK_2;MARK_3;MARK_4\n";
 
     /**
      * Запис статистики симуляції до CSV файлу з деталізацією по часу та ітераціям.
@@ -51,9 +52,10 @@ public class AdjustableCrossroadsCSVExport {
                         double[] timeStats = getStatistics(model);
 
                         String csvRow = String.format(
-                                "%d;%.2f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f\n",
+                                "%d;%.2f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f\n",
                                 iteration + 1, time,
                                 timeStats[0], timeStats[1], timeStats[2], timeStats[3],
+                                Math.max(timeStats[0], Math.max(timeStats[1], Math.max(timeStats[2], timeStats[3]))),
                                 timeStats[4], timeStats[5], timeStats[6], timeStats[7]
                         );
                         synchronized (csvWriter) {
